@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "ViewDepositInterest";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@model BusinessEntities.InterestViewDto
+@using CoreComponents;
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Form Elements -->
+        @using (Html.BeginForm())
+        {
+            int indx = 0;
+            List<BusinessEntities.InterestRatesDto> lstInterestRates = Model != null ? Model.InterestRates : null;
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">View Federation Deposit Interest Details</span>
+                    <button onclick="BackToList();" class="btn btn-default pull-right" type="button">Back To List</button>
+                </div>
+                
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-4"> 
+                            <div class="form-group">
+                                <label>Code </label>
+                                @Html.TextBoxFor(model => model.InterestCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>                            
+                            <div class="form-group">
+                                <label>Base</label>
+                            @Html.TextBoxFor(m => m.Base, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label>Interest Account Heading</label>
+                                @Html.TextBoxFor(m => m.InterestAH, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                @Html.TextBoxFor(m => m.InterestName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="form-group">
+                                <label>Calculation Method</label>
+                                @Html.TextBoxFor(m => m.CalculationMethod, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>PrincipalAHID</label>
+                                @Html.TextBoxFor(m => m.PrincipalAH, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label>Panel Account Heading</label>
+                                @Html.TextBoxFor(m => m.PenalAH, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>Interest Rates Details</strong>
+                        </div>
+                        <div class="panel-body">
+                            <br />
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="tblInterestRates">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="display: none;">#</th>
+                                            <th>ROI</th>
+                                            <th>Penal Rate</th>
+                                            <th>FromDate</th>
+                                            <th>ToDate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (lstInterestRates != null)
+                                        {
+                                            foreach (var item in lstInterestRates)
+                                            {
+                                                indx++;
+                                                <tr>
+                                                    <td class="text-center" style="display: none;">@indx </td>
+                                                    <td>
+                                                        <span>@item.ROI</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>@item.PenalROI</span>
+                                                    </td>
+                                                    <td>
+                                                        <span>@item.FromDate.ToDisplayDateFormat() </span>
+                                                    </td>
+                                                    <td>
+                                                        <span>@item.ToDate.ToDisplayDateFormat()</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; margin-bottom: 13px">
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("DepositInterestLookup")';
+    }
+
+    $(document).ready(function () {
+        menuLink = "menuMaster";
+        subMenuLink = "lnkSideFederationDepositInterest";
+        LoadMenu();
+    });
+
+</script>

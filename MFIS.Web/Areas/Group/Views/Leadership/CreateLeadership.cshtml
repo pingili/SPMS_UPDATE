@@ -1,0 +1,265 @@
+﻿@model MFIS.Web.Areas.Group.Models.LeadershipModel
+@using CoreComponents
+@{
+    ViewBag.Title = "CreateLeadership";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    string encryptLeadershipID = Model.LeadershipID > 0 ? Model.LeadershipID.EncryptString() : string.Empty;
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Leadership Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+
+                <div class="panel-body">
+                    @Html.HiddenFor(o => o.LeadershipID, new { @id = "LeadershipID", @name = "LeadershipID" })
+                    <div class="col-lg-4">
+                        @Html.HiddenFor(m => m.LeadershipID)
+                        <div class="form-group">
+                            <label>Leadership Level</label>
+                            @Html.DropDownListFor(m => m.LeadershipLevel, (SelectList)ViewBag.LeadershipLevels, "Select LeaderShip Level", new { @class = "form-control required" })
+                        </div>
+                        <div class="form-group">
+                            <label>Branch</label>
+
+                            @Html.DropDownListFor(d => d.BranchID, (SelectList)ViewBag.BranchNames, "Select LeaderShip Level", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                        </div>
+                        <div class="form-group">
+                            <label>Cluster</label>
+                            @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.ClusterNames, "Select Cluster", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                            @*@if (@Model.ClusterID == 0)
+                            {
+                                <select name="ClusterID" id="ClusterID" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.ClusterNames, "Select Cluster", new { @class = "form-control",  onchange = "BindDropDownOptions(this.id)" })
+                            }*@
+                        </div>
+                        <div class="form-group">
+                            <label>Group</label>
+                            @Html.DropDownListFor(d => d.GroupID, (SelectList)ViewBag.GroupNames, "Select Group", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                            @*@if (@Model.GroupID == 0)
+                            {
+                                <select name="GroupID" id="GroupID" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(d => d.GroupID, (SelectList)ViewBag.GroupNames, "Select Group", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                            }*@
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Member Name</label>
+                            @Html.DropDownListFor(d => d.MemberID, (SelectList)ViewBag.MemberNames, "Select Member", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                            @*@if (@Model.MemberID == 0)
+                            {
+                                <select name="MemberID" id="MemberID" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(d => d.MemberID, (SelectList)ViewBag.MemberNames, "Select Member", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)" })
+                            }*@
+                        </div>
+
+                        <div class="form-group">
+                            <label>Leadership Title</label>
+
+                            @Html.DropDownListFor(m => m.LeadershipTitle, (SelectList)ViewBag.leadershiptitle, "Select LeaderShip Title", new { @class = "form-control required" })
+
+                        </div>
+                        <div class="form-group">
+                            <label>From Date</label>
+                            @{
+                string FromDate = Model.FromDate.Ticks > 0 ? Model.FromDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@FromDate" class="form-control" id="FromDate" name="FromDate" readonly="true" placeholder="Select From Date" />
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label>To Date</label>
+                            @{
+                string ToDate = Model.ToDate.Ticks > 0 ? Model.ToDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@ToDate" class="form-control" id="ToDate" name="ToDate" readonly="true" placeholder="Select To Date" />
+                            }
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.LeadershipID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Submit</button>
+                        }
+
+                        <button type="reset" class="btn btn-outline btn-primary loader" onclick="return resetData('@encryptLeadershipID')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        function resetData(encryptLeaderShipId) {
+            
+            if (encryptLeaderShipId > 0) {
+                window.location.href = '@Url.Content("CreateLeadership?id=")' + encryptLeaderShipId;
+            }
+            else {
+                clearData();
+            }
+        }
+
+        function clearData() {
+            $('#LeadershipLevel').val('');
+            $('#BranchID').val('');
+            $('#ClusterID').val('');
+            $('#GroupID').val('');
+            $('#MemberID').val('');
+            $('#LeadershipTitle').val('');
+            $('#FromDate').val('');
+        }
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("LeadershipLookUp")';
+        }
+
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideLeadership";
+            LoadMenu();
+        });
+    </script>
+}
+
+
+
+<script src="~/Scripts/BPopup/jquery.bpopup-x.x.x.min.js.txt" type="text/javascript"></script>
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#FromDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#ToDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function BindDropDownOptions(id) {
+            var actionUrl = '@Url.Action("BindDropDowns", "Leadership")';
+            if (id == "BranchID") {
+                var BranchID = $("#BranchID").val();
+
+                $("#ClusterID").html("<option value=''>Select Cluster </option>");
+                $("#GroupID").html("<option value=''>Select Group </option>");
+                $("#MemberID").html("<option value=''>Select Member</option>");
+
+                $.post(actionUrl, { flag: "Branch", Id: BranchID }, function (response) {
+                    $("#ClusterID").html(response).prepend("<option value='' selected='selected'>Select Cluster </option>");
+                });
+            }
+
+            else if (id == "BranchID") {
+                var BranchID = $("#BranchID").val();
+                if (BranchID != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Leadership")';
+                    $("#ClusterID").html('').prepend("<option value=''>Select Cluster</option>");
+                    $.post(actionUrl, { flag: "Branch", Id: BranchID }, function (response) {
+                        $("#ClusterID").html(response).prepend("<option value='' selected='selected'>Select Cluster</option>");
+                    });
+                }
+            }
+            else if (id == "ClusterID") {
+                var ClusterId = $("#ClusterID").val();
+                if (ClusterId != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Leadership")';
+                    $("#GroupID").html('').prepend("<option value=''>Select Group</option>");
+                    $.post(actionUrl, { flag: "Cluster", Id: ClusterId }, function (response) {
+                        $("#GroupID").html(response).prepend("<option value='' selected='selected'>Select Group</option>");
+                    });
+                }
+            }
+            else if (id == "GroupID") {
+                var GroupId = $("#GroupID").val();
+                if (GroupId != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Leadership")';
+                        $("#MemberID").html('').prepend("<option value=''>Select Member</option>");
+                        $.post(actionUrl, { flag: "Group", Id: GroupId }, function (response) {
+                            $("#MemberID").html(response).prepend("<option value='' selected='selected'>Select Member</option>");
+                        });
+                    }
+                }
+
+
+
+};
+
+$(document).ready(function () {
+    if ('@Model.BranchID' != null && '@Model.BranchID' != '' && '@Model.BranchID' != '0')
+                $('#BranchID').val(@Model.BranchID);
+
+            if ('@Model.ClusterID' != null && '@Model.ClusterID' != '' && '@Model.ClusterID' != '0')
+                $('#ClusterID').val(@Model.ClusterID);
+
+            if ('@Model.GroupID' != null && '@Model.GroupID' != '' && '@Model.GroupID' != '0')
+                $('#GroupID').val(@Model.GroupID);
+
+            if ('@Model.MemberID' != null && '@Model.MemberID' != '' && '@Model.MemberID' != '0')
+                $('#MemberID').val('@Model.MemberID');
+
+            if ('@Model.LeadershipTitle' != null && '@Model.LeadershipTitle' != '' && '@Model.LeadershipTitle' != '0')
+                $('#LeadershipTitle').val(@Model.LeadershipTitle);
+
+        });
+
+
+    </script>
+}

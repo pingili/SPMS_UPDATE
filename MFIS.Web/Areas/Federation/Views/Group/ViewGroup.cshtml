@@ -1,0 +1,338 @@
+﻿@model BusinessEntities.GroupMasterViewDto
+@using CoreComponents;
+@{
+    ViewBag.Title = "ViewGroup";    
+    if (ViewBag.isGroupLogin)
+    {
+        Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    }
+}
+@using (Html.BeginForm())
+{
+    int GroupId = 0;
+    if (ViewBag.Id != null)
+    {
+        GroupId = ViewBag.Id;
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">View Group Details</span>
+                    @if (GroupId == 0)
+                    {
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    }
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Code</label>
+                                @{var groupiD = Convert.ToInt32(ViewBag.GroupId);}
+                                <input type="hidden" value="@groupiD" id="hdnGroupId" name="hdnGroupID"/>
+                                @Html.TextBoxFor(m => m.GroupCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label><br />
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name(Telugu)</label><br />
+                                @Html.TextBoxFor(model => model.TEGroupName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Reference Number</label><br />
+                                @Html.TextBoxFor(model => model.GroupRefNumber, new { @class = "form-control", @readonly = "readonly" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li id="lgroupdetails" class="active">
+                            <a href="#" role="tab" data-toggle="tab" onclick="return naviageTab('groupdetails', event);">Group Details
+                            </a>
+                        </li>
+                        <li id="lbankdetails" class="">
+                            <a href="#" role="tab" data-toggle="tab" onclick="return naviageTab('accountdetails', event);">Bank A/c Details
+                            </a>
+                        </li>
+                        <li id="lmembersection" class="">
+                            <a href="#membersection" role="tab" data-toggle="tab" onclick="return naviageTab('members', event);">Members
+                            </a>
+                        </li>
+                        <li id="lleadership" class="" style="display: none">
+                            <a href="#leadership" role="tab" data-toggle="tab" onclick="return naviageTab('Leaders');">Leaders
+                            </a>
+                        </li>
+                        <li id="lloanInterest" class="">
+                            <a href="#loaninterest" role="tab" data-toggle="tab" onclick="return naviageTab('loandetails');">Loan Interest
+                            </a>
+                        </li>
+                        <li id="ldepositinterest" class="">
+                            <a href="#depositinterest" role="tab" data-toggle="tab" onclick="return naviageTab('depositdetails');">Deposit Interest
+                            </a>
+                        </li>
+                        <li id="lhistory" class="" style="display: none">
+                            <a href="#history" role="tab" data-toggle="tab" onclick="return naviageTab('history');">History
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="groupdetails">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Cluster</label>
+                                    @Html.TextBoxFor(m => m.Cluster, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Village</label>
+                                    @Html.TextBoxFor(m => m.Village, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Panchayats/Colony</label>
+                                    @Html.TextBoxFor(m => m.Panchayat, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4">
+
+                                <div class="form-group">
+                                    <label>Formation Date</label>
+                                    @Html.TextBox("ManagerFromDate", Model.FormationDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                                <div class="form-group date" id="datetimep">
+                                    <label>Federation Transactions Start Date</label>
+                                    @Html.TextBox("ManagerFromDate", Model.FederationTranStartDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Meeting Frequency</label><br />
+                                    @foreach (var item in (SelectList)ViewBag.MeetingFrrequency)
+                                    {
+                                        @Html.RadioButtonFor(model => model.MeetingFrequency, item.Value, new { @disabled = "disabled" })
+                                        <label class="control-label">@item.Text</label>
+                                    }
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Meeting Day</label>
+                                    @Html.TextBoxFor(model => model.MeetingDayText, new { @class = "form-control", @readonly = "readonly" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <label>Panchayats/Colony</label>
+                                    @Html.TextBoxFor(m => m.Panchayat, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Date of Closure/Withdrawn</label>
+                                    @Html.TextBox("ManagerFromDate", Model.DateOfClosure.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6" hidden="hidden">
+                                        <label>Meeting Start Time</label>
+                                        @Html.TextBoxFor(model => model.MeetingStartTime, new { @class = "form-control", @readonly = "readonly" })
+
+                                    </div>
+                                    <div class="col-sm-6" hidden="hidden">
+                                        <label>Meeting End Time</label>
+                                        @Html.TextBoxFor(model => model.MeetingEndTime, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Regular Saving Amount</label>
+                                    @Html.TextBox("SavingAmount", Model.RegularSavingAmount.ToDisplayCurrency(), new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Regular Saving A/C Head</label>
+                                    @Html.TextBoxFor(model => model.RegularSavingAccountHead, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="bankdetails">
+                        </div>
+                        <div class="tab-pane fade" id="membersection">
+                        </div>
+                        <div class="tab-pane fade" id="leadership">
+                        </div>
+                        <div class="tab-pane fade" id="loaninterest">
+                        </div>
+                        <div class="tab-pane fade" id="depositinterest">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tab panes -->
+
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; margin-bottom: 13px">
+                        &nbsp;&nbsp;
+                         @if (GroupId == 0)
+                         {
+                             <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                         }
+                        <input type="hidden" id="hdnCurrentTab" name="hdnCurrentTab" value="groupdetails" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("GroupLookUp")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideGroup";
+            LoadMenu();
+        });
+        $(function () {
+            GroupMaster();
+
+        });
+        var GroupMaster = function () {
+            var tabtype = $('#hdnCurrentTab').val();
+            naviageTab = function (tabtype, event) {
+
+                var actionurl = '';
+                var GroupID = $('#hdnGroupId').val();
+                var isUpdate = (Number(GroupID) && Number(GroupID) > 0);
+                DisplayActiveTab('lgroupdetails');
+
+
+
+                //  $('#hdnCurrentTab').val(tabtype);
+                switch (tabtype) {
+
+                    case "groupdetails":
+                        DisplayTab(tabtype);
+                        @*actionurl = '@Url.Action("ViewGroup", "Group")';
+                        $.post(actionurl, { id: GroupID }, function (data) {
+                            if (data) {
+                                DisplayTab(tabtype);
+                            }
+                        });*@
+                        break;
+                    case "accountdetails":
+                        actionurl = '@Url.Action("ViewGroupBankDetails", "Group")';
+                        $.get(actionurl, { id: GroupID }, function (data) {
+                            if (data) {
+                                $('#bankdetails').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "members":
+                        actionurl = '@Url.Action("Member", "Group")';
+                        $.get(actionurl, { "groupID": $('#hdnObjectID').val() }, function (data) {
+                            if (data) {
+                                $('#membersection').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "Leaders":
+                        actionurl = '@Url.Action("ViewLeaderShip", "Group")';
+                        $.get(actionurl, function (data) {
+                            if (data) {
+                                $('#leadership').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "loandetails":
+                        var actionurl = '@Url.Action("ViewLoanInterestDetails", "Group")';
+                        $.get(actionurl, { GroupID: GroupID }, function (data) {
+
+                            if (data) {
+                                $('#loaninterest').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "depositdetails":
+                        var actionurl = '@Url.Action("ViewdepositinterestDetails", "Group")';
+                        $.get(actionurl, { GroupID: GroupID }, function (data) {
+                            if (data) {
+                                $('#depositinterest').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                }//switch
+            },
+            DisplayTab = function (tabType) {
+                var linkId = '';
+                var sectionId = '';
+                $('#groupdetails, #bankdetails, #leadership, #membersection, #loaninterest, #depositinterest').attr("class", "tab-pane fade");
+                $('#lgroupdetails, #lbankdetails, #lleadership, #lmembersection, #lloanInterest, #ldepositinterest').attr("class", "");
+                $('#hdnCurrentTab').val(tabType);
+                switch (tabType) {
+                    case "groupdetails":
+                        linkId = 'lgroupdetails';
+                        sectionId = 'groupdetails';
+                        break;
+                    case "accountdetails":
+                        linkId = 'lbankdetails';
+                        sectionId = 'bankdetails';
+                        break;
+                    case "members":
+                        linkId = 'lmembersection';
+                        sectionId = 'membersection';
+                        break;
+                    case "Leaders":
+                        linkId = 'lleadership';
+                        sectionId = 'leadership';
+                        break;
+                    case "loandetails":
+                        linkId = 'lloanInterest';
+                        sectionId = 'loaninterest';
+                        break;
+                    case "depositdetails":
+                        linkId = 'ldepositinterest';
+                        sectionId = 'depositinterest';
+                        break;
+                }
+
+                $('#' + linkId).attr("class", "active");
+                $('#' + sectionId).attr("class", "tab-pane fade active in");
+            }
+        }
+        DisplayActiveTab = function (tabLinkId) {
+            $('#lgroupdetails, #lbankdetails, #lleadership, #lmembersection, #lloanInterest, #ldepositinterest').attr("class", "");
+            $('#' + tabLinkId).attr("class", "active");
+        }
+    </script>
+    
+}

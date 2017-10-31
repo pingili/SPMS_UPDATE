@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C67E16D3-324E-46A2-8232-8D06279500A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataLogic</RootNamespace>
+    <AssemblyName>DataLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdoHelper.cs" />
+    <Compile Include="DBConstants.cs" />
+    <Compile Include="Implementation\AccountHeadDll.cs" />
+    <Compile Include="Implementation\AccountHeadMappingDll.cs" />
+    <Compile Include="Implementation\BankMasterDAL.cs" />
+    <Compile Include="Implementation\ContraEntryDal.cs" />
+    <Compile Include="Implementation\EmployeeDAL.cs" />
+    <Compile Include="Implementation\DepositOBDll.cs" />
+    <Compile Include="Implementation\FederationLoanApplicationDal.cs" />
+    <Compile Include="Implementation\FedReportsDll.cs" />
+    <Compile Include="Implementation\GroupGeneralPaymentDal.cs" />
+    <Compile Include="Implementation\GroupMemberReceiptDal.cs" />
+    <Compile Include="Implementation\GroupOtherJournalDal.cs" />
+    <Compile Include="Implementation\GroupOtherReceiptDll.cs" />
+    <Compile Include="Implementation\GroupMeetingDAL.cs" />
+    <Compile Include="Implementation\InterestMasterDll.cs" />
+    <Compile Include="Implementation\LoanOBDll.cs" />
+    <Compile Include="Implementation\MasterDal.cs" />
+    <Compile Include="Implementation\MemberConfirmationDemandDal.cs" />
+    <Compile Include="Implementation\MemberDll.cs" />
+    <Compile Include="Implementation\BankLoanDataAccess.cs" />
+    <Compile Include="Implementation\MemberLoanDisbursementDataAccess.cs" />
+    <Compile Include="Implementation\ReceiptDll.cs" />
+    <Compile Include="Implementation\ModuleDll.cs" />
+    <Compile Include="Implementation\LoginDll.cs" />
+    <Compile Include="Implementation\LoanDisbursementDataAccess.cs" />
+    <Compile Include="Implementation\RepaymentDll.cs" />
+    <Compile Include="Implementation\ReportsDal.cs" />
+    <Compile Include="Implementation\RoleDal.cs" />
+    <Compile Include="Implementation\RoleModulesDal.cs" />
+    <Compile Include="Implementation\ModuleActionDal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEntities\BusinessEntities.csproj">
+      <Project>{1359797b-6813-45c9-816c-11e8b54e219e}</Project>
+      <Name>BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreComponents\CoreComponents.csproj">
+      <Project>{2279d55d-c865-40b7-b7e5-b6a6ffb147ad}</Project>
+      <Name>CoreComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MFIEntityFrameWork\MFIEntityFrameWork.csproj">
+      <Project>{1e48e5d5-db5d-4bb3-98b9-1b2b0b60480b}</Project>
+      <Name>MFIEntityFrameWork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{48a3c6ab-812c-4692-8821-e06bd8a22fcb}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

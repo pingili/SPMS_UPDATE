@@ -1,0 +1,67 @@
+﻿<div id="collapseOne" class="panel-collapse collapse " style="height: auto;">
+    <div class="panel-body">
+        <div class="form-group">
+            <label>Account Head Name</label>
+            <select id="ddlAccountHead" class="form-control" onfocus="RemoveValidation(this.id);" onchange="GetOpeningBalance(this.value);">
+                <option value="">Please Select Account Head</option>
+            </select>
+        </div>
+
+        <div id="dvAddOpenBalance" class="form-group">
+            <label>Opening Balance</label>
+            <br>
+            <input class="form-control adjc-left-80" placeholder="Enter Opening Balance" name="OpeningBalance" id="txtAddOpeningBalance" onfocus="RemoveValidation(this.id);">
+
+            <select class="form-control adjc-right-20" disabled="disabled" name="OpeningBalanceType" id="ddlAddOpeningBalanceType">
+                <option value="Dr">Dr</option>
+                <option value="Cr">Cr</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="panel-footer">
+        <div class="form-group" style="margin-left: 16px;">
+            <button type="button" class="btn btn-outline btn-primary" onclick="UpdateOpeningBalance();">Submit</button>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function GetOpeningBalance(ahid) {
+        $.post('@Url.Action("GetOB", "GroupAccountTree")',
+            { ahid: $('#ddlAccountHead').val()},
+            function (data) {
+                $('#txtAddOpeningBalance').val(data.balance)
+                $('#ddlAddOpeningBalanceType').val(data.OpeningBalanceType)
+            },
+            'json');
+    }
+
+    function UpdateOpeningBalance() {
+        $.post('@Url.Action("UpdateOB", "GroupAccountTree")',
+            { ahid: $('#ddlAccountHead').val(), balance: $('#txtAddOpeningBalance').val() },
+            function (data) {
+                if (data.result ) {
+                    alert('Opening Balance Updated Successfully.');
+                }
+            },
+            'json');
+    }
+
+    function RemoveValidation(id) {
+        $('#' + id).removeClass('required');
+    }
+
+    $(document).ready(function () {
+        
+        var actionUrl = '@Url.Action("BindDropDowns", "GroupAccountTree")' + '?parentAhid=0&accountHeadLevel=5&Id=ViewBalanceAccountHead&isFederation=false';// + $('#IsFederation').val();
+        $.post(actionUrl, { parentAhid: 0, accountHeadLevel: 5, Id: "ViewBalanceAccountHead", isFederation: $('#IsFederation').val() }, function (response) {
+            $("#ddlAccountHead").html(response.DropDownOptions);
+            $("#ddlAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+        }, 'json');
+    });
+
+
+</script>

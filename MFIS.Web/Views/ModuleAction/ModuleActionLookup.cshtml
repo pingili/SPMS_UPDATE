@@ -1,0 +1,109 @@
+﻿@model List<BusinessEntities.ModuleActionLookup>
+@using CoreComponents
+@{
+    ViewBag.Title = "ModuleActionLookup";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Module Action Lookup</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddModuleAction(0);">Add New Module Action</button>
+                </div>
+                @if (Result != null && Result.ObjectId > 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div>
+                }
+                else if (Result != null && Result.ObjectId < 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tblmoduleActiondetails">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Module Name</th>
+                                    <th>Module Action Code</th>
+                                    <th>Action</th>
+                                    <th>Url</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var module in Model)
+                                {
+                                    bool isActive = module.StatusCode == Utilities.Constants.StatusCodes.Active;
+                                
+                                string inActiveTitle = isActive ? "In-Active" : "Active";
+                                int ModuleActionID = module.ModuleActionId;
+                                    string deleteTitle = "Delete";
+
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(Model.IndexOf(module) + 1) </td>
+                                        <td>@module.ModuleName</td>
+                                        <td>@module.ModuleActionCode</td>
+                                        <td>@module.ActionName</td>
+                                        <td>@module.Url</td>
+                                        <td class="text-center">
+                                            <img src="~/@(isActive ? ("Content/images/Circle_Green.png") : "Content/images/Circle_Red.png")" title="Active" />
+                                        </td>
+                                        <td class="text-center">
+                                            <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="editrecord('@ModuleActionID');" />
+                                            <img style="cursor: pointer" onclick="ActiveInactiveModuleAction('@ModuleActionID','@module.StatusCode');" src="~/@(isActive ? "Content/images/Circle_Red.png" : "Content/images/Circle_Green.png")" title="InActive" />
+                                            <img style="cursor: pointer" onclick="DeleteModuleAction('@ModuleActionID');" src="~/Content/images/delete_btn1.png" title="Delete" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+}
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script>
+    function AddModuleAction(id) {
+        window.location.href = '@Url.Content("AddModuleAction?id=")'+id;
+    }  
+
+    function editrecord(id) {
+        window.location.href = '@Url.Content("AddModuleAction?id=")' + id;
+    }
+
+    function DeleteModuleAction(ID) {
+        if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
+            return false;
+        window.location.href = '@Url.Content("DeleteModuleAction?Id=")' + ID;
+    }
+    function ActiveInactiveModuleAction(ID, currentStatusCode) {
+        if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+            return false;
+
+        window.location.href = '@Url.Content("ActiveInactiveModuleAction?Id=")' + ID;
+    }
+
+    $(document).ready(function () {
+        $('#tblmoduleActiondetails').dataTable({
+            "bSort": false
+        });
+    });
+</script>

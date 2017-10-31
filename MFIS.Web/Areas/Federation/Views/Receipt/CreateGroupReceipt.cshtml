@@ -1,0 +1,467 @@
+﻿@using BusinessEntities
+@using CoreComponents
+@{
+    ViewBag.Title = "CreateGroupReceipt";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@model BusinessEntities.ReceiptMasterDto
+@using (Html.BeginForm(FormMethod.Post))
+{
+    int indx = 0;
+    List<ReceiptTranscationDto> lstGroupReceiptTranscation = Model != null ? Model.lstGroupReceiptTranscationDto : null;
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group Receipt </span>
+                    @Html.ActionLink("Add New Group Receipt", "CreateGroupReceipt", null, new { @class = "btn btn-default pull-right" })
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <input type="hidden" value="@Model.AccountMasterID" id="AccountMasterID" name="AccountMasterID" />
+                            <input type="hidden" value="@Model.AHID" id="AHID" name="AHID" />
+
+                            @if (Model.AccountMasterID > 0)
+                            {
+                                <label>
+                                    Voucher Number
+                                </label>
+                                @Html.TextBoxFor(model => model.VoucherNumber, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+
+                            }
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>
+                                    Cluster
+                                </label>
+                                @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.Clusters, "Select Cluster", new { @class = "form-control required", onchange = "BindDropDownOptions(this.id)" })
+                                @* @if(@Model.ClusterID==0)
+                                    {
+                                        @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.Clusters, "Select Cluster", new { @class = "form-control", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.Clusters, "Select Cluster", new { @class = "form-control", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)" })
+                                    }*@
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group No</label>
+
+                                @if (@Model.GroupID == 0)
+                                {
+                                    <select name="GroupID" id="GroupID" class="form-control required" onchange="getSelectName(this.value);getReceiptTemplate();">
+                                        <option value="0">please select</option>
+                                    </select>
+                                }
+                                else
+                                {
+
+                                    @Html.DropDownListFor(d => Model.GroupID, (SelectList)ViewBag.GroupNames, "Select Group", new { @class = "form-control required", @name = "GroupID", @id = "GroupID", onchange = "getSelectName(this.value);getReceiptTemplate();" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label>
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                <input type="hidden" id="EmployeeID" name="EmployeeID" value="@Model.EmployeeID" />
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", maxlength = "32", @placeholder = "Enter Employee Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                @{
+                                string TransactionDate = Model.TransactionDate.Ticks > 0 ? Model.TransactionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                    <input type="text" value="@TransactionDate" class="form-control required" id="TransactionDate" name="TransactionDate" required="required" readonly="true" placeholder="Select TransactionDate" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Tanscation Mode</label><br>
+                                <input type="radio" name="TransactionMode" id="Cash" value="C" checked="">&nbsp; Cash &nbsp;
+                                <input type="radio" name="TransactionMode" id="Bank" value="B">&nbsp; Bank &nbsp;
+
+                                @*                                Cash:   @Html.RadioButton("TransactionDisplayMode", "Cash", new {id="Cash",value="1",@checked="Checked" })
+                                    Bank: @Html.RadioButton("TransactionDisplayMode", "Bank", new {id="Bank",value="2" })  *@
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2" id="Amount">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @id = "money", onkeypress = "return validateNumbersOnly(event);" })
+                                @*<input class="form-control" />*@
+                            </div>
+                        </div>
+                        <div class="TransactionDisplayMode">
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Group SB a/c No</label>
+                                    @*@Html.DropDownListFor(model => model.BankAccount, (SelectList)ViewBag.federationbanks, "Select Bank Account", new { @class = "form-control", onchange = "GetFAccountName(this.value);" })*@
+                                    @Html.TextBoxFor(model => model.GroupBankAccountNumber, new { @class = "form-control", @placeholder = "Enter GroupBankAccountName", @id = "GroupBankAccountNumber" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Group Bank Name</label>
+                                    @*@Html.TextBoxFor(m => m.BankAccountName, null, new { @class = "form-control", @id = "BankAccountName", @readonly = "true" })*@
+
+                                    @Html.TextBoxFor(model => model.GroupBankAccountName, new { @class = "form-control", @id = "accountName", @placeholder = "Enter GroupBankAccountName" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Cheque Number</label>
+                                    @Html.TextBoxFor(model => model.ChequeNumber, new { @class = "form-control", @placeholder = "Enter ChequeNumber", @id = "ChequeNumber" })
+
+                                    @* <input class="form-control" placeholder="Cheque Number" />*@
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Cheque Date</label>
+                                    @{
+                                string ChequeDate = Model.ChequeDate.Ticks > 0 ? Model.ChequeDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                        <input type="text" value="@ChequeDate" class="form-control" id="ChequeDate" name="ChequeDate" readonly="true" placeholder="Select ChequeDate" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" id="table-responsive">
+                        @Html.Partial("_ReceiptTemplate", Model)
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Reference Number</label>
+                                @Html.TextBoxFor(model => model.VoucherRefNumber, new { @class = "form-control", @placeholder = "Enter ReferenceNumberReferenceNumber" })
+
+                                @*<input class="form-control" type="text" placeholder="R48484" />*@
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>PartyName</label>
+                                @Html.TextBoxFor(model => model.PartyName, new { @class = "form-control", @id = "PartyName", @placeholder = "Enter party Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(e => e.Narration, 2, 4, new { @class = "form-control address-only" })
+                                @* <textarea class="form-control" rows="1" style="height: 35px;"></textarea>*@
+                            </div>
+                        </div>
+                        <div class="TransactionDisplayMode">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Federation Bank Account Number</label>
+                                    @Html.DropDownListFor(d => Model.FederationBankAccountNumber, (SelectList)ViewBag.federationbanks, "Select AccountNo", new { @class = "form-control required", onchange = "GetFAccountName(this.value);" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Federation Bank Account Name</label>
+                                    @Html.TextBoxFor(model => model.FederationBankAccountName, new { @class = "form-control", @id = "FaccountName", @readonly = "readonly", @placeholder = "Federation Bank Account Name" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary" onclick="javascript:return validation();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#TransactionDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0",
+                onSelect: function (selectedDate) {
+                    getReceiptTemplate();
+                }
+            });
+            $('#ChequeDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+}
+<script>
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("GroupReceiptLookUp")';
+    }
+    function getSelectName(id) {
+        $.post('@Url.Action("GetSelectName")' + '/' + id, {},
+               function (data) {
+                   $('#GroupName').val(data.GroupName);
+               }, 'json');
+    }
+    function GetFAccountName(id) {
+        if (id != "") {
+            $.post('@Url.Action("GetFAccountName")' + '/' + id, {},
+                      function (data) {
+                          // $('#BankAccountName').val(data.FaccountName);
+                          $('#AccountHeadId').val(data.AHID);
+                          //$('#AccountCode').html(data.AccountCode);
+                          $('#AccountName').html(data.AccountName);
+                          ViewBalanceSummary();
+                      }, 'json');
+           }
+       }
+       var ReceiptMatster = function () {
+           menuLink = "menuTransactions";
+           subMenuLink = "lnkSideGroupReceipt";
+           LoadMenu();
+       }
+       if ($('input[name="TransactionMode"]:checked').val() == "C") {
+           $('.TransactionDisplayMode').hide();
+           $('#Amount').show();
+       }
+       $("#Bank").click(function () {
+           $('.TransactionDisplayMode').show();
+       });
+       //$("#Cash").click(function () {
+       //    $('.TransactionDisplayMode').hide();
+       //    $('#Amount').show();
+       //});
+       $("#Cash").click(function () {
+           $('.TransactionDisplayMode').hide();
+           GetAHID($('#Cash').val());
+
+       });
+       if ($('#Cash').val() == "C") {
+           $('.TransactionDisplayMode').hide();
+           GetAHID($('#Cash').val());
+       }
+       function GetAHID(Id) {
+           $.post('@Url.Action("GetAHID")' + '/' + Id, { isfederation: true },
+            function (data) {
+                $('#AccountHeadId').val(data.AHID);
+                $('#AccountName').html(data.AccountName);
+                ViewBalanceSummary();
+            }, 'json');
+       }
+       function ViewBalanceSummary() {
+           var actionUrl = '@Url.Action("ViewBalanceSummary", "Receipt")';
+        var ahid = $('#AccountHeadId').val();
+        $.post(actionUrl, { ahId: ahid, isFederation: true }, function (response) {
+            if (response.BalanceType === "Dr") {
+                $('#Balance').html(response.ClosingBalance);
+            } else {
+                $('#Balance').html(response.ClosingBalance);
+            }
+
+        }, 'json');
+    }
+    function BindDropDownOptions(id) {
+        var actionUrl = '@Url.Action("BindDropDowns", "Receipt")';
+        if (id == "ClusterID") {
+            var ClusterID = $("#ClusterID").val();
+            $("#GroupID").html('').prepend("<option value=''>Select Group </option>");
+            //$("#ClusterID").html('').prepend("<option value=''>Select Cluster </option>");
+            $.post(actionUrl, { flag: "Cluster", Id: ClusterID }, function (response) {
+                $("#GroupID").html(response).prepend("<option value='' selected='Selected'>Select Group</option>");
+            });
+        }
+    }
+</script>
+<script>
+    $(function () {
+        $('input.Amount').change(function () {
+            
+            var mny = $('#money').val();
+            var total = 0;
+            $('input.Amount').each(function () {
+                
+                total += parseInt(this.value);
+            });
+            $('#DrTotal').html(total);
+        });
+    });
+
+    function validation() {
+        validate1();
+        var error = "";
+        var mny = $('#money').val();
+        //if ($('#DrTotal').text() != $('#money').val()) {
+        //    alert("Please enter Valid Amount and is Equal To:    " + mny);
+        //    return false;
+        //}
+        $('#tblgropureceipt input[type="text"]').each(function () {
+            txt = this;
+            if ($.trim($(txt).val()) == '') {
+                alert('Please provide DrAmount.');
+                return false;
+            }
+        });
+        if ($.trim($('#money').val()) === '') {
+            alert('please enter Amount');
+            return false;
+        }
+        if ($('input[name="TransactionMode"]:checked').val() == "B") {
+            var AcNo = $('#GroupBankAccountNumber').val();
+            var AcName = $('#accountName').val();
+            var ChequeNumber = $('#ChequeNumber').val();
+            var ChequeDate = $('#ChequeDate').val();
+            if (AcNo == '') {
+                alert('please enter AccountNumber');
+                return false;
+            } if (AcName == '') {
+                alert('please enter AccountName');
+                return false;
+            } if (ChequeNumber == '') {
+                alert('please enter cheque number.');
+                return false;
+            }
+            if (ChequeDate == '') {
+                alert(' please enter Cheque Date');
+                return false;
+            }
+        }
+        return Confirm('Do you wish to save GroupReceipt Details?');
+    }
+    function validateNumbersOnly(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+        if ((unicode == 8) || (unicode == 9) || (unicode == 127) || (unicode > 47 && unicode < 58)) {
+            return true;
+        }
+        else {
+            window.alert("This field accepts only Numbers");
+            return false;
+        }
+    }
+    $('#money').change(function () {
+        debugger;
+        var totalamount = $('#money').val();
+        if (!isNaN(totalamount)) {
+            var total = parseInt(totalamount);
+            for (i = 1; i < 100; i++) {
+                if ($('#CrAmount_' + i)) {
+                    var demand = parseInt($('#OpeningBalance_' + i).val());
+                    if (demand < total)
+                        $('#CrAmount_' + i).val(demand);
+                    else if (total > 0)
+                        $('#CrAmount_' + i).val(total);
+
+                    total = total - demand;
+                }
+            }
+        }
+
+    });
+    function validate1() {
+        var validate = true;
+        if ($.trim($('#ClusterID').val()) == '' && $.trim($('#GroupID').val()) == '0' && $.trim($('#TransactionDate').val()) == '') {
+            $('#ClusterID,#GroupID,#TransactionDate').css('border-color', 'red');
+            validate = false;
+        }
+        else {
+            $('#ClusterID,#GroupID,#TransactionDate').css('border-color', '');
+
+        }
+        if ($.trim($('#ClusterID').val()) == '') {
+            $('#ClusterID').css('border-color', 'red');
+            validate = false;
+        }
+        else {
+            $('#ClusterID').css('border-color', '');
+
+        }
+        if ($.trim($('#GroupID').val()) == '0') {
+            $('#GroupID').css('border-color', 'red');
+            validate = false;
+        }
+        else {
+            $('#GroupID').css('border-color', '');
+
+        }
+        if ($.trim($('#TransactionDate').val()) == '') {
+            $('#TransactionDate').css('border-color', 'red');
+            validate = false;
+        }
+        else {
+            $('#TransactionDate').css('border-color', '');
+
+        }
+        return validate;
+    }
+
+
+    function getReceiptTemplate() {
+        debugger;
+        var groupid = $('#GroupID').val();
+        var transactiondate = $('#TransactionDate').val();
+        if (groupid != '' && groupid > 0 && transactiondate != '') {
+            $.post('@Url.Action("GetReceiptTemplate", "Receipt")',
+                { groupid: groupid, transactiondate: transactiondate },
+                function (data) {
+                    $('#table-responsive').html('');
+                    $('#table-responsive').html(data);
+                });
+        }
+    }
+
+
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGroupReceipt";
+        LoadMenu();
+
+    });
+</script>
+
+

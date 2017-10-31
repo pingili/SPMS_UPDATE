@@ -1,0 +1,23 @@
+﻿
+@BusinessEntities.ResultDto resultDto=ViewBag.Result;
+
+@if (resultDto != null && resultDto.ObjectId > 0 && !string.IsNullOrEmpty(resultDto.Message))
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong> Indicates a successful or positive action.
+    </div>
+}
+else if (resultDto != null && resultDto.ObjectId < 0 && !string.IsNullOrEmpty(resultDto.Message))
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong> Indicates a dangerous or potentially negative action.
+    </div>
+}
+
+@*<div class="alert alert-info">
+  <strong>Info!</strong> Indicates a neutral informative change or action.
+</div>*@
+
+@*<div class="alert alert-warning">
+  <strong>Warning!</strong> Indicates a warning that might need attention.
+</div>*@

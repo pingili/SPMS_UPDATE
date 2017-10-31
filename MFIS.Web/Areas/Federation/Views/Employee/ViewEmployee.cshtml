@@ -1,0 +1,489 @@
+﻿@{
+    ViewBag.Title = "ViewEmployee";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    
+}
+@model BusinessEntities.EmployeeViewDto
+@using CoreComponents;
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">View Employee Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                @Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee RefCode</label>
+                                @Html.TextBoxFor(m => m.EmployeeRefCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name(Telugu)</label>
+                                @Html.TextBoxFor(model => model.TEEmployeeName, new { @class = "form-control ", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+
+                                @if (Model.Photo != null)
+                                {
+                                    <img src="@("/" + Model.Photo)" id="employee" class="employee" alt="" style="width:90px;height:60px;">
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/FileNotFound.png" alt="" id="employee" style="width: 90px; height: 60px;">
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Branch Code</label>
+                                @Html.TextBoxFor(model => model.BranchCode, new { @class = "form-control ", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Branch Name</label>
+                                @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>SurName</label>
+                                @Html.TextBoxFor(m => m.SurName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>SurName(Telugu)</label>
+                                @Html.TextBoxFor(model => model.TESurName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @* <div>
+                        <label style="color: #A94442;">Cluster :<span id="cluster"></span>, Village :<span id="village"></span></label>
+                    </div>*@
+                    <!-- Nav tabs -->
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active" tabindex="1">
+                            <a href="#personaldetails" onclick='movetotab("personaldetails");' role="tab" data-toggle="tab">Personal Details
+                            </a>
+                        </li>
+
+                        <li tabindex="2">
+                            <a href="#familydetails" onclick='movetotab("familydetails");' role="tab" data-toggle="tab">Income &amp; Family Details
+                            </a>
+                        </li>
+                        <li tabindex="3">
+                            @*<a href="#proofs" onclick='movetotab("proofs");' role="tab" data-toggle="tab">Proofs
+                            </a>*@
+                            <a href="#proofs" onclick='movetotab("proofs");' role="tab" data-toggle="tab">Proofs</a>
+                        </li>
+                        @* <li tabindex="4">
+                            <a href="#BANKAccountDetails" onclick='movetotab("BANKAccountDetails");' role="tab" data-toggle="tab">Bank A/c Details
+                            </a>
+                        </li>*@
+                        <li tabindex="5">
+                            <a href="#CreateLogin" onclick='movetotab("CreateLogin");' role="tab" data-toggle="tab">Login Details
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="personaldetails" class="tab-pane fade active in">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Cluster Name</label>
+                                        @Html.TextBoxFor(model => model.Cluster, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Designation</label>
+                                        @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>From Date</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DesignationFromDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>To Date</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DesignationToDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div style="height: 57px;" class="form-group">
+                                        <label>Gender</label>
+                                        @if (Model.Gender == "M")
+                                        {
+                                            <input type="text" class="form-control" value="Male" disabled="disabled" />
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" value="Female" disabled="disabled" />
+
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Date Of Joining</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DOJ.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label>Date Of Birth</label>
+                                    @{
+                                        @Html.TextBox("ManagerFromDate", Model.DOB.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+
+                                    }
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Date Of Retirement</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DateOfRetirement.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div style="height: 57px;" class="form-group">
+                                        <label>Disablity</label>
+                                        @if (Model.Disability == false)
+                                        {
+                                            <input type="text" class="form-control" value="No" disabled="disabled" />
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" value="Yes" disabled="disabled" />
+
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Education Qualification</label>
+                                        @Html.TextBoxFor(model => model.EducationQualification, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Religion</label>
+                                        @Html.TextBoxFor(m => m.Religion, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Social Category</label>
+                                        @Html.TextBoxFor(m => m.SocialCategory, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        <label>Marital Status</label>
+                                        @if (Model.MaritalStatus == "M")
+                                        {
+                                            <input type="text" class="form-control" value="Married" disabled="disabled" />
+                                        }
+                                        else if (Model.MaritalStatus == "U")
+                                        {
+                                            <input type="text" class="form-control" value="Unmarried" disabled="disabled" />
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" value="Single" disabled="disabled" />
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Contact Number</label>
+                                        @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control  phonenumber-only", @placeholder = "Mobile Number" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Present Address</label>
+                                        @Html.TextAreaFor(m => m.PresentAddress, 2, 5, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        <label>Permanent Address</label>
+                                        @Html.TextAreaFor(m => m.PermanentAddress, 2, 5, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Blood Group</label>
+                                        @Html.TextBoxFor(m => m.BloodGroup, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        <label>Emergency Contact Number</label>
+                                        @Html.TextBoxFor(m => m.EmergencyContactNumber, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Emergency Contact Name</label>
+                                        @Html.TextBoxFor(m => m.EmergencyContactName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <div id="familydetails" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Nominee Name</label>
+                                        @Html.TextBoxFor(m => m.NomineeName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Social Category</label>
+                                        @Html.TextBoxFor(m => m.SocialCategory, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Nominee Relationship</label>
+                                        @Html.TextBoxFor(m => m.NomineeRelationship, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Family Income</label>
+                                        @Html.TextBoxFor(m => m.FamilyIncome, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Non Earning Members In Family</label>
+                                        @Html.TextBoxFor(m => m.NonEarningMembersInFamily, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Parent Guardian Name</label>
+                                        @Html.TextBoxFor(m => m.ParentGuardianName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Earning Members In Family</label>
+                                        @Html.TextBoxFor(m => m.EarningMembersInFamily, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label>Assets In Name Of Employee</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.AssetsInNameOfEmployee, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label>Parent Guardian Relationship</label>
+                                            @Html.TextBoxFor(m => m.ParentGuardianRelationship, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="proofs" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Aadhar Number</label>
+                                        @if (Model.EmployeeKYC.Count > 0)
+                                        {
+                                            @Html.TextBoxFor(m => m.EmployeeKYC[0].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("txtAadhar", null, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                   
+                                    <div class="form-group">
+                                        <label>PAN Card</label>
+                                        @if (Model.EmployeeKYC.Count > 1)
+                                        {
+                                            @Html.TextBoxFor(m => m.EmployeeKYC[1].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("PanCard", null, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <img src="@(Model.EmployeeKYC.Count > 0 ? "/" + Model.EmployeeKYC[0].FileName : "/Content/images/FileNotFound.png")" alt="Aadhar Card" style="width:100px;height:70px;"/>
+                                    </div>
+                                  
+                                    <div class="form-group">
+                                        <img src="@(Model.EmployeeKYC.Count > 1 ? "/" + Model.EmployeeKYC[1].FileName : "/Content/images/FileNotFound.png")" alt="Pan Card" style="width:100px;height:70px;"/>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Ration Card </label>
+                                        @if (Model.EmployeeKYC.Count > 2)
+                                        {
+                                            @Html.TextBoxFor(m => m.EmployeeKYC[2].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("RationCard", null, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                     <div class="form-group">
+                                        <label>VoterID</label>
+                                        @if (Model.EmployeeKYC.Count > 3)
+                                        {
+                                            @Html.TextBoxFor(m => m.EmployeeKYC[3].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("VoterId", null, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                   @* <div class="form-group">
+                                        <label>Job Card</label>
+                                        @if (Model.EmployeeKYC.Count > 4)
+                                        {
+                                            @Html.TextBoxFor(m => m.EmployeeKYC[4].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBox("JobCard", null, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>*@
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+
+                                        <img src="@(Model.EmployeeKYC.Count > 2 ? "/" + Model.EmployeeKYC[2].FileName : "/Content/images/FileNotFound.png")" alt="Ration Card" style="width:100px;height:70px;"/>
+                                    </div>
+                                      <div class="form-group">
+                                        <img src="@(Model.EmployeeKYC.Count > 3 ? "/" + Model.EmployeeKYC[3].FileName : "/Content/images/FileNotFound.png")" alt="Voter Card" style="width:100px;height:70px;"/>
+                                    </div>
+                                    @*<div class="form-group">
+
+                                        <img src="@(Model.EmployeeKYC.Count > 4 ? "/" + Model.EmployeeKYC[4].FileName : "/Content/images/FileNotFound.png")" alt="JOB Card" style="width:100px;height:70px;"/>
+                                    </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="CreateLogin">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Role Name </label>
+                                    <label class="form-control">@Model.RoleName</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Login Name </label>
+                                    <input class="form-control" value="@Model.LoginUserName" id="LoginUserName" name="LoginUserName" maxlength="20" placeholder="Enter User Name" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input class="form-control" value="@Model.LoginPassWord" id="LoginPassWord" name="LoginPassWord" maxlength="16" type="password" placeholder="Enter Password" readonly="readonly">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; margin-bottom: 13px">
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+              
+            <!-- End Form Elements -->
+            <script type="text/javascript">
+
+                function BackToList() {
+                    showProgress();
+                    window.location.href = '@Url.Action("EmployeeLookUp", "Employee")';
+                }
+                function movetotab(tabname) {
+                    $('#CurrentTab').val(tabname);
+
+                }
+                $(document).ready(function () {
+                    menuLink = "menuOrganization";
+                    subMenuLink = "lnkSideEmployee";
+                    LoadMenu();
+                });
+                CustomTransliteration(['TEEmployeeName', 'TESurName']);
+
+            </script>
+        }
+    </div>
+</div>
+

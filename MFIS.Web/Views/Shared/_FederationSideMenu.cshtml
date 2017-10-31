@@ -1,0 +1,56 @@
+﻿@using BusinessEntities;
+
+<div class="navbar-header" style="width: 100%;">
+     <div style="background-color: white; width: 250px; height: 80px;" align="center">
+    <a href="@Url.Action("AccountTree", "AccountTree", new { Area = "Federation" })">
+        <img alt="logo" style="width: 150px; height: 75px;" src="~/Content/images/LogoSpms.png" /></a>
+         </div>
+</div>
+
+<ul id="side-menu" class="nav">
+    <li>
+        @using BusinessEntities;
+        @{
+            CurrentUser userInfo = new CurrentUser();
+            if (HttpContext.Current.Session[Utilities.Constants.SessionKeys.SK_USERINFO] != null)
+            {
+                userInfo = (CurrentUser)HttpContext.Current.Session[Utilities.Constants.SessionKeys.SK_USERINFO];
+            }
+        }
+        <!-- user image section-->
+        <div class="user-section">
+            <div class="user-section-inner">
+                <img src="@(string.IsNullOrEmpty(userInfo.Photo) ? Url.Content("~/Content/images/user.jpg") : "../../" + userInfo.Photo)" style="width:50px;height:60px;"/>
+            </div>
+            <div style="font-size: small; font-weight: 100; color: #FFF;" class="user-info">
+
+                @userInfo.UserName
+                <br>
+                Role : @userInfo.Role
+            </div>
+        </div>
+        <!--end user image section-->
+    </li>
+    <li style="font-size: 16px; font-weight: bold; text-decoration: underline; text-align: center;"><a title="logout" style="color:cornsilk;cursor:pointer;" href="@Url.RouteUrl("Default", new { controller = "Base", action = "Logout" })">Log out</a></li>
+    @{
+        List<ModuleDto> modules = (List<ModuleDto>)Session["Modules"];
+        List<ModuleDto> lstParents = modules.FindAll(p => p.ParentID == 0).OrderBy(o => o.DisplayOrder).ToList();
+        foreach (var mainMenu in lstParents)
+        {
+        <li id="@mainMenu.ControlId" style="cursor:pointer;" class="">
+            <a style="font-size: large;" ><i class="fa fa-list-ul fa-fw"></i>&nbsp;@mainMenu.ModuleName<span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                @{
+            List<ModuleDto> subMenu = modules.FindAll(c => c.ParentID == mainMenu.ModuleId).OrderBy(o => o.DisplayOrder).ToList();
+            foreach (var link in subMenu)
+            {
+                    <li class="" title="@link.ModuleName" id="@link.ControlId"><a href="~/@link.Url"><i class="fa fa-circle fa-fw"></i>@link.ModuleName</a></li>
+            }
+                }
+            </ul>
+        </li>
+        }
+    }
+</ul>
+
+

@@ -1,0 +1,148 @@
+﻿@model MFIS.Web.Areas.Federation.Models.MandalModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateMandal";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptMandalId = Model.MandalID > 0 ? Model.MandalID.EncryptString() : string.Empty;
+    
+}
+
+@using (Html.BeginForm())
+{ 
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Mandal Details</span>
+                     <button type="button" class="btn btn-default pull-right" onclick="AddMandal();">Add New Mandal</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.MandalID" id="MandalID" name="MandalID" />
+                    <div class="col-lg-4">
+                        @if (@Model.DistrictID > 0)
+                        {
+                            <div class="form-group">
+                                @*<label>Mandal Code</label>*@
+                                @Html.DisplayNameFor(m => m.MandalCode)
+                                @Html.TextBoxFor(model => model.MandalCode, new { @class = "form-control", @placeholder = "ML-0101", @readonly = "Mandal Code" })
+                            </div>
+                        }
+                        <div class="form-group">
+
+                            <label>@Html.DisplayNameFor(m => m.Mandal)</label>
+                            @Html.TextBoxFor(model => model.Mandal, new { @class = "form-control alphabet-only ", @placeholder = "Enter Mandal Name" })
+                        </div>
+                        <div class="form-group">
+                           <label> @Html.DisplayNameFor(m => m.TEMandalName)</label>
+                            @Html.TextBoxFor(model => model.TEMandalName, new { @class = "form-control alphabet-only ", @placeholder = "Enter Telugu Mandal Name" })
+                        </div>
+
+                          <div class="form-group">
+                                    <label style="padding-left: 2px">Mandal Type</label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.MandalType, "R")
+                                        Rural
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.MandalType, "T")
+                                        Town/Urban
+                                    </label>
+                                </div>
+
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.StateID)</label>
+                            @Html.DropDownListFor(d => d.StateID, (SelectList)ViewBag.States, "Select State", new { @class = "form-control", @id = "ddlState", onchange = "BindDropDownOptions(this.id)" })
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.DisplayNameFor(m => m.DistrictID)</label>
+                            @if (@Model.DistrictID == 0)
+                            {
+                            <select name="DistrictID" id="ddlDistrict" class="form-control", onchange="BindDropDownOptions(this.id)">
+                                <option value="">please select</option>
+                            </select>
+                            }
+                            else
+                            {
+                            @Html.DropDownListFor(d => d.DistrictID, (SelectList)ViewBag.Districts, "Select District", new { @class = "form-control" })
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if(Model.MandalID>0)
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Save</button>
+                        }
+                        else
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Submit</button>
+                        }
+                        @*
+                        <button type="button" class="btn btn-outline btn-primary">Reset</button>*@
+                        <button type="button" id="btnClearAll" class="btn btn-outline btn-primary" onclick="return Reset('@encryptMandalId');">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+
+        CustomTransliteration(['TEMandalName']);
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Action("MandalLookup", "Mandal")';
+        }
+
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideMandal";
+            LoadMenu();
+        });
+        function BindDropDownOptions(id) {
+            var actionUrl = '@Url.Action("BindDropDowns", "Mandal")';
+            if (id == "ddlState") {
+                var StateID = $("#ddlState").val();
+                $.post(actionUrl, { flag: "State", Id: StateID }, function (response) {
+                    $("#ddlDistrict").html(response).prepend("<option value='0'>Select District </option>");
+                });
+            }
+            if ($("#ddlState").find("option:selected").text() == "Select State") {
+                $("#ddlDistrict").empty();
+                $("#ddlDistrict").append("<option value='0'>Select District</option>");
+            }
+        }
+
+        function AddMandal() {
+            showProgress();
+            window.location.href = '@Url.Action("CreateMandal", "Mandal")';
+        }
+        function Reset(encryptMandalId) {
+            
+            if (encryptMandalId != '')
+                window.location.href = '@Url.Content("CreateMandal?id=")' + encryptMandalId;
+        }
+        
+    </script>
+    
+    <script src="~/Scripts/Common/Common.js"></script>
+}

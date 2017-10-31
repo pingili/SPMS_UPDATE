@@ -1,0 +1,105 @@
+﻿@using BusinessEntities;
+@model BusinessEntities.TrialBalanceDto
+
+@{
+    ViewBag.Title = "IncomeAndExpenditure";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    int RecordCount = ViewBag.RecordCount;
+    List<TrialBalanceDto> lstIncomes = ViewBag.Incomes;
+    List<TrialBalanceDto> lstExpenditure = ViewBag.Expenditure;
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="table-responsive">
+
+
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesBalancesheet">
+                            <thead>
+                                <tr>
+                                    <th colspan="1" class="text-center"></th>
+                                    <th colspan="2" class="text-center">INCOME</th>
+
+                                    <th colspan="2" class="text-center">CLOSING</th>
+
+                                    <th colspan="2" class="text-center">EXPENDITURE</th>
+
+                                    <th colspan="2" class="text-center">CLOSING</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">#</td>
+                                    <td class="text-center">AH CODE</td>
+                                    <td class="text-center">ACCOUNT HEAD NAME</td>
+
+                                    <td class="text-center">DEBIT</td>
+                                    <td class="text-center">CREDIT</td>
+                                    <td class="text-center">AH CODE</td>
+                                    <td class="text-center">ACCOUNT HEAD NAME</td>
+
+                                    <td class="text-center">DEBIT</td>
+                                    <td class="text-center">CREDIT</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < RecordCount; i++)
+                                {
+
+                                    TrialBalanceDto Incomes = i < lstIncomes.Count ? lstIncomes[i] : new TrialBalanceDto();
+                                    TrialBalanceDto Expenditure = i < lstExpenditure.Count ? lstExpenditure[i] : new TrialBalanceDto();
+                                    
+                                    <tr>
+                                        <td class="text-center">@(i + 1)</td>
+                                        <td class="text-center">@Incomes.Ahcode </td>
+                                        <td class="text-center">@Incomes.Accounthaedname</td>
+                                        <td style="text-align: right">@Incomes.Debit3</td>
+                                        <td style="text-align: right">@Incomes.Credit3</td>
+                                        <td class="text-center">@Expenditure.Ahcode </td>
+                                        <td class="text-center">@Expenditure.Accounthaedname</td>
+                                        <td style="text-align: right">@Expenditure.Debit3</td>
+                                        <td style="text-align: right">@Expenditure.Credit3</td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="1" class="text-center"></td>
+                                    <td colspan="2" class="text-center">Total:</td>
+                                    <td colspan="2" class="text-center">@ViewBag.TotalIncomesBalance</td>
+                                    <td colspan="2" class="text-center"></td>
+                                    <td colspan="2" class="text-center">@ViewBag.TotalExpenditurebalance</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" id="cmd" style="margin-top: 35px;" class="btn btn-default pull-right" onclick="DownloadPdf();">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        menuLink = "menuFinancialReports";
+        subMenuLink = "lnkSideIncomeAndExpenditure";
+        LoadMenu();
+        $('#dataTablesBalancesheet').dataTable({
+            "bSort": false
+        });
+    });
+    function DownloadPdf() {
+        window.location.href = '@Url.Content("~/IncomeAndExpenditure/ExportsReports_Group")';
+     }
+</script>

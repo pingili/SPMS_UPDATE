@@ -1,0 +1,667 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E48E5D5-DB5D-4BB3-98B9-1B2B0B60480B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MFIEntityFrameWork</RootNamespace>
+    <AssemblyName>MFIEntityFrameWork</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName></SccProjectName>
+    <SccLocalPath></SccLocalPath>
+    <SccAuxPath></SccAuxPath>
+    <SccProvider></SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountHead.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountMaster.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccountTransaction.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AccoutHeadGroupLevelByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomEdmx\MultipleResultSets.cs" />
+    <Compile Include="CustomEdmx\ProcNames.cs" />
+    <Compile Include="FederationContraEntryWithDrawlGetByAccountMasterId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MFISDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MFISDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MFISDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MFISDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MFISDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceiptAppropriationPriority.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RefMaster.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RefValueMaster.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetting.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountGetAHCODEByFederation_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountGetAHCODEByIsmemberTransaction_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountHeadCopy2_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountHeadGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountHeadGetByAHID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspAccountHeadGetByIsFederation_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankDetailsByBankDetailID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankDetailsByBankEntryID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankDetailsByEntityID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankDetailsByObjectID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankDetailsGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankMasterGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankMasterGetByBankId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankMasterGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBankMasterLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBranchGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBranchGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBranchGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspBranchLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UspBranchNameByCode_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspClusterGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspClusterGetByBranchID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspClusterGetByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspClusterGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspClusterLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspDepositInterestGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspDepreciation_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspDistrictGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspDistrictGetByDistrictId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspDistrictLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UspEmployeeClusterGetEmployee_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeGetByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeKYCGetByEmployeeID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeKYCGetByEmployeeKYCID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeKYCGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspEmployeeLookUp_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationContraEntryDepositedLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationContraEntryWithDrawlDetailsByAccountMasterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationContraEntryWithDrawlLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationGeneralPaymentsLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationGeneralReceiptLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationLoanDisbursement_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationMeetingGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationMeetingGetByFederationMeetingID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationMeetingLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFederationMeetingmembersGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFundSourceGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFundSourceGetByFundSourceId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspFundSourceLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGeneralPaymentsGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGeneralReceiptGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetAccountHeadClosingBalnces_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetAccountHeadSavings_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetAHNamesByGroupID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetAllBankMaster_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetInterestRates_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetLeadershipLevel_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetMasterDetailsByCode_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetModuleActionsByModuleID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetNPADetails_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetRAPByType_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGetRoles_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupBankDetails_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupContraEntryDepositedLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupContraEntryWithDrawlDetailsByAccountMasterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupContraEntryWithDrawlLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupDepositLoanInterestByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupDetailsGetByEmployeeId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupEmployeeGetALL_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupEmployeeGetByClusterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupEmployeeGetByGroupID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGeneralPaymentsLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGeneralReceiptLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGetAllBanksDetailsByGroupID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspgroupGetAllBanksDetails_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGetByGroupId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupInterestByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupInterestGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupJournalEntryLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLoanApplicationGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLoanApplicationGetByLoanMasterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLoanApplicationGetViewByLoanMasterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLoanApplicationLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLoanDisbursementLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupMeetingGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupMeetingLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupMeetingmembersGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupNameGetByClusterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupNameGetByVillageID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspgroupReceiptByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupReceiptLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspGroupReceipt_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspInterestByIDByAHName_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspInterestByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspInterestGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspInterestLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspJournalEntryGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspJournalEntryLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspJournalEntryVoucherGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLeadershipGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLeadershipLookUp_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanDisbursementDetailsByLoanMasterId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanGroupLoanDisbursementLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanInterestGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanPurposeDetailsByProjectID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanPurposeGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanPurposeGetByLoanPurposeId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanPurposeLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanRefundsGetAccountHeads_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanRefunds_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityGetByLoanSecurityID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityMasterGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityMasterGetByLoanSecurityID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspLoanSecurityMasterLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMandalGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMandalGetByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMandalLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspmeetingLeaders_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberByGroupId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberGetByMemberID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberKYCGetByMemberID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberKYCGetByMemberKYCID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberKYCGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UspMemberLeadershiplookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberLoanApplicationGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberLoanApplicationGetByLoanMasterID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberLoanApplicationLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberLoanDisbursementLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberReceiptByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberReceiptInsertUpdate_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberReceiptLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspMemberReceipt_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspModuleActionGetByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspModuleActionLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspModuleGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspOccupationGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspOccupationGetByOccupationID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspOccupationLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspOrganizationGetAllBanksDetails_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspOrganizationGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPanchayatGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPanchayatGetByGroupID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPanchayatGetByPanchayatId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPanchayatGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPanchayatLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPaymentsToFederationByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspPaymentsToFederationLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspProjectGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspProjectGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspProjectLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspRefundsFromfederationGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspRefundsFromFederationLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspRefValuesByRefMasterCode_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspRolesGetByRoleID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspRolesLookUp_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspslaccountsgetbyparentahid_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspStateGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspStateGetByStateId_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspStatusMasterGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspStatusMasterGetbByStatusCode_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspVillageGetAll_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspVillageGetById_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspVillageGetViewByID_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="uspVillageLookup_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="usp_Result.cs">
+      <DependentUpon>MFISDB.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="MFISDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MFISDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MFISDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MFISDB.edmx</DependentUpon>
+      <LastGenOutput>MFISDB.Context.cs</LastGenOutput>
+    </None>
+    <None Include="MFISDB.edmx.diagram">
+      <DependentUpon>MFISDB.edmx</DependentUpon>
+    </None>
+    <None Include="MFISDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MFISDB.edmx</DependentUpon>
+      <LastGenOutput>MFISDB.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

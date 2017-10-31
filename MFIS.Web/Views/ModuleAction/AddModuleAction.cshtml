@@ -1,0 +1,94 @@
+﻿@model BusinessEntities.ModuleActionDto
+@{
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+
+}
+<script src="~/Scripts/jquery/jquery-1.7.1.min.js"></script>
+@using (Html.BeginForm())
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="header">Add Module Action</span>
+            <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+        </div>
+        @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+        {
+            <div class="alert alert-success">
+                <strong>Success!</strong> @ViewBag.Result.Message
+            </div>
+        }
+        else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong> @ViewBag.Result.Message
+            </div>
+        }
+        <div class="panel-body">
+            <div class="col-lg-6">
+                <div class="form-group col-lg-8">
+                    <input type="hidden" id="ModuleActionId" name="ModuleActionId" value="@Model.ModuleActionId" />
+                    <label>Module Name </label>
+                    @*<input type="hidden" id="ModuleId" name="ModuleId" value="@Model.ModuleId" />*@
+                    @Html.DropDownListFor(d => d.ModuleId, (SelectList)ViewBag.modulesSelectList, "-Select Module-", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-lg-8">
+                    <label>Module Action Code </label>
+                    @Html.TextBoxFor(m => m.ModuleActionCode, new { @class = "form-control" })
+                </div>
+                <div class="form-group col-lg-8">
+                    <label>Action </label>
+                    @*@Html.DropDownList("ActionName", new List<SelectListItem>() {
+                            new SelectListItem { Text = "Add", Value = "1" },
+                            new SelectListItem { Text = "Edit", Value = "2" },
+                            new SelectListItem { Text = "Delete", Value = "3" },
+                            new SelectListItem { Text = "Active In-Active", Value = "4" },
+
+                        }, "-Select-", new { @class="form-control"})*@
+                    @*<input type="hidden" id="ActionName" name="ActionName" value="@Model.ActionName" />*@
+                    <select name="ActionName" class="form-control" id="ActionName">
+                        <option value="0">-Select-</option>
+                        <option value="Add">Add</option>
+                        <option value="Edit">Edit</option>
+                        <option value="Delete">Delete</option>
+                        <option value="Active_In_Active">Active_In_Active</option>
+
+                    </select>
+                    
+                </div>
+                <div class="form-group col-lg-12">
+                    <label>Url </label>
+                    @Html.TextBoxFor(m => m.Url, new { @class = "form-control" })
+                </div>
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <div class="form-group" style="margin-left: 16px;">
+                <button type="submit" id="btnSave" class="btn btn-outline btn-primary">Save</button>
+
+                <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    function BackToList() {
+        window.location.href = 'ModuleActionLookup';
+    }
+    $(document).ready(function () {
+       
+                            var vval = '@Model.ActionName';
+        if (vval != '' && vval != '0' && vval != null) {
+           
+            $('#ActionName').val(vval).attr("selected","selected");
+        }
+      
+      
+        @*if ('@Model.ActionName' != null && '@Model.ActionName' != '' && '@Model.ActionName' != '0')
+            $('#ActionName').val(@Model.ActionName);*@
+    });
+
+</script>

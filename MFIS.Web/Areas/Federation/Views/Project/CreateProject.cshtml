@@ -1,0 +1,94 @@
+﻿@model MFIS.Web.Areas.Federation.Models.ProjectModel
+@{
+    ViewBag.Title = "Project";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (@Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Project Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <input type="hidden" value="@Model.ProjectID" id="ProjectID" name="ProjectID" />
+                        @if (@Model.ProjectID > 0)
+                        {
+                            <div class="form-group">
+                                <label>Poject Code</label>
+                                @Html.TextBoxFor(model => model.ProjectCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label>Project Purpose</label>
+                                                        @Html.DropDownListFor(d => d.Purpose, (SelectList)ViewBag.ProjectPurposes, "Select Project Purpose", new { @class = "form-control required" })
+                            <input type="hidden" name="ProjectName" id="ProjectName" value="dummy" /> 
+                        </div>
+                        @*<div class="form-group">
+                            <label>Project Purpose</label>
+                       
+                                @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control alphanumericr-only required", @placeholder = "Enter Project Name", maxlength = "64" })
+
+                        </div>*@
+                        <div class="form-group">
+                            <label>Type</label>
+                            @Html.DropDownListFor(d => d.Type, (SelectList)ViewBag.ProjectTypes, "Select Type", new { @class = "form-control required" })
+                        </div>
+                        <div class="form-group">
+                            <label>Fund Source</label>
+                            @Html.DropDownListFor(d => d.FundSourceID, (SelectList)ViewBag.foundSource, "Select Fund Source", new { @class = "form-control required" })
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if(Model.ProjectID>0)
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Save</button>
+                        }
+                        else
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Submit</button>
+
+                        }
+                        <button type="button" class="btn btn-outline btn-primary " id="btnClearAll">Reset</button>
+                        <button type="button" class="btn btn-default pull-right " onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("~/Federation/Project/ProjectLookup")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuMaster";
+        subMenuLink = "lnkSideProject";
+        LoadMenu();
+    });
+</script>
+
+<script src="~/Scripts/Common/Common.js"></script>

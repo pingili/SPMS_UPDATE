@@ -1,0 +1,348 @@
+﻿@model BusinessEntities.MemberLoanApplicationViewDto
+@using CoreComponents;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    bool isView = ViewBag.isViewPage;
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    string StatusCode = Model.StatusCode;
+    int appLevel = Model.ApprovalLevel;
+    bool isDisbursementDetailsSaved = Model.DisbursementDate != DateTime.MinValue;
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Member Loan Application View ( @Model.Status) </span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    <input type="hidden" value="@Model.LoanMasterId.EncryptString()" id="LoanMasterId" name="LoanMasterId" />
+                </div>
+                @if (Result != null && Result.ObjectId > 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div>
+                }
+                else if (Result != null && Result.ObjectId < 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>LoanCode</label><br />
+                                <input type="text" value="@Model.LoanCode" readonly="true" class="form-control" />
+                                @Html.HiddenFor(m => m.LoanCode)
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+
+                            <div class="form-group">
+                                <label>Member Name</label><br>
+                                <input type="text" value="@Model.MemberName" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Application Date</label><br>
+                                <input type="text" value="@Model.LoanApplicationDate.ToDisplayDateFormat()" class="form-control" id="LoanApplicationDate" name="LoanApplicationDate" readonly="true" placeholder="Select Loan Application Date" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Project Purpose</label>
+                                <input type="text" value="@Model.ProjectPurpose" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Purpose</label>
+                                <input type="text" value="@Model.LoanPurpose" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Amount</label>
+                                <input type="text" value="@Model.LoanApplyAmount.ToDisplayCurrency()" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>No.Of Installments</label>
+                                <input type="text" value="@Model.NoOfInstallmentsProposed" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Mode</label>
+                                <input type="text" value="@("Monthly")" readonly="true" class="form-control" readonly=" true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Group Loan Principal Account Head</label>
+                            <input type="text" value="@Model.LoanPrincipalAccountHead" readonly="true" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label>*Requester Comments</label>
+                                @if (isView)
+                                {
+                                    @Html.TextAreaFor(m => m.GroupApprovalComments, new { @class = "form-control", @disabled = "disabled" })
+                                }
+                                else
+                                {
+                                    if (StatusCode == "INITIATED" || StatusCode == "FOR_GROUP_REVERIFY")
+                                    {
+                                        @Html.TextAreaFor(m => m.GroupApprovalComments, new { @class = "form-control", @id = "txtGroupComments", @name = "txtGroupComments" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextAreaFor(m => m.GroupApprovalComments, new { @class = "form-control", @disabled = "disabled" })
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @if (StatusCode != "INITIATED" && Model.DisbursementDate != DateTime.MinValue)
+                    {
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Interest Account Head</label>
+                                    @Html.TextBoxFor(m => m.LoanInterestAccountHead, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Interest Rate(%)</label>
+                                    @Html.TextBoxFor(m => m.InterestRate, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Monthly Due Day</label>
+                                    @Html.TextBoxFor(m => m.MonthlyDueDay, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Disbursement Amount</label>
+                                    @Html.TextBox("amount", Model.DisbursementAmount.ToDisplayCurrency(), new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>No.Of Installments</label>
+                                    @Html.TextBoxFor(m => m.NoOfInstallment, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Loan Reference #</label>
+                                    @Html.TextBoxFor(m => m.LoanReferenceNumber, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Disbursement Mode</label>
+                                    @Html.TextBoxFor(m => m.TransactionMode, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Disbursement Date</label>
+                                    @Html.TextBox("DisbursementDate", Model.DisbursementDate.ToDisplayDateFormat(), new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>1st Installment Starts From</label>
+                                    @Html.TextBox("InstallmentStartFrom", Model.InstallmentStartFrom.ToDisplayDateFormat(), new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Final installment Date</label>
+                                    @Html.TextBox("InstallmentClosingDate", Model.InstallmentClosingDate.ToDisplayDateFormat(), new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Monthly Principal Demand</label>
+                                    @Html.TextBoxFor(m => m.MonthlyPrincipalDemand, new { @readonly = "true", @class = "form-control" })
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.ChequeNumber))
+                            {
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Cheque Number</label>
+                                        @Html.TextBoxFor(m => m.ChequeNumber, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Cheque Date</label>
+                                        @Html.TextBoxFor(m => m.ChequeDate, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.BankAccountHead))
+                            {
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Group Bank Account</label>
+                                        @Html.TextBoxFor(m => m.BankAccountHead, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        if (isView)
+                        {
+                            <div class="row">
+                                @if (!string.IsNullOrWhiteSpace(Model.ClusterApprovalComments))
+                                {
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Cluster Comments</label>
+                                        @Html.TextAreaFor(m => m.ClusterApprovalComments, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.FederationApprovalComments))
+                                {
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Federation Comments</label>
+                                        @Html.TextAreaFor(m => m.FederationApprovalComments, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                @if (StatusCode == "FOR_CLUSTER_REVIEW" || StatusCode == "FOR _CLUSTER_REVERIFY")
+                                {
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Cluster Comments</label>
+                                        @Html.TextAreaFor(m => m.ClusterApprovalComments, new { @class = "form-control", @id = "txtClusterComments", @name = "txtClusterComments" })
+                                    </div>
+                                </div>
+                                }
+                                else
+                                {
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Cluster Comments</label>
+                                        @Html.TextAreaFor(m => m.ClusterApprovalComments, new { @readonly = "true", @class = "form-control" })
+                                    </div>
+                                </div>
+                                }
+                                @if (StatusCode == "FOR_FED_REVIEW")
+                                {
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Federation Comments</label>
+                                        @Html.TextAreaFor(m => m.FederationApprovalComments, new { @class = "form-control", @id = "txtFedComments", @name = "txtFedComments" })
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        @Html.HiddenFor(m => m.StatusCode)
+                        @if (!isView)
+                        {
+                            if (StatusCode == "FOR_CLUSTER_REVERIFY" || StatusCode == "FOR_CLUSTER_REVIEW" || StatusCode == "FOR_FED_REVIEW")
+                            {
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <select id="ddlAction" name="ddlAction" class="form-control" style="width:30%;padding-right:5px;">
+                                            <option value="APP">Approve</option>
+                                            <option value="CAN">Send Back/Cancel</option>
+                                            <option value="REJ">Reject</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-lg-7">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary lock-dependent" onclick="return approve('@(Model.LoanMasterId.EncryptString())')">Send for Approval</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideGroupLoanApplication";
+            LoadMenu();
+        });
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("MemberLoanApplicationLookup")';
+        }
+        function approve(loanMasterId) {
+            var statusCode = '@Model.StatusCode';
+            var comments = '';
+            var action = 'APP'
+            if (statusCode == "INITIATED" || statusCode == "FOR_GROUP_REVERIFY") {
+                Comments = $('#txtGroupComments').val();
+            }
+            else {
+                action = $('#ddlAction').val();
+                if (action == '') {
+                    alert('Please select action');
+                    return false;
+                }
+                var isDisbursementUpdated = '@isDisbursementDetailsSaved.ToString().ToLower()';
+                if (isDisbursementUpdated == 'false') {
+                    alert('Please update the disbursement details to proceed with approval.');
+                    return false;
+                }
+
+                if (statusCode == "FOR_CLUSTER_REVIEW" || statusCode == "FOR_CLUSTER_REVERIFY") {
+                    Comments = $('#txtClusterComments').val();
+                } else {
+                    Comments = $('#txtFedComments').val();
+                }
+            }
+
+            if ($.trim(Comments) == '') {
+                alert('Please enter approval Comments.');
+                return false;
+            }
+
+            if (action == "REJ") {
+                return confirm('if you proceed, The loan process will be end abnormally and you cannot make any changes in it. \n Do you wish to continue?');
+            }
+            else if (action == "APP") {
+                return confirm('if you proceed, your application will be moved to the next level of approver and you cannot make any changes in it. \n Do you wish to continue?');
+            }
+            else {
+                return confirm('if you proceed, loan application will be moved to the previous level of approver and you cannot make any changes in it. \n Do you wish to continue?');
+            }
+        }
+    </script>
+}

@@ -1,0 +1,175 @@
+﻿@model BusinessEntities.FederationLoanApplicationDto
+
+@{
+    ViewBag.Title = "CreateFedLoanAppln";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">
+                        Federation Loan Application &nbsp;<label></label>
+                    </span>
+                    @Html.ActionLink("Back to List", "GroupOtherReceiptLookUp", null, new { @class = "btn btn-default pull-right" })
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Cluster</label><br />
+                                @Html.DropDownListFor(d => d.ClusterId, (SelectList)ViewBag.clusters, "Select Cluster", new { @class = "form-control required", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group</label><br />
+                                <select id="GroupId" name="GroupId" onchange="BindDropDownOptions(this.id)" class="form-control">
+                                    <option value="">Select Group</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Total Members</label>
+                                @Html.TextBoxFor(m => m.TotalMembers, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label style="font: 500">Federation Assets</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>General Ledger A/C</label>
+                                @Html.DropDownListFor(m => m.GLAccountId, (SelectList)ViewBag.lstGLAcHeads, "Select Account Head", new { @class = "form-control required", @id = "ddlGlAccount", @name = "ddlGlAccount", onchange = "BindDropDownOptions(this.id)" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Sub Ledger A/C</label>
+                                <select id="SLAccountId" name="SLAccountId" onchange="BindGRSLAccountHead()" class="form-control">
+                                    <option value="">Select SL AccountHead</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label style="font: 500">Group Liabilities</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>General Ledger A/C</label>
+                                @Html.TextBoxFor(m => m.GRGLAccount, new { @class = "form-control readonly", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Sub Ledger A/C</label>
+                                @Html.TextBoxFor(m => m.GRSLAccount, new { @class = "form-control", @readonly = "true" })
+                                @*<select id="" name="SLAccountId" class="form-control">
+                                        <option value="">Select SL AccountHead</option>
+                                    </select>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>LoanSanctionAmount</label>
+                                @Html.TextBoxFor(m => m.LoanSanctionAmount, new { @class = "form-control"})
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>NoOf Installments</label>
+                                @Html.TextBoxFor(m => m.NoOfInstallments, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Bank Account</label>
+                                <select id="grpBankAccount" name="grpBankAccount" class="form-control">
+                                    <option value="">Select Bank Account</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validateOtherReceipt();">Submit</button>
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return resetall('')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        function BindDropDownOptions(id) {
+            var url = '@Url.Action("BindDropdown", "FederationLoanApplication")';
+            if (id == "ddlclusters") {
+                var ClusterID = $("#ddlclusters").val();
+                $.post(url, { flag: "Cluster", Id: ClusterID }, function (response) {
+                    $("#GroupId").html(response).prepend("<option value='' selected='selected'>Select Group </option>");
+                });
+            }
+            if (id == "GroupId") {
+                var groupId = $("#GroupId").val();
+                $.post(url, { flag: "Group", Id: groupId }, function (response) {
+                    $("#grpBankAccount").html(response.sbOptions).prepend("<option value='' selected='selected'>Select Bank Account </option>");
+                    $('#TotalMembers').val(response.MemberCount);
+                });
+            }
+            if (id == "ddlGlAccount") {
+                var glAccountId = $("#ddlGlAccount").val();
+                if (glAccountId == '') {
+
+                }
+
+                $.post(url, { flag: "GLAccount", Id: glAccountId }, function (response) {
+                    $("#SLAccountId").html(response).prepend("<option value='' selected='selected'>Select SLAccount </option>");
+                });
+            }
+        }
+
+        function BindGRSLAccountHead() {
+            var FedSlAccount = $('#SLAccountId').val();
+            if (FedSlAccount == '') {
+                //clear all dependants
+                $("#GRSLAccount").val('');
+                $('#GRGLAccount').val('');
+            }
+            var url = '@Url.Action("BindGRSLAccountHead", "FederationLoanApplication")' + '?id=' + $('#SLAccountId').val();
+            $.post(url, {}, function (response) {
+                $("#GRSLAccount").val(response.GRSLA);
+                $('#GRGLAccount').val(response.GRGLA);
+            });
+        }
+    </script>
+}

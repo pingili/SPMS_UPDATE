@@ -1,0 +1,215 @@
+﻿@model BusinessEntities.FederationMeetingDTO
+
+@using CoreComponents
+@{
+    ViewBag.Title = "CreateGroupMetting";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+<script src="~/Scripts/jquery.bpopup.min.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment.js"></script>
+@using BusinessEntities
+@using (Html.BeginForm())
+{
+    int index = 0;
+    List<MeetingMembersDTO> fed = Model.lstFederationMemberDto;
+    string MeetingDate = Model != null && Model.MeetingDate.Ticks > 0 ? Model.MeetingDate.ToDisplayDateFormat() : string.Empty;
+    string TransactionDate = Model != null && Model.TransactionDate.Ticks > 0 ? Model.TransactionDate.ToString("dd/MMM/yyyy") : string.Empty;
+   
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Federation Meeting</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    @Html.HiddenFor(m => m.FederationMeetingId)
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Meeting Date</label>
+                                <input type="text" value="@MeetingDate" class="form-control required Date-Only" id="MeetingDate" name="MeetingDate" placeholder="Select Meeting Date" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.IsConducted, new { @name = "IsConducted", @class = "checkbox-inline" })
+                                <label>Not Conducted</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="Shownotcoducted">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label>Reason</label>
+                                @Html.DropDownListFor(m => m.Reason, (SelectList)ViewBag.Reason, "Select Reason", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label>Other Reason</label>
+                                @Html.TextAreaFor(m => m.OtherReason, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="Conducted">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                <input type="text" value="@TransactionDate" class="form-control required Date-Only" id="TransactionDate" name="TransactionDate" placeholder="Select Transaction Date" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Start Time</label>
+                                @Html.TextBoxFor(m => m.StartTime, null, new { @class = "form-control", @ID = "StartTime", @Name = "StartTime", @Placeholder = "Select StartTime" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>End Time</label>
+                                @Html.TextBoxFor(m => m.EndTime, new { @class = "form-control", @ID = "EndTime", @Name = "EndTime" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.IsSplMeeting, new { @name = "IsSplMeeting", @class = "checkbox-inline" })
+                                <label>Is Special Meeting</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label>Meeting Comments</label>
+                                @Html.TextAreaFor(m => m.MeetingComments, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label>Meeting Objective</label>
+                                @Html.TextAreaFor(m => m.MeetingObjective, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <strong class="adjc-right-30">
+                                <label class="checkbox-inline ">
+                                    <input type="checkbox" id="chkall">
+                                </label>
+                                Select All Member(s)
+                            </strong>
+                        </div>
+                        <hr />
+                        <div class="col-lg-12">
+                            @foreach (var Member in Model.lstFederationMemberDto)
+                            {
+                                index++;
+                                <div class="col-lg-2">
+                                    <label class="checkbox-inline adjc-right-60">
+                                        <input type="checkbox" id="Checkmember_@index" @(Member.IsAttended ? "checked='checked'" : string.Empty) name="Checkmember_@index" />
+                                    </label>
+                                </div>
+                                <div class="col-lg-4">
+                                    <input type="hidden" id="hdnMemberID_@index" name="hdnMemberID_@index" value="@Member.MemberID" />
+                                    <label id="hdnMember_@index" name="hdnMember_@index">@Member.MemberName</label>
+                                </div>
+                            }
+
+                        </div>
+                        @Html.Hidden("hdnIndex", index)
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="form-group" style="margin-left: 16px;">
+                    <button type="submit" class="btn btn-outline btn-primary loader" onclick="javascript:return Check()">Submit</button>
+                    <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqryUi")
+<script>
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("FederationMeetingLookup")';
+    }
+
+    function Check() {
+        var validateResult = true;
+        var isNotConducted = $('#IsConducted').prop('checked').toString() == 'true';
+        var RequiredFields = !isNotConducted ? ['MeetingDate', 'TransactionDate', 'StartTime', 'EndTime', 'MeetingComments', 'MeetingObjective'] : ['MeetingDate', 'Reason'];
+        for (i = 0; i < RequiredFields.length; i++) {
+            if ($('#' + RequiredFields[i]).val() == '') {
+                $('#' + RequiredFields[i]).css({ "border": "1px solid Red" })
+                validateResult = false;
+            }
+        }
+
+        if (validateResult && !isNotConducted) {
+            if ($('input[id^="Checkmember"]:checked').length < 1) {
+                alert('Please select member(s)');
+            }
+        }
+        return validateResult;
+    }
+    $(document).ready(function () {
+        showHideConducted();
+        $('#IsConducted').change(function () {
+            showHideConducted();
+        });
+    });
+
+    $('#MeetingDate').datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+0"
+    });
+
+    $('#TransactionDate').datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+0"
+    });
+
+    $('#StartTime').timepicker();
+
+    $('#EndTime').timepicker();
+
+    $("#chkall").change(function () {
+        $('input[id^="Checkmember"]').prop('checked', $(this).prop("checked"));
+    });
+
+    function showHideConducted() {
+        var isNotConducted = $('#IsConducted').prop('checked').toString() == 'true';
+
+        if (isNotConducted) {
+            $('#Shownotcoducted').show();
+            $('#Conducted').hide();
+        }
+        else {
+            $('#Shownotcoducted').hide();
+            $('#Conducted').show();
+        }
+    }
+</script>

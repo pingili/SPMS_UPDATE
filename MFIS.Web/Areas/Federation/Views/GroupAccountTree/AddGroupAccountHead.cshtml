@@ -1,0 +1,332 @@
+﻿@using System.Web.UI.WebControls
+@Html.Hidden("ParentAHID")
+@Html.Hidden("AHID")
+
+@{
+    var lstMajorCategory = new List<BusinessEntities.AccountHeadDto>();
+    if (ViewBag.AccountHeads != null)
+    {
+        lstMajorCategory = ViewBag.AccountHeads;
+        ViewBag.AHID = lstMajorCategory.FindAll(f => f.ParentAHID == 0).Any() ? lstMajorCategory.FindAll(f => f.ParentAHID == 0).First().AHID : 0;
+    }
+}
+<div id="collapseOne" class="panel-collapse collapse " style="height: auto;">
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdAddSubGroup" type="radio" value="4" onclick="AddSubGroupAccountHead(this.id)">Add Sub Group
+            </label>
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdAddAccountHead" type="radio" checked="checked" value="5" onclick="AddSubGroupAccountHead(this.id)">Add Account Head
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Major Category</label>
+            <br>
+            @{
+                int i = 0;
+                foreach (var majorCategory in lstMajorCategory.FindAll(f => f.ParentAHID == 0))
+                {
+
+                    if (i == 0)
+                    {
+                        i++;
+                        <label class="radio-inline">
+                            <input name="AHType" id="rdAdd@(majorCategory.AHName)" type="radio" checked="checked" value="@majorCategory.AHType"  onclick="BindAddDropDownOptions('ddlAddSubCategory', '@majorCategory.AHID',this.id)">@majorCategory.AHName
+                        </label>
+                    }
+
+                    else
+                    {
+                        <label class="radio-inline">
+                            <input name="AHType" id="rdAdd@(majorCategory.AHName)" type="radio" value="@majorCategory.AHType" onclick="BindAddDropDownOptions('ddlAddSubCategory', '@majorCategory.AHID',this.id)">@majorCategory.AHName
+                        </label>
+                    }
+                }
+
+            }
+
+        </div>
+
+        <div class="form-group">
+            <label>Sub Category </label>
+            <select id="ddlAddSubCategory" class="form-control" onfocus="RemoveValidation(this.id);" onchange="BindAddDropDownOptions('ddlAddMajorGroup', this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Major Group </label>
+            <select id="ddlAddMajorGroup" class="form-control" onfocus="RemoveValidation(this.id);" onchange="BindAddDropDownOptions('ddlAddSubGroup', this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+
+
+        <!--This is for Add Account Head : Begin-->
+        <div id="dvAddSubGroup" class="form-group">
+            <label>Sub Group </label>
+            <select id="ddlAddSubGroup" class="form-control" onfocus="RemoveValidation(this.id);" onchange="AddSubGroupChange(this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <!--This is for Add Sub Group : Begin-->
+        <div id="dvAddSubGroupCode" style="display: none;" class="form-group">
+            <label>Sub Group Code</label>
+            <input class="form-control" id="txtAddSubGroupAHCode" name="SubGroupAHCode" placeholder="Enter Sub Group Code" onfocus="RemoveValidation(this.id);">
+        </div>
+        <div id="dvAddSubGroupName" style="display: none;" class="form-group">
+            <label>Sub Group Name</label>
+            <input class="form-control" placeholder="Enter Sub Group Name" id="txtAddSubGroupAHName" name="SubGroupAHName" onfocus="RemoveValidation(this.id);">
+        </div>
+        <!--This is for Add Sub Group : End-->
+        <div id="dvAddAccountHeadCode" class="form-group">
+            <label>Accounting Head Code</label>
+            <input class="form-control" placeholder="Enter Accounting Head Code" id="txtAddAHCode" name="AHCode" onfocus="RemoveValidation(this.id);" />
+            @*@Html.TextBoxFor(model => model.AHCode, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div id="dvAddAccountHeadName" class="form-group">
+            <label>Accounting Head Name</label>
+            <input class="form-control" placeholder="Enter Accounting Head Name" name="AHName" id="txtAddAHName" onfocus="RemoveValidation(this.id);" />
+            @*@Html.TextBoxFor(model => model.AHName, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div class="form-group">
+            <label>Member Transaction</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdAddMemberTransactionYes" type="radio" checked="checked" value="true">Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdAddMemberTransactionNo" type="radio" value="false">No
+            </label>
+        </div>
+        <div id="dvAddSubLedger" class="form-group">
+            <label>Sub Ledger Account</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdAddIsSLAccountYes" type="radio" checked="checked" value="true" onclick="IsSLA(this.id);" />Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdAddIsSLAccountNo" type="radio" value="false" onclick="IsSLA(this.id);" />No
+            </label>
+        </div>
+        <div id="dvAddOpenBalance" class="form-group" style="display: none;">
+            <label>Opening Balance</label>
+            <br>
+            <input class="form-control adjc-left-80" placeholder="Enter Opening Balance" name="OpeningBalance" id="txtAddOpeningBalance" onfocus="RemoveValidation(this.id);">
+
+            <select class="form-control adjc-right-20" disabled="disabled" name="OpeningBalanceType" id="ddlAddOpeningBalanceType">
+                <option value="Dr">Dr</option>
+                <option value="Cr">Cr</option>
+            </select>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group" style="margin-left: 16px;">
+            <button type="button" class="btn btn-outline btn-primary" onclick="AddAccountHeadDetails()">Submit</button>
+            <button type="button" class="btn btn-outline btn-primary" onclick="AddClearValues();">Reset</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var accountHeadLevel = document.getElementById("rdAddAccountHead").checked ? 5 : 4;
+
+    function AddAccountHeadDetails() {
+        var isValid = true;
+        if ($('#ddlAddSubCategory').val() == "") {
+            $('#ddlAddSubCategory').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlAddSubCategory').removeClass('required');
+
+
+        if ($('#ddlAddMajorGroup').val() == "") {
+            $('#ddlAddMajorGroup').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlAddMajorGroup').removeClass('required');
+
+        var isSubGroup = document.getElementById('rdAddSubGroup').checked ? true : false;
+
+        if (isSubGroup) {
+            if ($('#txtAddSubGroupAHName').val() == "") {
+                $('#txtAddSubGroupAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtAddSubGroupAHName').removeClass('required');
+
+            if ($('#txtAddSubGroupAHCode').val() == "") {
+                $('#txtAddSubGroupAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtAddSubGroupAHCode').removeClass('required');
+        }
+        else {
+            if ($('#txtAddAHCode').val() == "") {
+                $('#txtAddAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtAddAHCode').removeClass('required');
+
+            if ($('#txtAddAHName').val() == "") {
+                $('#txtAddAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtAddAHName').removeClass('required');
+            
+            //if ($('#ddlAddSubGroup').val() == "") {
+            //    $('#ddlAddSubGroup').addClass('required');
+            //    isValid = false;
+            //}
+            //else
+            //    $('#ddlAddSubGroup').removeClass('required');
+        }
+
+
+        var isSla = document.getElementById('rdAddIsSLAccountNo').checked ? true : false;
+
+        if (isSla) {
+            if ($('#txtAddOpeningBalance').val() == "") {
+                $('#txtAddOpeningBalance').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtAddOpeningBalance').removeClass('required');
+        }
+
+        if (isValid) {
+            var actionUrl = '@Url.Action("AddEditSubGroupAccountHead","GroupAccountTree")';
+            document.forms[0].action = actionUrl;
+            document.forms[0].submit();
+        }
+
+    }
+
+    function BindAddDropDownOptions(id, parentAhid, rbId) {
+        accountHeadLevel = document.getElementById("rdAddAccountHead").checked ? 5 : 4;
+
+        if (id == "ddlAddSubCategory")
+            AddClearValues();
+
+        if (id == "ddlAddSubGroup") {
+            LoadAddMajorGroupLevelDropDowns("SubGroup", parentAhid, accountHeadLevel);
+            $('#ParentAHID').val(parentAhid);
+            return;
+        }
+        else {
+            var actionUrl = '@Url.Action("BindDropDowns", "GroupAccountTree")';
+            $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id }, function (response) {
+                $("#" + id).html(response.DropDownOptions);
+                $("#" + id).prepend("<option value='' selected='selected'>Please select</option>");
+            }, 'json');
+        }
+        try {
+            if (rbId.toLowerCase() == "rdaddassets" || rbId.toLowerCase() == "rdaddincome") {
+                $('#ddlAddOpeningBalanceType').val("Dr");
+                $('#OpeningBalanceType').val("Dr");
+
+            }
+            else {
+                $('#ddlAddOpeningBalanceType').val("Cr");
+                $('#OpeningBalanceType').val("Cr");
+            }
+
+        } catch (e) {
+
+        }
+
+
+    }
+
+    function LoadAddMajorGroupLevelDropDowns(id, parentAhid, accountHeadLevel) {
+        var actionUrl = '@Url.Action("BindDropDowns", "GroupAccountTree")';
+        $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id }, function (response) {
+            if (response.SubGroupOptions != null && response.SubGroupOptions != "") {
+                $("#ddlAddSubGroup").html(response.SubGroupOptions);
+                $("#ddlAddSubGroup").prepend("<option value='' selected='selected'>Please select</option>");
+            }
+
+        }, 'json');
+    }
+
+
+    $(document).ready(function () {
+        var actionUrl = '@Url.Action("BindDropDowns", "GroupAccountTree")';
+        localStorage.removeItem("SearchAccountHeadOptions");
+
+        $.post(actionUrl, { parentAhid: '@ViewBag.AHID', accountHeadLevel: 0, Id: "ddlAddSubCategory" }, function (response) {
+            $("#ddlAddSubCategory").html(response.DropDownOptions);
+            $("#ddlAddSubCategory").prepend("<option value='' selected='selected'>Please select</option>");
+        }, 'json');
+    });
+
+    function RemoveValidation(id) {
+        $('#' + id).removeClass('required');
+    }
+    function AddSubGroupAccountHead(id) {
+        AddClearValues();
+        if (id == "rdAddAccountHead") {
+            $('#dvAddAccountHeadCode').show();
+            $('#dvAddAccountHeadName').show();
+            $('#dvAddSubLedger').show();
+            $('#dvAddSubGroupCode').hide();
+            $('#dvAddSubGroupName').hide();
+            $('#dvSearchAccountHead').show();
+            $('#dvAddSubGroup').show();
+
+        } else if (id == "rdAddSubGroup") {
+            $('#dvAddSubLedger').hide();
+            $('#dvAddAccountHeadCode').hide();
+            $('#dvAddAccountHeadName').hide();
+            $('#dvAddSubGroupCode').show();
+            $('#dvAddSubGroupName').show();
+            $('#dvSearchAccountHead').hide();
+            $('#dvAddSubGroup').hide();
+            
+        }
+    }
+
+    function IsSLA(id) {
+        if (id == "rdAddIsSLAccountYes")
+            $('#dvAddOpenBalance').hide();
+        else {
+            $('#dvAddOpenBalance').show();
+
+        }
+
+    }
+
+    function AddSubGroupChange(parentAhid) {
+        accountHeadLevel = document.getElementById("rdAddAccountHead").checked ? 5 : 4;
+        if (accountHeadLevel === 5) {
+            $('#ParentAHID').val(parentAhid);
+        }
+    }
+
+    function AddClearValues() {
+        $('#ddlAddSubGroup').html("<option value='' selected='selected'>Please select</option>");
+        $('#ddlAddMajorGroup').html("<option value='' selected='selected'>Please select</option>");
+        $('#txtAddSubGroupAHName').val('');
+        $('#txtAddSubGroupAHCode').val('');
+        $('#txtAddAHCode').val('');
+        $('#txtAddAHName').val('');
+        $('#ParentAHID').val('');
+        $('#AHID').val('');
+        $("#ddlAddSubCategory").val('');
+        $('#txtAddOpeningBalance').removeClass('required');
+        $('#ddlAddSubGroup').removeClass('required');
+        $('#txtAddAHCode').removeClass('required');
+        $('#txtAddAHName').removeClass('required');
+        $('#txtAddSubGroupAHCode').removeClass('required');
+        $('#ddlAddMajorGroup').removeClass('required');
+        $('#ddlAddSubCategory').removeClass('required');
+        $('#txtAddSubGroupAHName').removeClass('required');
+    }
+
+</script>

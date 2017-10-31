@@ -1,0 +1,115 @@
+﻿@model MFIS.Web.Areas.Federation.Models.OccupationModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateOccupation";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encriptoccupationID = Model.OccupationID > 0 ? Model.OccupationID.EncryptString() : string.Empty;
+}
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Occupation Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddOccupation();">Add New Occupation</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+
+                    <input type="hidden" value="@Model.OccupationID" id="OccupationID" name="OccupationID" />
+                    <div class="col-lg-4">
+
+                        @if (@Model.OccupationID > 0)
+                        {
+                            <div class="form-group">
+                                <label>Code</label>
+                                @Html.TextBoxFor(model => model.OccupationCode, new { @class = "form-control", @placeholder = " Enter Occupation Code", @id = "occupationcata", @readonly = "readonly", maxlength = "6" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            @*    <label>Category</label>*@
+                            @Html.DisplayNameFor(model => model.OccupationCategory)
+                            @Html.DropDownListFor(model => Model.OccupationCategory, (SelectList)ViewBag.OccupationCategory, "select Occupation", new { @class = "form-control", @id = "OccupationCategory", name = "OccupationCategory" })
+                        </div>
+                        <div class="form-group">
+                            <label>Occupation Title</label>
+                            @Html.TextBoxFor(model => model.Occupation, new { @class = "form-control alphabet-only", @placeholder = "Enter Occupation", maxlength = "64" })
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.OccupationID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Submit</button>
+
+                        }
+
+
+                        @*<button type="reset" class="btn btn-outline btn-primary">Reset</button>*@
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return resetall('@encriptoccupationID')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Action("OccupationLookUp", "Occupation")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideOccupation";
+        LoadMenu();
+    });
+    function resetall(encriptoccupationID) {
+        if (encriptoccupationID != '') {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("CreateOccupation?id=")' + encriptoccupationID
+        }
+        else {
+            AddOccupation();
+        }
+    }
+    $(document).ready(function () {
+        var occupationcategory = '@Model.OccupationCategory';
+        if (occupationcategory != 0) {
+            $('#OccupationCategory').val(occupationcategory);
+        }
+    });
+    $(document).ready(function () {
+        $("#btnClear").click(function () {
+            $("#OccupationCategory").val('');
+            $("#Occupation").val('');
+        });
+    });
+    function AddOccupation() {
+        showProgress();
+        window.location.href = '@Url.Action("CreateOccupation","Occupation")';
+    }
+
+</script>
+<script src="~/Scripts/Common/Common.js"></script>

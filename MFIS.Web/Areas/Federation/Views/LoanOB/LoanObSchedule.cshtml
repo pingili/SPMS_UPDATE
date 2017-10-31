@@ -1,0 +1,78 @@
+﻿@using CoreComponents;
+
+@{
+                    // string DisbusementDate = @ViewBag.DisbusementDate.ToShortDateString();
+      
+}
+<div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="Table1" style="">
+            <thead>
+                <tr>
+                    <th class="text-center">Inst. No.</th>
+                    <th>Due Date</th>
+                    <th>Principal</th>
+                    <th>Total. Demand</th>
+                    <th>Prin. Demand</th>
+                    <th>Interest Demand</th>
+                    <th>Prin. Balance</th>
+                    <th>Days</th>
+                    <th>Int.Rate</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="overflow-y: scroll; max-height: 400px">
+        <table class="table table-striped table-bordered table-hover">
+            <tbody>
+                @{ List<BusinessEntities.ScheduleDTO> lstobj = new List<BusinessEntities.ScheduleDTO>();
+                   if (ViewBag.lstSchedules != null)
+                   {
+
+                       lstobj = ViewBag.lstSchedules;
+
+                   }
+                       
+                }
+                @if (lstobj != null)
+                {
+                    foreach (var obj in lstobj)
+                    {
+                    <tr class="gradeA odd">
+                        <td class="text-center">@obj.PERIOD</td>
+                        <td class="text-center">@obj.PAYDATE.ToDisplayDateFormat()</td>
+                        <td class="text-right">@obj.Opening_Balance.ToDisplayCurrency()</td>
+                        <td class="text-right">@obj.PRINCIPAL.ToDisplayCurrency()</td>
+                        <td class="text-right">@obj.PRINCIPAL.ToDisplayCurrency()</td>
+                        <td class="text-right">@obj.INTEREST.ToDisplayCurrency()</td>
+                        <td class="text-right">@obj.CURRENT_BALANCE.ToDisplayCurrency()</td>
+                        <td class="text-center">@obj.DAYS</td>
+                        <td class="text-center">@obj.INTERESTRate</td>
+                    </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-right: 22px; float: left">
+        <input id="btnClose" style="cursor: pointer; width: 50px; margin-right: 28px; border-color: blue;"
+            type="button" value="Close" onclick="javascript: Close();" />
+
+    </div>
+    <div style="margin-right: 22px; float: inherit">
+        <input id="btnSubmit" style="cursor: pointer; width: 50px; margin-right: 28px; border-color: blue;"
+            type="button" value="Save" onclick="javascript: SaveSchedule();" />
+
+    </div>
+    <div style="margin-right: 22px; float: inherit">
+        <label id="lblMessage" style="font-size: medium; color: red" />
+
+    </div>
+
+</div>
+<script type="text/javascript">
+   
+
+
+</script>

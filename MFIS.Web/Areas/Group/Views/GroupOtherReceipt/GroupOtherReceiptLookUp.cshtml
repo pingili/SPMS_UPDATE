@@ -1,0 +1,150 @@
+﻿@using BusinessEntities;
+@model IEnumerable<GroupOtherReceiptLookUpDto>
+@using CoreComponents
+
+@{
+    ViewBag.Title = "GeneralReceiptLookup";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    long totalAmount = default(long);
+    int counter = default(int);
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group General Receipt Lookup</span>
+                    @Html.ActionLink("Upload Receipt", "OtherReceiptesUpload", "GroupOtherReceipt", new { @class = "btn btn-default pull-right lock-dependent" })
+                    <button type="button" class="btn btn-default pull-right lock-dependent" onclick="Addrecard();" style="margin: 0 10px;">Add General Receipt</button>
+                </div>
+                @if (Result != null && Result.ObjectId > 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div>
+                }
+                else if (Result != null && Result.ObjectId < 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralReceipts">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Vocher NO</th>
+                                    <th>A.C Head</th>
+                                    <th>Amount</th>
+                                    <th>Transaction Date</th>
+                                    <th>Narration</th>
+                                    <th>Lock Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        totalAmount += item.Amount.ToLong();
+                                        bool isActive = item.StatusCode == Utilities.Constants.StatusCodes.Active;
+                                        string inActiveTitle = isActive ? "In-Active" : "Active";
+                                        string encryptAccountMasterID = item.AccountMasterID.EncryptString();
+                                        string deleteTitle = "Delete";
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(++counter)</td>
+                                        <td>@item.VoucherNumber</td>
+                                        <td>@item.AHName </td>
+                                        <td class="text-right">@item.Amount.ToDisplayCurrency()</td>
+                                        <td>@(item.TransactionDate == DateTime.MinValue ? string.Empty : item.TransactionDate.ToDisplayDateFormat()) </td>
+                                        <td>@item.Narration</td>
+                                        <td class="text-center">
+                                            @*<img src="@(isActive ? Url.Content("~/Content/images/Circle_Green.png") : Url.Content("~/Content/images/Circle_Red.png"))" title="@item.Status" />*@
+                                            @item.LockStatus
+                                        </td>
+                                        <td class="text-center">
+                                            <img src="~/Content/images/view-icon.png" style="cursor: pointer; width: 16px; height: 16px;" title="View" onclick="ViewGeneralReceipts('@encryptAccountMasterID');"  />
+                                            @if (item.IsEdit)
+                                            {
+                                            <img src="~/Content/images/Edit.png" style="cursor: pointer; @(isActive ? string.Empty : "display:none;")" title="Edit" onclick="EditGeneralReceipts('@encryptAccountMasterID');" />
+                                            }
+                                            @if (item.IsDelete)
+                                            {
+                                            <img style="cursor: pointer" onclick="DeleteGeneralReceipts('@encryptAccountMasterID');" src="~/Content/images/delete_btn1.png" title="@deleteTitle" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    }
+                                    <tr class="gradeA even">
+                                        <td></td><td></td><td></td>
+                                        <td class="text-right"><b>Total</b></td>
+                                        <td class="text-right">@totalAmount</td>
+                                        <td></td><td></td><td></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr class="gradeA even">
+                                        <td class="text-center" colspan="8">No Records found</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+    <link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script type="text/javascript">
+
+        function EditGeneralReceipts(id) {
+            showProgress();
+            window.location.href = '@Url.Content("CreateOtherReceipt?id=")' + id
+        }
+        function ViewGeneralReceipts(id) {
+            showProgress();
+            window.location.href = '@Url.Content("GroupOtherReceiptView?id=")' + id
+        }
+        function DeleteGeneralReceipts(encryptAccountMasterID) {
+            if (!confirm('If you continue, this record will be deleted permanently \n Do you wish to continue?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("DeleteGroupOtherReceipt?Id=")' + encryptAccountMasterID;
+        }
+
+        function ActiveInactiveGeneralReceipts(encryptAccountMasterID, currentStatusCode) {
+            if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("ActiveInactiveGeneralReceipt?Id=")' + encryptAccountMasterID;
+        }
+        function Addrecard() {
+            showProgress();
+            window.location.href = '@Url.Content("CreateOtherReceipt")';
+        }
+        function Addrecard1() {
+            showProgress();
+            window.location.href = '@Url.Content("OtherReceiptesUpload")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideGeneralReceipts";
+            LoadMenu();
+            $('#dataTablesGeneralReceipts').dataTable({
+                "bSort": false
+            });
+        });
+    </script>
+}

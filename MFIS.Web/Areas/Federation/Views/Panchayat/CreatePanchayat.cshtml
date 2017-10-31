@@ -1,0 +1,284 @@
+﻿@model MFIS.Web.Areas.Federation.Models.PanchayatModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreatePanchayat";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptpanchayatId = Model.PanchayatID > 0 ? Model.PanchayatID.EncryptString() : string.Empty;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Panchayat Details</span>
+                      <input type="button" class="btn btn-default pull-right" onclick="addPanchayat();" value="Add New Panchayat" />
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+
+                @*@RenderPage("~/Views/Shared/_Message.cshtml",ViewBag.ResultDto)*@
+
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    @if(@Model.PanchayatID > 0)
+                    {
+                        <input type="hidden" name="PanchayatID" id="PanchayatID" value="@Model.PanchayatID" />
+                    }
+                   
+                    <div class="row">
+                        <div class="col-lg-4">
+                            @if (@Model.PanchayatID > 0)
+                            {
+                                <div class="form-group">
+                                    <label>Panchayat Code</label>
+                                    @*<input class="form-control" disabled="disabled" placeholder="N-01010101">*@
+
+                                    @Html.TextBoxFor(m => m.PanchayatCode, new { @class = "form-control", @readonly = "readonly", @placeholder = "N-01010101", maxlength = "20" })
+                                </div>
+                            }
+                        </div>
+                        <div class="col-lg-4">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.PanchayatName)
+                                @*<input class="form-control" placeholder="Thallapusapally" maxlength="20">*@
+                                @Html.TextBoxFor(m => m.PanchayatName, new { @class = "form-control alphabet-only", @placeholder = "Enter Panchayat Name", maxlength = "64", @ID = "PanchayatName" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.TEPanchayatName)
+                                @*<input class="form-control" placeholder="Thallapusapally" maxlength="20">*@
+                                @Html.TextBoxFor(m => m.TEPanchayatName, new { @class = "form-control alphabet-only", @placeholder = "పంచాయతీ పేరు", maxlength = "512", @ID = "TEPanchayatName" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.StateID)
+                                @Html.DropDownListFor(m => m.StateID, (SelectList)ViewBag.states, "Select State", new { @class = "form-control", @placeholder = "D-01", @id = "StateID", @name = "StateID", onchange = "BindDropDownOptions(this.id)" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @*<label>Cluster</label>*@
+                                @Html.DisplayNameFor(m => m.DistrictID)
+                                @if (@Model.DistrictID == 0)
+                                {
+                                    <select name="DistrictID" id="DistrictID" class="form-control", onchange="BindDropDownOptions(this.id)">
+                                        <option value="">please select</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(m => m.DistrictID, (SelectList)ViewBag.district, "---select--", new { @class = "form-control", @placeholder = "D-01", @ID = "DistrictID", @name = "DistrictID", onchange = "BindDropDownOptions(this.id)" })
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @*<label>Mandal</label>*@
+                                @Html.DisplayNameFor(m => m.MandalID)
+                                @if (@Model.MandalID == 0)
+                                {
+                                    <select name="MandalID" id="MandalID" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                        <option value="0">please select</option>
+                                    </select>
+                                }
+                                else
+                                {                            
+                            @Html.DropDownListFor(m => m.MandalID, (SelectList)ViewBag.mandal, "---select--", new { @id = "MandalID", @name = "MandalID", @class = "form-control", @placeholder = "D-01", onchange = "BindDropDownOptions(this.id)" })
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @*<label>Cluster</label>*@
+                                @Html.DisplayNameFor(m => m.ClusterID)
+                                @if (@Model.ClusterID == 0)
+                                {
+                                <select name="ClusterID" id="ClusterID" class="form-control", onchange="BindDropDownOptions(this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                                }
+                                else
+                                {
+                                 @Html.DropDownListFor(m => m.ClusterID, (SelectList)ViewBag.clusters, "---select--", new { @class = "form-control", @placeholder = "D-01", @ID = "ClusterID", @name = "ClusterID", onchange = "BindDropDownOptions(this.id)" })
+                                }
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @*<label>Village/Town</label>*@
+                                @Html.DisplayNameFor(m => m.VillageID)
+                                @if (@Model.VillageID == 0)
+                                {
+                                <select name="VillageID" id="VillageID" class="form-control", onchange="BindDropDownOptions(this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                                }
+                                else
+                                {
+                                @Html.DropDownListFor(m => m.VillageID, (SelectList)ViewBag.village, "---select--", new { @class = "form-control", onchange = "BindDropDownOptions(this.id)", @id = "VillageID", @name = "VillageID" })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if(Model.PanchayatID>0)
+                        {
+                        @*<button type="submit" class="btn btn-outline btn-primary">Submit</button>*@
+                        <input type="submit" class="btn btn-outline btn-primary" value="Save" />
+                        }
+                        else
+                        {
+                        <input type="submit" class="btn btn-outline btn-primary" value="Submit" />
+
+                        }
+                        @*<button type="reset" class="btn btn-outline btn-primary">Reset</button>*@
+                        @*<button type="button" class="btn btn-outline btn-primary" onclick="clearAllfields();">Reset</button>*@
+                        <button type="button" id="btnClearAll" class="btn btn-outline btn-primary" onclick="return clearPanchyatData('@encryptpanchayatId');">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+        }
+    </div>
+    <!-- end page-wrapper -->
+
+</div>
+<script type="text/javascript">
+    function clearPanchyatData(encryptpanchayatId)
+    {
+        
+        if (encryptpanchayatId != null)
+        {
+            window.location.href = '@Url.Content("CreatePanchayat?id=")' + encryptpanchayatId;
+        }
+        else
+        {
+            clearAllData();
+        }
+    }
+
+    function clearAllData() {
+        if (!confirm("are you sure do you want to clear all entered data ?"))
+        {
+            return false;
+        }
+        else {
+            $('#PanchayatCode').val("");
+            $('#PanchayatName').val("");
+            $('#TEPanchayatName').val("");
+            $('#StateID').find('option:first').attr('selected', 'selected');
+            $('#MandalID').find('option:first').attr('selected', 'selected');
+            $('#ClusterID').find('option:first').attr('selected', 'selected');
+            $('#VillageID').find('option:first').attr('selected', 'selected');
+        }
+
+    }
+    CustomTransliteration(['TEPanchayatName']);
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Action("PanchayatLookup", "Panchayat")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSidePanchayat";
+        LoadMenu();
+    });
+    function addPanchayat() {
+        showProgress();
+        window.location.href = '@Url.Action("CreatePanchayat","Panchayat")';
+    }
+    function BindDropDownOptions(id) {
+        var actionUrl = '@Url.Action("BindDropDowns", "Panchayat")';
+        if (id == "StateID") {
+            var StateID = $("#StateID").val();
+            $("#DistrictID").html('').prepend("<option value=''>Select District </option>");
+            $("#MandalID").html('').prepend("<option value=''>Select Mandal </option>");
+            $("#ClusterID").html('').prepend("<option value=''>Select Cluster </option>");
+            $("#VillageID").html('').prepend("<option value=''>Select Village </option>");
+            $.post(actionUrl, { flag: "State", Id: StateID }, function (response) {
+                $("#DistrictID").html(response).prepend("<option value='' selected='selected'>Select District </option>");
+            });
+        }
+        else if (id == "DistrictID") {
+            var DistrictID = $("#DistrictID").val();
+            if (DistrictID != "") {
+                var actionUrl = '@Url.Action("BindDropDowns", "Panchayat")';
+                $("#MandalID").html('').prepend("<option value=''>Select Mandal </option>");
+                $("#ClusterID").html('').prepend("<option value=''>Select Cluster </option>");
+                $("#VillageID").html('').prepend("<option value=''>Select Village </option>");
+                $.post(actionUrl, { flag: "District", Id: DistrictID }, function (response) {
+                    $("#MandalID").html(response).prepend("<option value='' selected='selected'>Select Mandal </option>");
+                });
+            }
+        }
+        else if (id == "MandalID") {
+            var MandalId = $("#MandalID").val();
+            if (MandalId != "") {
+                var actionUrl = '@Url.Action("BindDropDowns", "Panchayat")';
+                $("#ClusterID").html('').prepend("<option value=''>Select Cluster </option>");
+                $("#VillageID").html('').prepend("<option value=''>Select Village </option>");
+                $.post(actionUrl, { flag: "Mandal", Id: MandalId }, function (response) {
+                    $("#ClusterID").html(response).prepend("<option value='' selected='selected'>Select Cluster </option>");
+                });
+            }
+        }
+        else if (id == "ClusterID") {
+            var ClusterId = $("#ClusterID").val();
+            if (ClusterId != "") {
+                var actionUrl = '@Url.Action("BindDropDowns", "Panchayat")';
+                    $("#VillageID").html('').prepend("<option value=''>Select Village</option>");
+                    $.post(actionUrl, { flag: "Cluster", Id: ClusterId }, function (response) {
+                        $("#VillageID").html(response).prepend("<option value='' selected='selected'>Select Village</option>");
+                    });
+                }
+            }
+    if ($("#StateID").find("option:selected").text() == "Select State") {
+        $("#DistrictID").empty();
+        $("#DistrictID").append("<option value=''>Select District </option>");
+        $("#MandalID").empty();
+        $("#MandalID").append("<option value=''>Select Mandal</option>");
+        $("#ClusterID").empty();
+        $("#ClusterID").append("<option value=''>Select Cluster</option>");
+        $("#VillageID").empty();
+        $("#VillageID").append("<option value=''>Select Village</option>");
+    }
+}
+
+</script>

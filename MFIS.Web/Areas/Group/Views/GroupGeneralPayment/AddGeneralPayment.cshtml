@@ -1,0 +1,429 @@
+﻿@using CoreComponents;
+@using BusinessEntities;
+@model BusinessEntities.GroupGeneralPaymentDto
+
+@{
+    ViewBag.Title = "AddGeneralPayment";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@*<script src="~/Scripts/jquery.bpopup.min.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment.js"></script>*@
+<style type="text/css">
+    .form-control {
+        padding: 2px 2px;
+        height: 30px;
+        border-radius: 2px;
+    }
+
+    .span-tran-delete {
+        color: #428bca;
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    ResultDto res = ViewBag.Result;
+    string voucherNumber = "N/A";
+    int counter = 0;
+    decimal totalAmount = 0;
+    if (Model != null && Model.VoucherNumber != null)
+    {
+        voucherNumber = Model.VoucherNumber;
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    @Html.HiddenFor(m => m.AccountMasterID)
+                    <span class="header">General Payment &nbsp;<label>Vocher Number</label>
+                        : @voucherNumber </span>
+                    @Html.ActionLink("Back to List", "GeneralPaymentsLookup", null, new { @class = "btn btn-default pull-right lock-dependent" })
+                    @*<button type="button" class="btn btn-default pull-right" onclick="BackToList()">Back To List</button>*@
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label><br />
+                                @Html.DropDownListFor(m => m.TransactionMode, new List<SelectListItem>
+                 {
+                    new SelectListItem{ Text="Cash", Value = "C" },
+                    new SelectListItem{ Text="Cash Deposit at Bank", Value = "BD" },
+                    new SelectListItem {Text="Cheque Deposit at Bank",Value="BC" }
+                 }, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label><br />
+                                @Html.DropDownListFor(m => m.TransactionDate, (SelectList)ViewBag.MonthMeetings, "Select Meeting Date", new { @class = "form-control" })
+
+                                <input type="text" value="@Model.TransactionDate.ToDisplayDateFormat()" class="form-control required one-month-enable-date-picker" id="txtTransactionDate" name="txtTransactionDate" placeholder="Select TransactionDate" readonly="true" style="display:none;" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Vocher RefNumber</label>
+                                @Html.TextBoxFor(m => m.VoucherRefNumber, new { @class = "form-control alphanumeric-only" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Collection Agent</label>
+                                @Html.DropDownListFor(m => m.CollectionAgent, (SelectList)ViewBag.slEmp, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 dv-cheque">
+                            <div class="form-group">
+                                <label>Cheque Number</label>
+                                @Html.TextBoxFor(m => m.ChequeNumber, null, new { @class = "form-control number-only" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 dv-cheque">
+                            <div class="form-group">
+                                <label>Cheque Date</label>
+                                <input type="text" value="@Model.ChequeDate.ToDisplayDateFormat()" class="form-control" id="ChequeDate" name="ChequeDate" placeholder="Select ChequeDate" readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>General Ledger A/C</label>
+                                @Html.DropDownList("GLAccountId", (SelectList)ViewBag.lstGLAcHeads, "Select Account Head", new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Sub Ledger A/C</label>
+                                <select id="SLAccountId" name="SLAccountId" class="form-control">
+                                    <option value="">Select SL AccountHead</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                @Html.TextBox("Amount", 0, new { @class = "form-control required number-only", @style = "width:95%;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-1" style="padding: 2px;">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="button" id="btnAddTran" name="btnAddTran" value="Add" class="form-control btn-primary lock-dependent" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1" style="padding: 2px;">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <input type="button" id="btnClearTran" name="btnClearTran" value="Clear" class="form-control btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTableGeneralPayments">
+                            <thead>
+                                <tr>
+                                    <th>GL Account Head</th>
+                                    <th>SL Account Head</th>
+                                    <th>Amount</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.TransactionsList != null && Model.TransactionsList.Count > 0)
+                                {
+                                    foreach (var objTran in Model.TransactionsList)
+                                    {
+                                        totalAmount += objTran.Amount;
+                                    <tr id="tr_@(++counter)">
+                                        <td>
+                                            <input type="hidden" id="hdnGLId_@counter" name="hdnGLId_@counter" value="@objTran.GLAccountId"/>
+                                            <input type="hidden" id="hdnSLId_@counter" name="hdnSLId_@counter" value="@objTran.SLAccountId"/>
+                                            <input type="hidden" id="hdnGLAccount_@counter" name="hdnGLAccount_@counter" value="@objTran.GLAccount"/>
+                                            <input type="hidden" id="hdnSLAccount_@counter" name="hdnSLAccount_@counter" value="@objTran.SLAccount"/>
+                                            <span id="glAccount_@counter">@objTran.GLAccount </span>
+                                        </td>
+                                        <td><span id="slAccount_@counter">@objTran.SLAccount</span></td>
+                                        <td>
+                                            <span id="amount_@counter">@objTran.Amount.ToDisplayCurrency() </span>
+                                            <input type="hidden" id="hdnAmount_@counter" name="hdnAmount_@counter" value="@objTran.Amount" />
+                                        </td>
+                                        <td><span class="span-tran-delete lock-dependent" onclick="javascript:deleteTran(@counter);">Delete</span> </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" align="right" style="padding-right: 10px;"><b>Total:</b></td>
+                                    <td>
+                                        <span id="spnTotal" name="spnTotal" style="font-weight: bold;">@totalAmount.ToDisplayCurrency()</span>
+                                        <input type="hidden" id="hdnTotalAmount" name="hdnTotalAmount" value="@totalAmount.ToDisplayCurrency()" />
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Head</label>
+                                <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <div class="col-lg-3" id="dvToBank">
+                            <div class="form-group">
+                                <label>Group Bank Account</label>
+                                @Html.DropDownListFor(m => m.BankEntryId, (SelectList)ViewBag.slBankAh, "Select Bank Account Head", new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <input type="hidden" id="hdnMaxTranCount" name="hdnMaxTranCount" value="@(counter)" />
+                        <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validateGeneralPayment();">Submit</button>
+                        <button type="button" class="btn btn-outline btn-primary lock-dependent" onclick="return resetall('')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqryUi")
+
+<script type="text/javascript">
+    $(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGeneralPayments";
+        LoadMenu();
+
+        $('#btnAddTran').on('click', function () {
+            $('#btnAddTran').css('border-color', '');
+
+            var glAccountId = $('#GLAccountId').val();
+            var _slAccountId = $('#SLAccountId').val();
+            var amount = $('#Amount').val();
+            var maxTranCount = $('#hdnMaxTranCount').val();
+
+            if (glAccountId == '') {
+                alert('Select GL Account');
+                return false;
+            }
+            if (_slAccountId == '') {
+                alert('Select SL Account');
+                return false;
+            }
+            if (amount == '') {
+                alert('Enter amount');
+                return false;
+            }
+            if (!Number(amount)) {
+                alert('Enter valid amount');
+                return false;
+            }
+
+            //sl account duplicate validation
+            if ($('input[type="hidden"][id*="hdnSLId_"][value="' + _slAccountId + '"]').length) {
+                alert('selected Sl Account already added');
+                return false;
+            }
+
+            var indx = Number(maxTranCount) + 1;
+            var glAccount = $.trim($('#GLAccountId option:selected').text());
+            var _slAccount = $.trim($('#SLAccountId option:selected').text());
+
+            var newtr = '<tr id="tr_' + indx + '">';
+            newtr += '<td><input type="hidden" id="hdnGLId_' + indx + '" name="hdnGLId_' + indx + '" value="' + glAccountId + '"/>';
+            newtr += '<input type="hidden" id="hdnSLId_' + indx + '" name="hdnSLId_' + indx + '" value="' + _slAccountId + '"/>';
+            newtr += '<input type="hidden" id="hdnGLAccount_' + indx + '" name="hdnGLAccount_' + indx + '" value="' + glAccount + '"/>';
+            newtr += '<input type="hidden" id="hdnSLAccount_' + indx + '" name="hdnSLAccount_' + indx + '" value="' + _slAccount + '"/>';
+            newtr += '<span id="glAccount_' + indx + '">' + glAccount + '</span></td>';
+            newtr += '<td><span id="slAccount_' + indx + '">' + _slAccount + '</span></td>';
+            newtr += '<td><span id="amount_' + indx + '">' + amount + '</span>';
+            newtr += '<input type="hidden" id="hdnAmount_' + indx + '" name="hdnAmount_' + indx + '" value="' + amount + '" /></td>';
+            newtr += '<td><span class="span-tran-delete" onclick="javascript:deleteTran(' + indx + ');">Delete</span> </td>';
+            newtr += '</tr>';
+
+            $('#dataTableGeneralPayments tbody').append(newtr);
+            $('#hdnMaxTranCount').val(indx);
+            $('#btnClearTran').click();
+            caluculateTotal();
+        });
+
+        $('#btnClearTran').on('click', function () {
+            $('#GLAccountId').val('');
+            $('#SLAccountId').val('');
+            $('#Amount').val('0');
+        });
+    });
+
+    function deleteTran(indx) {
+        if (confirm('Do you wish to remove selected transaction?')) {
+            $('tr[id="tr_' + indx + '"]').remove();
+            caluculateTotal();
+        }
+    }
+
+    function caluculateTotal() {
+        var totalAmount = 0;
+        $('span[id*="amount_"]').each(function (indx, spanControl) {
+            totalAmount += Number($.trim($(spanControl).text()));
+        });
+        $('#spnTotal').text(totalAmount);
+        $('#hdnTotalAmount').val(totalAmount);
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var transactionDate = '@(Model != null && Model.TransactionDate != default(DateTime) ? Model.TransactionDate.ToDisplayDateFormat() : string.Empty)';
+        $('#TransactionDate').val(transactionDate);
+        TransactionModeChange();
+        LoadSlAccountHeadsByGlAhId();
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("GroupOtherReceiptLookUp")';
+        }
+
+        $('#TransactionMode').on('change', function () {
+            TransactionModeChange();
+        });
+
+        function TransactionModeChange() {
+            var tMode = $('#TransactionMode').val();
+            $('.dv-cheque').hide();
+            if (tMode == "C") {
+                $('#dvToBank').hide();
+                $('#txtToHead').val('Cash In Hand');
+                $('#TransactionDate').show();
+                $('#txtTransactionDate').hide();
+            } else {
+                $('#TransactionDate').hide();
+                $('#txtTransactionDate').show();
+                $('#txtToHead').val('Cash at Bank');
+                $('#dvToBank').show();
+
+                if (tMode == "BC") {
+                    $('.dv-cheque').show();
+                }
+            }
+        }
+
+        $('#GLAccountId').change(function () {
+            LoadSlAccountHeadsByGlAhId();
+        });
+
+        function LoadSlAccountHeadsByGlAhId() {
+            $('#SLAccountId').find('option:gt(0)').remove();
+
+            var glAhId = $('#GLAccountId').val();
+            if (!Number(glAhId)) {
+                return;
+            }
+
+            //Load SL Account Heads of selected GL
+            var optionsList = '';
+            var url = '@Url.Action("GetGroupSubLedgerAccountHeadsByGLAHId")';;
+            $.post(url, { glAHId: Number(glAhId) }, function (data) {
+                debugger;
+                if (data.slAccountHeads) {
+                    $(data.slAccountHeads).each(function (item, value) {
+                        debugger;
+                        optionsList += '<option value="' + value.ID + '"> ' + value.Text + '</option>';
+                    });
+                    $('#SLAccountId').append(optionsList);
+                }
+            }, 'json');
+        }
+
+        @* var yyOpen = '@(Convert.ToDateTime(ViewBag.MeetingDate).Year)';
+        var mmOpen = '@(Convert.ToDateTime(ViewBag.MeetingDate).Month - 1)';
+        var currentOpenMonth = new Date(Number(yyOpen), mmOpen, 1);
+
+        $('#txtTransactionDate').datepicker({
+            dateFormat: "dd/M/yy",
+            defaultDate: currentOpenMonth,
+            minDate: currentOpenMonth,
+            hideIfNoPrevNext: true,
+            stepMonths: 0
+        });*@
+
+        $('#ChequeDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-10:+20",
+            minDate: __currentOpenMonth,
+            defaultDate: __currentOpenMonth
+        });
+    });
+
+    function validateGeneralPayment() {
+        var mode = $('#TransactionMode').val();
+        if (mode == "C") {
+            if ($('#TransactionDate').val() == "") {
+                $('#TransactionDate').css('border-color', 'red');
+                return false;
+            } else {
+                $('#TransactionDate').css('border-color', '');
+            }
+        } else {
+            if ($('#txtTransactionDate').val() == "") {
+                $('#txtTransactionDate').css('border-color', 'red');
+                return false;
+            } else {
+                $('#txtTransactionDate').css('border-color', '');
+            }
+        }
+
+        if (!Number($.trim($('#hdnTotalAmount').val()))) {
+            $('#btnAddTran').css('border-color', 'red');
+            return false;
+
+        } else {
+            $('#btnAddTran').css('border-color', '');
+        }
+
+        if (mode == "BC" && $('#ChequeNumber').val() == '') {
+            $('#ChequeNumber').css('border-color', 'red');
+            return false;
+        } else {
+            $('#ChequeNumber').css('border-color', '');
+        }
+
+        if (mode != "C") {
+            if ($('#BankEntryId').val() == '') {
+                $('#BankEntryId').css('border-color', 'red');
+                return false;
+            } else {
+                $('#BankEntryId').css('border-color', '');
+            }
+        }
+
+        return true;
+    }
+
+    function BindDropDownOptions(id) {
+        $.post('@Url.Action("GetSLAccouts")' + '/' + id, {},
+                  function (data) {
+                      $('#SLAcName').val(data.SLAccounts);
+                  }, 'json');
+    }
+</script>
+

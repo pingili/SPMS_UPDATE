@@ -1,0 +1,194 @@
+﻿@model MFIS.Web.Areas.Federation.Models.BranchModel
+@using CoreComponents
+
+@{
+    ViewBag.Title = "CreateBranch";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptBranchID = Model.BranchID > 0 ? Model.BranchID.EncryptString() : string.Empty;    
+    
+}
+@using (Html.BeginForm(FormMethod.Post))
+{
+    string abs = @Model.StartDate.ToString();
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Branch Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddBranch();">Add New Branch</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        @if (@Model.BranchID > 0)
+                        {
+                            <div class="form-group">
+                                <label>Branch Code</label>
+                                @Html.TextBoxFor(m => Model.BranchCode, new { @class = "form-control", @readonly = "readonly", maxlength = "8" })
+                            </div>
+                        }
+                        @if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.ObjectCode))
+                        { 
+                            <div class="form-group">
+                                <label>Branch Code</label>
+                                @Html.TextBoxFor(m => Model.BranchCode, new { @class = "form-control", @readonly = "readonly", maxlength = "8", @value = @ViewBag.Result.ObjectCode })
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            @Html.HiddenFor(m => m.BranchID)
+                            @Html.TextBoxFor(m => Model.BranchName, new { @class = "form-control alphabet-only required", @placeholder = "Enter Branch Name", maxlength = "64" })
+                        </div>
+                        <div class="form-group">
+                            <label>Branch Name(Telugu)</label>
+                            @Html.TextBoxFor(m => Model.TEBranchName, new { @class = "form-control alphabet-only", @placeholder = "Enter Branch Telugu Name", maxlength = "512" })
+                        </div>
+                        <div class="form-group">
+                            <label>Branch Start Date</label>
+                            @{
+                        string StartDate = Model.StartDate.Ticks > 0 ? Model.StartDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@StartDate" class="form-control" id="StartDate" name="StartDate" readonly="true" placeholder="StartDate" />
+                            }
+                            @*@Html.TextBoxFor(m => Model.StartDate, new { @class = "form-control date-only", @readonly = "true", @placeholder = "dd/mm/yyyy" })*@
+                            @* <input type="text" id="StartDate" name="StartDate" readonly="true" class="form-control" placeholder="Enter Start Date" />*@
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Contact Details</strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label>Email </label>
+                                    @Html.TextBoxFor(m => Model.Email, new { @class = "form-control email-only", @placeholder = "Enter Email", maxlength = "64" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    @Html.TextBoxFor(m => Model.Phone, new { @class = "form-control", @placeholder = "Enter Phone Number", maxlength = "16" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    @Html.TextAreaFor(m => Model.Address, new { @class = "form-control", @rows = "3", maxlength = "512" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.BranchID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader">Save</button>
+                            
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader" onclick="return Check();">Submit</button>
+                            
+                        }
+                        <button type="button"  class="btn btn-outline btn-primary" onclick="resetData('@encryptBranchID')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+                <!-- End Form Elements -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        function resetData(BranchId) {
+            if (BranchId != '') {
+                if (!confirm('If you continue reset all Fields'))
+                    return false;
+                window.location.href = '@Url.Content("CreateBranch?id=")' + BranchId;
+            }
+            else {
+                clearDataFields();
+            }
+        }
+        function clearDataFields() {
+            $('.row').find('input:text').each(function () {
+                $(this).val('');
+            });
+            $(".row").find('input:text, select, textarea').val('');
+            $(".row").find('input:radio, input:checkbox').prop('checked', false).prop('selected', false);
+        }
+
+        function BackToList() {
+            showProgress();
+            window.location.href = 'BranchLookUp';
+        }
+        function AddBranch() {
+            showProgress();
+            window.location.href = '@Url.Action("CreateBranch", "Branch")';
+        }
+
+
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideBranch";
+            LoadMenu();
+        });
+        CustomTransliteration(['TEBranchName']);
+
+        function Check() {
+            var validateResult = true;
+            var RequiredFields = ['BranchName', 'TEBranchName', 'StartDate', 'Email', 'Phone', 'Address'];
+            for (i = 0; i < RequiredFields.length; i++) {
+                if ($('#' + RequiredFields[i]).val() == '') {
+                    $('#' + RequiredFields[i]).css({ "border": "1px solid Red" })
+                    validateResult = false;
+                }
+            }
+            return validateResult;
+        }
+    </script>
+}
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#StartDate').datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#AccountantFromDate').datepicker({
+                dateFormat: "dd/mm/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#ManagerFromDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+
+}
+

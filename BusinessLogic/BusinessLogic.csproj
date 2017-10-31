@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4C8ABCD-CF03-4A55-BAB0-1693317B1E08}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLogic</RootNamespace>
+    <AssemblyName>BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\MFIS.Web\ReferenceDLL\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\MFIS.Web\ReferenceDLL\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoMapper\AutoMapperEntityConfiguration.cs" />
+    <Compile Include="Implementation\AccountHeadMappingService.cs" />
+    <Compile Include="Implementation\AccountHeadService.cs" />
+    <Compile Include="Implementation\BankMasterBll.cs" />
+    <Compile Include="Implementation\BankService.cs" />
+    <Compile Include="Implementation\BranchService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Implementation\ClusterService.cs" />
+    <Compile Include="Implementation\CommonService.cs" />
+    <Compile Include="Implementation\ContraEntryService.cs" />
+    <Compile Include="Implementation\DepositOBBll.cs" />
+    <Compile Include="Implementation\DepreciationService.cs" />
+    <Compile Include="Implementation\DistrictService.cs" />
+    <Compile Include="Implementation\EmployeeKycService.cs" />
+    <Compile Include="Implementation\EmployeeService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Implementation\FederationGeneralPaymentsService.cs" />
+    <Compile Include="Implementation\FederationGeneralReceiptService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Implementation\FederationLoanApplicationService.cs" />
+    <Compile Include="Implementation\FederationMeetingService.cs" />
+    <Compile Include="Implementation\FundSourceService.cs" />
+    <Compile Include="Implementation\GroupGeneralPaymentsService.cs" />
+    <Compile Include="Implementation\GroupGeneralReceiptService.cs" />
+    <Compile Include="Implementation\GroupJournalService.cs" />
+    <Compile Include="Implementation\GroupLoanDisbursementService.cs" />
+    <Compile Include="Implementation\GroupMeetingService.cs" />
+    <Compile Include="Implementation\GroupMemberReceiptService.cs" />
+    <Compile Include="Implementation\GroupOtherJournalService.cs" />
+    <Compile Include="Implementation\GroupOtherReceiptService.cs" />
+    <Compile Include="Implementation\GroupReceiptService.cs" />
+    <Compile Include="Implementation\GroupLoanApplicationService.cs" />
+    <Compile Include="Implementation\GroupService.cs" />
+    <Compile Include="Implementation\InterestService.cs" />
+    <Compile Include="Implementation\JournalService.cs" />
+    <Compile Include="Implementation\LeadershipService.cs" />
+    <Compile Include="Implementation\LoanApplicationService.cs" />
+    <Compile Include="Implementation\LoanOBBll.cs" />
+    <Compile Include="Implementation\LoanPurposeService.cs" />
+    <Compile Include="Implementation\LoanSecurityMasterService.cs" />
+    <Compile Include="Implementation\LoginBll.cs" />
+    <Compile Include="Implementation\MandalService.cs" />
+    <Compile Include="Implementation\MasterService.cs" />
+    <Compile Include="Implementation\MemberConfirmationDemandService.cs" />
+    <Compile Include="Implementation\MemberKycService.cs" />
+    <Compile Include="Implementation\BankLoanService.cs" />
+    <Compile Include="Implementation\MemberLoanApplicationService.cs" />
+    <Compile Include="Implementation\MemberLoanDisbursementService.cs" />
+    <Compile Include="Implementation\MemberRefundsService.cs" />
+    <Compile Include="Implementation\MemberReceiptService.cs" />
+    <Compile Include="Implementation\MemberService.cs" />
+    <Compile Include="Implementation\ModuleServices.cs" />
+    <Compile Include="Implementation\ModuleActionService.cs" />
+    <Compile Include="Implementation\NPAService.cs" />
+    <Compile Include="Implementation\OccupationService.cs" />
+    <Compile Include="Implementation\OrganizationService.cs" />
+    <Compile Include="Implementation\PanchayatService.cs" />
+    <Compile Include="Implementation\PaymentsToFederationService.cs" />
+    <Compile Include="Implementation\ProjectService.cs" />
+    <Compile Include="Implementation\RAPService.cs" />
+    <Compile Include="Implementation\ReferenceValueService.cs" />
+    <Compile Include="Implementation\RefundsFromFederationService.cs" />
+    <Compile Include="Implementation\RepaymentService.cs" />
+    <Compile Include="Implementation\RoleModulesService.cs" />
+    <Compile Include="Implementation\RolesService.cs" />
+    <Compile Include="Implementation\StateService.cs" />
+    <Compile Include="Implementation\StatusService.cs" />
+    <Compile Include="Implementation\VillageService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEntities\BusinessEntities.csproj">
+      <Project>{1359797b-6813-45c9-816c-11e8b54e219e}</Project>
+      <Name>BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreComponents\CoreComponents.csproj">
+      <Project>{2279d55d-c865-40b7-b7e5-b6a6ffb147ad}</Project>
+      <Name>CoreComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLogic\DataLogic.csproj">
+      <Project>{c67e16d3-324e-46a2-8232-8d06279500a6}</Project>
+      <Name>DataLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MFIEntityFrameWork\MFIEntityFrameWork.csproj">
+      <Project>{1e48e5d5-db5d-4bb3-98b9-1b2b0b60480b}</Project>
+      <Name>MFIEntityFrameWork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{48a3c6ab-812c-4692-8821-e06bd8a22fcb}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

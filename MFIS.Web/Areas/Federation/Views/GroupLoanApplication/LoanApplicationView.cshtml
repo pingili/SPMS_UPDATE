@@ -1,0 +1,120 @@
+﻿@model BusinessEntities.GroupLoanApplicationDto
+@using CoreComponents;
+@{
+    ViewBag.Title = "LoanApplicationView";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{  
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group Loan Application</span>
+                    @Html.ActionLink("Back To List", "GroupLoanApplicationLookup", null, new { @class = "btn btn-default pull-right" })
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>LoanCode</label><br />
+                                @Html.TextBoxFor(d => d.LoanCode, new { @class = "form-control", @readonly = "LoanCode", maxlength = "32" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Code</label><br>
+                                @Html.TextBoxFor(d => Model.GroupCode, new { @class = "form-control required",@readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label><br>
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Application Date</label><br>
+                                @{
+    string loanapplicationdate = Model.LoanApplicationDate.Ticks > 0 ? Model.LoanApplicationDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                    <input type="text" value="@loanapplicationdate" class="form-control required" id="LoanApplicationDate" name="LoanApplicationDate" readonly="true" placeholder="Select LoanApplicationDate" />
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+
+                            <div class="form-group">
+                                <label>Village Code</label><br>
+                                @Html.TextBoxFor(model => model.VillageCode, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Village Name</label><br>
+                                @Html.TextBoxFor(model => model.VillageName, new { @class = "form-control", @readonly = "true" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Cluster Code</label>
+                                @Html.TextBoxFor(model => model.ClusterCode, new { @class = "form-control", @readonly = "true" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Cluster Name</label>
+                                @Html.TextBoxFor(model => model.ClusterName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Purpose</label>
+                                @Html.TextBoxFor(d => Model.LoanPurposeName, new { @class = "form-control required", @ID = "LoanPurpose", @readonly = "true"  })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>FundSourse</label>
+                                @Html.TextBoxFor(d => Model.FundSourceName, new { @class = "form-control required", @ID = "FundSourse", @readonly = "true"  })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+
+                            <div class="form-group">
+                                <label>Loan Amount</label>
+                                @Html.TextBox("LoanAmountApplied", Model.LoanAmountApplied.ToDisplayCurrencyInRupees(), new { @class = "form-control required number-only", @ID = "LoanAmountApplied", @Name = "LoanAmountApplied", @readonly = "true"  })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>NoOfInstallments</label>
+                                @Html.TextBoxFor(l => l.NoofInstallmentsProposed, new { @class="form-control",@readonly="true"})
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Mode</label>
+                                <select name="Mode" id="Mode" class="form-control" readonly="true">
+                                    <option selected="selected" value="1045">Monthly</option>
+                                    <option value="1044">Weekly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

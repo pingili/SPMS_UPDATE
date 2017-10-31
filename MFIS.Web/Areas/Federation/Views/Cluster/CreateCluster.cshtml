@@ -1,0 +1,307 @@
+﻿@model MFIS.Web.Areas.Federation.Models.ClusterModel
+@using CoreComponents
+@{
+    ViewBag.Title = "CreateCluster";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptClusterId = Model.ClusterID > 0 ? Model.ClusterID.EncryptString() : string.Empty;
+}
+
+@using (Html.BeginForm("CreateCluster", "Cluster"))
+{
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Cluster Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddCluster();">Add New Cluster</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    @Html.HiddenFor(i => i.ClusterID, new { @id = "ClusterID", @name = "ClusterID" })
+                    <div class="col-lg-4">
+                        @if (Model.ClusterID > 0)
+                        {
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(c => c.ClusterCode)</label>
+                                @Html.TextBoxFor(model => model.ClusterCode, new { @class = "form-control", @readonly = "ClusterCode" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.ClusterName)
+                            </label>
+                            @Html.TextBoxFor(model => model.ClusterName, new { @class = "form-control alphabet-only ", @placeholder = "Enter Cluster Name" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.TEClusterName)
+                            </label>
+                            @Html.TextBoxFor(model => model.TEClusterName, new { @class = "form-control alphabet-only", @placeholder = "Enter Cluster Telugu Name" })
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.StateID)
+                            </label>
+                            @Html.DropDownListFor(model => model.StateID, (SelectList)ViewBag.States, "Select State", new { @class = "form-control", @id = "ddlState", onchange = "BindDropDownOptions(this.id)" })
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.DistrictID)
+                            </label>
+                            @Html.DropDownListFor(d => d.DistrictID, (SelectList)ViewBag.Districts, "Select District", new { @class = "form-control", @id = "ddlDistrict", onchange = "BindDropDownOptions(this.id)" })
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.MandalID)
+                            </label>
+
+                            @Html.DropDownListFor(model => model.MandalID, (SelectList)ViewBag.Mandals, "Select Mandal", new { @class = "form-control", @id = "ddlMandal", onchange = "BindDropDownOptions(this.id)" })
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                @Html.DisplayNameFor(c => c.BranchID)
+                            </label>
+                            @Html.DropDownListFor(d => d.BranchID, (SelectList)ViewBag.Branches, "Select Branch", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            @{                                
+                        string StartDate = Model.StartDate.Ticks > 0 ? Model.StartDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@StartDate" class="form-control required" id="StartDate" name="StartDate" readonly="true" placeholder="Select Start Date" />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.ClusterID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader" id="submit" onclick="savecluster();">Save</button>
+                            
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader" id="submit" onclick="savecluster();">Submit</button>
+                            
+                        }
+                        <button type="button" id="btnClearAll" class="btn btn-outline btn-primary" onclick="return resetData('@encryptClusterId')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+        </div>
+        <!-- end page-wrapper -->
+    </div>
+}
+<script>
+    CustomTransliteration(['TEClusterName']);
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Action("ClusterLookup", "Cluster")';
+    }
+    function resetData(encryptClusterId) {
+        if (encryptClusterId != '') {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("CreateCluster?id=")' + encryptClusterId;
+        }
+        else {
+            $('#ClusterName').val('');
+            $('#TEClusterName').val('');
+            $('#ddlState').val('');
+            $('#ddlDistrict').val('');
+            $('#ddlMandal').val('');
+            $('#BranchID').val('');
+            $('#StartDate').val('');
+        }
+    }
+    function savecluster() {
+        if (validateFields()) {
+            var actionUrl = '@Url.Action("CreateCluster", "Cluster")';
+            document.forms[0].action = actionUrl;
+            document.forms[0].submit();
+        }
+    }
+    function AddCluster() {
+        showProgress();
+        window.location.href = '@Url.Action("CreateCluster", "Cluster")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideCluster";
+        LoadMenu();
+
+        var stateId = '@Model.StateID';
+        if (stateId != null && stateId != "" && parseInt(stateId) > 0) {
+            $("#ddlState").val('@Model.StateID');
+        }
+        var mandalId = '@Model.MandalID';
+        if (mandalId != null && mandalId != "" && parseInt(mandalId) > 0) {
+            $("#ddlMandal").val('@Model.MandalID');
+        }
+
+        var districtid = '@Model.DistrictID';
+        if (districtid != null && districtid != "" && parseInt(districtid) > 0) {
+            $("#ddlDistrict").val('@Model.DistrictID');
+
+        }
+
+        var branchId = '@Model.BranchID';
+        if (branchId != null && branchId != "" && parseInt(branchId) > 0) {
+            $("#BranchID").val('@Model.BranchID');
+        }
+
+       @* var laderId = '@Model.Leader';
+        if (laderId != null && laderId != "" && parseInt(laderId) > 0) {
+            $("#Leader").val('@Model.Leader');
+        }*@
+    });
+
+    function validateFields() {
+        var isValid = true;
+        if ($("#StartDate").val() == null || $("#StartDate").val() == "") {
+            $("#StartDate").addClass('required');
+            isValid = false;
+        } else {
+            $("#StartDate").removeClass('required');
+
+        }
+
+        if ($("#ClusterName").val() == null || $("#ClusterName").val() == "") {
+            isValid = false;
+            $("#ClusterName").addClass('required');
+        } else {
+            $("#ClusterName").removeClass('required');
+        }
+
+        if ($("#ddlState").find("option:selected").text() == "Select State") {
+            isValid = false;
+            $("#ddlState").addClass('required');
+        } else {
+            $("#ddlState").removeClass('required');
+        }
+
+        if ($("#ddlMandal").find("option:selected").text() == "Select Mandal") {
+            isValid = false;
+            $("#ddlMandal").addClass('required');
+        } else {
+            $("#ddlMandal").removeClass('required');
+        }
+
+        if ($("#ddlDistrict").find("option:selected").text() == "Select District") {
+            isValid = false;
+            $("#ddlDistrict").addClass('required');
+        } else {
+            $("#ddlDistrict").removeClass('required');
+        }
+
+        if ($("#BranchID").find("option:selected").text() == "Select Branch") {
+            isValid = false;
+            $("#BranchID").addClass('required');
+        } else {
+            $("#BranchID").removeClass('required');
+        }
+
+        //if ($("#Leader").find("option:selected").text() == "Select Leader") {
+        //    isValid = false;
+        //    $("#Leader").addClass('required');
+        //} else {
+        //    $("#Leader").removeClass('required');
+        //}
+
+        return isValid;
+    }
+
+    function BindDropDownOptions(id) {
+        var actionUrl = '@Url.Action("BindDropDowns", "Cluster")';
+        if (id == "ddlState") {
+            var StateID = $("#ddlState").val();
+            $.post(actionUrl, { flag: "State", Id: StateID }, function (response) {
+                $("#ddlDistrict").html(response).prepend("<option value='0'>Select District </option>");
+            });
+        }
+
+        else if (id == "ddlDistrict") {
+            var DistrictID = $("#ddlDistrict").val();
+            var actionUrl = '@Url.Action("BindDropDowns", "Cluster")';
+            $.post(actionUrl, { flag: "District", Id: DistrictID }, function (response) {
+                $("#ddlMandal").html(response).prepend("<option value='0'>Select Mandal </option>");
+            });
+        }
+
+        //if ($("#ddlState").find("option:selected").text() == "Select State") {
+
+        //    //$("#ddlDistrict").empty();
+        //    $("#ddlDistrict").append("<option value='0'>Select District</option>");
+        //    //$("#ddlMandal").empty();
+        //    $("#ddlMandal").append("<option value='0'>Select Mandal</option>");
+
+        //}
+        //if ($("#ddlDistrict").find("option:selected").text() == "Select District ") {
+        //   // $("#ddlMandal").empty();
+        //    $("#ddlMandal").append("<option value='0'>Select Mandal</option>");
+        //}
+}
+
+
+    @*function BindMandalDropDownOptions(id) {
+        var actionUrl = '@Url.Action("BindDropDowns", "Cluster")';
+            if (id == "ddlDistrict") {
+                var DistrictID = $("#ddlDistrict").val();
+                $.post(actionUrl, { flag: "District", Id: DistrictID }, function (response) {
+                    $("#ddlMandal").html(response).prepend("<option value=''>Please Select </option>");
+                });
+            }
+        }*@
+</script>
+<script src="~/Scripts/Common/Common.js"></script>
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#LeaderFromDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#StartDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+
+}
+

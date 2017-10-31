@@ -1,0 +1,1069 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B05AA25-F25C-4EB7-84C6-D430FB26FC8B}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MFIS.Web</RootNamespace>
+    <AssemblyName>MFIS.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\ReferenceDLL\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CRVsPackageLib">
+      <HintPath>..\packages\Crystal Reports\CRVsPackageLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Design">
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.CrystalReports.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine">
+      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.TemplateEngine">
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.CrystalReports.TemplateEngine.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.Data.AdoDotNetInterop">
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.Data.AdoDotNetInterop.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Enterprise.Viewing.ReportSource">
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.Enterprise.Viewing.ReportSource.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc">
+      <HintPath>..\packages\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.ClientDoc.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommLayer, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.CommLayer.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonControls, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.CommonControls.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.CommonObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers">
+      <HintPath>..\packages\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.Controllers.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CubeDefModel, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.CubeDefModel.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel">
+      <HintPath>..\packages\CrystalDecisions.ReportAppServer.1.0.0\lib\CrystalDecisions.ReportAppServer.DataDefModel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataSetConversion, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.DataSetConversion.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ObjectFactory, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.ObjectFactory.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Prompting, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.Prompting.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.ReportDefModel, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.ReportDefModel.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.XmlSerialize, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.ReportAppServer.XmlSerialize.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource">
+      <HintPath>..\packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared">
+      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.VSDesigner">
+      <HintPath>..\packages\Crystal Reports\CrystalDecisions.VSDesigner.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web">
+      <HintPath>..\packages\CrystalDecisions.Web.1.0.1\lib\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms">
+      <HintPath>..\packages\CrystalDecisions.Windows.Forms.1.0.0\lib\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
+      <HintPath>..\ReferenceDLL\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceDLL\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\ReferenceDLL\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceDLL\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\ReferenceDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReferenceDLL\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\ReferenceDLL\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\ReferenceDLL\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.20710.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Federation\Controllers\AccountTreeController.cs" />
+    <Compile Include="Areas\Federation\Controllers\BranchController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\Federation\Controllers\ClusterController.cs" />
+    <Compile Include="Areas\Federation\Controllers\DataEntryStatusReportController.cs" />
+    <Compile Include="Areas\Federation\Controllers\DistrictController.cs" />
+    <Compile Include="Areas\Federation\Controllers\BankController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\Federation\Controllers\DepreciationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\EmployeeController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Areas\Federation\Controllers\FundSourceController.cs" />
+    <Compile Include="Areas\Federation\Controllers\GroupAccountTreeController.cs" />
+    <Compile Include="Areas\Federation\Controllers\GroupController.cs" />
+    <Compile Include="Areas\Federation\Controllers\InterestController.cs" />
+    <Compile Include="Areas\Federation\Controllers\LoanInterestController.cs" />
+    <Compile Include="Areas\Federation\Controllers\MaintananceController.cs" />
+    <Compile Include="Areas\Federation\Controllers\MandalController.cs" />
+    <Compile Include="Areas\Federation\Controllers\LoanPurposeController.cs" />
+    <Compile Include="Areas\Federation\Controllers\LoanSecurityMasterController.cs" />
+    <Compile Include="Areas\Federation\Controllers\NPAController.cs" />
+    <Compile Include="Areas\Federation\Controllers\OccupationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\OrganizationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\PanchayatController.cs" />
+    <Compile Include="Areas\Federation\Controllers\ProjectController.cs" />
+    <Compile Include="Areas\Federation\Controllers\RAPController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\ContraEntryController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\DepositController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\DepositOBController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\FederationMeetingController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\GeneralPaymentsController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\GroupLoanApplicationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\GeneralReceiptController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\GroupLoanDisbursementController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\JournalEntryVoucherController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\FederationLoanApplicationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\LoanOBController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\PaymentsToFederationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\ReceiptController.cs" />
+    <Compile Include="Areas\Federation\Controllers\TransactionControllers\RefundsFromFederationController.cs" />
+    <Compile Include="Areas\Federation\Controllers\VillageController.cs" />
+    <Compile Include="Areas\Federation\FederationAreaRegistration.cs" />
+    <Compile Include="Areas\Federation\Models\AccountHeadModel.cs" />
+    <Compile Include="Areas\Federation\Models\BankMasterModel.cs" />
+    <Compile Include="Areas\Federation\Models\BranchModel.cs" />
+    <Compile Include="Areas\Federation\Models\ContraEntryModel.cs" />
+    <Compile Include="Areas\Federation\Models\DepositModel.cs" />
+    <Compile Include="Areas\Federation\Models\DepreciationModel.cs" />
+    <Compile Include="Areas\Federation\Models\ClusterModel.cs" />
+    <Compile Include="Areas\Federation\Models\DistrictModel.cs" />
+    <Compile Include="Areas\Federation\Models\EmployeeModel.cs" />
+    <Compile Include="Areas\Federation\Models\GeneralPaymentsModel.cs" />
+    <Compile Include="Areas\Federation\Models\GeneralReceiptModel.cs" />
+    <Compile Include="Areas\Federation\Models\GroupLoanApplicationModel.cs" />
+    <Compile Include="Areas\Federation\Models\GroupLoanDisbursementModel.cs" />
+    <Compile Include="Areas\Federation\Models\GroupModel.cs" />
+    <Compile Include="Areas\Federation\Models\GroupReceiptModel.cs" />
+    <Compile Include="Areas\Federation\Models\InterestModel.cs" />
+    <Compile Include="Areas\Federation\Models\MeetingModel.cs" />
+    <Compile Include="Areas\Group\Controllers\LeadershipController.cs" />
+    <Compile Include="Areas\Group\Controllers\LoanApplicationController.cs" />
+    <Compile Include="Areas\Group\Controllers\MaintananceController.cs" />
+    <Compile Include="Areas\Federation\Models\LoanSecurityMasterModel.cs" />
+    <Compile Include="Areas\Federation\Models\LoanSecurityModel.cs" />
+    <Compile Include="Areas\Federation\Models\LoginModel.cs" />
+    <Compile Include="Areas\Federation\Models\MandalLookupModel.cs" />
+    <Compile Include="Areas\Federation\Models\MandalModel.cs" />
+    <Compile Include="Areas\Federation\Models\LoanPurposeModel.cs" />
+    <Compile Include="Areas\Federation\Models\NPAModel.cs" />
+    <Compile Include="Areas\Federation\Models\OccupationModel.cs" />
+    <Compile Include="Areas\Federation\Models\FundSourceModel.cs" />
+    <Compile Include="Areas\Federation\Models\OrganizationModel.cs" />
+    <Compile Include="Areas\Federation\Models\PanchayatModel.cs" />
+    <Compile Include="Areas\Federation\Models\ProjectModel.cs" />
+    <Compile Include="Areas\Federation\Models\RefValuesModel.cs" />
+    <Compile Include="Areas\Federation\Models\VillageModel.cs" />
+    <Compile Include="Areas\Group\Controllers\GroupAccountTreeController.cs" />
+    <Compile Include="Areas\Group\Controllers\MemberController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\AccountHeadMappingController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\ContraEntryController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupDepositOBController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupGeneralPaymentController .cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupJournalEntryController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GeneralReceiptController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupLoanOBController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupJournalController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupMeetingController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupMemberReceiptController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\GroupOtherReceiptController .cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\BankLoanController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\MemberLoanApplicationController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\MemberLoanDisbursementController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\MemberPaymentController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\MemberReceiptController.cs" />
+    <Compile Include="Areas\Group\Controllers\TransactionControllers\RefundsFromFederationController.cs" />
+    <Compile Include="Areas\Group\GroupAreaRegistration.cs" />
+    <Compile Include="Areas\Group\Models\CreateMemberRefundsModel.cs" />
+    <Compile Include="Areas\Group\Models\DepositModel.cs" />
+    <Compile Include="Areas\Group\Models\GeneralPaymentsModel.cs" />
+    <Compile Include="Areas\Group\Models\GeneralReceiptModel.cs" />
+    <Compile Include="Areas\Group\Models\LeadershipModel.cs" />
+    <Compile Include="Areas\Group\Models\LoanApplicationModel.cs" />
+    <Compile Include="Areas\Group\Models\MemberModel.cs" />
+    <Compile Include="Areas\Group\Models\MemberReceiptModel.cs" />
+    <Compile Include="AutoMapper\AutoMapperUIConfiguration.cs" />
+    <Compile Include="Controllers\BalanceSheetController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CashBookController.cs" />
+    <Compile Include="Controllers\BankBookController.cs" />
+    <Compile Include="Controllers\GeneralLedgerController.cs" />
+    <Compile Include="Controllers\GroupCashBookController.cs" />
+    <Compile Include="Controllers\IncomeAndExpenditureController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MemberConfirmationReportController.cs" />
+    <Compile Include="Controllers\MemberLoanLedgerController.cs" />
+    <Compile Include="Controllers\OpeningBalanceController.cs" />
+    <Compile Include="Controllers\RoleModulesController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\ModuleActionController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BalanceSheetModel.cs" />
+    <Compile Include="Models\CashbookPaymentsModel.cs" />
+    <Compile Include="Models\CashbookModel.cs" />
+    <Compile Include="Models\GeneralLedgerModel.cs" />
+    <Compile Include="Models\GroupCashBookModel.cs" />
+    <Compile Include="Models\IncomeAndExpenditureModel.cs" />
+    <Compile Include="Models\MemberLoanLedgerModel.cs" />
+    <Compile Include="Models\OpeningBalanceModel.cs" />
+    <Compile Include="Models\TrialBalanceModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\TrialBalanceController.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\FinancialRports\BalanceSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BalanceSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\FinancialRports\IncomeAndExpenditure.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IncomeAndExpenditure.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\FinancialRports\TrialBalance.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrialBalance.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\CashBook.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CashBook.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\GeneralLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\GroupCashBook.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GroupCashBook.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\GroupDemondSheet.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GroupDemondSheet.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\MemberBalanceConformation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemberBalanceConformation.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\RegistersReports\MemberLoanLedger.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MemberLoanLedger.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Federation\Views\Group\CreateGroupBankDetails.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Federation\Views\Village\CreateVillage.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Content\css\main-style.css" />
+    <Content Include="Content\css\site.css" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.css" />
+    <Content Include="Content\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\1468082722_lock.png" />
+    <Content Include="Content\images\1468095521_unlock.png" />
+    <Content Include="Content\images\icon-minus.png" />
+    <Content Include="Content\images\icon-plus.png" />
+    <Content Include="Content\images\ajax-loader-big.gif" />
+    <Content Include="Content\images\Apply_Active.gif" />
+    <Content Include="Content\images\Apply_Over.gif" />
+    <Content Include="Content\images\banner1.jpg" />
+    <Content Include="Content\images\banner2.jpg" />
+    <Content Include="Content\images\BIgButton1.png" />
+    <Content Include="Content\images\Circle_Green.png" />
+    <Content Include="Content\images\Circle_Red.png" />
+    <Content Include="Content\images\close_button.png" />
+    <Content Include="Content\images\delete_btn1.png" />
+    <Content Include="Content\images\Edit.png" />
+    <Content Include="Content\images\FileNotFound.png" />
+    <Content Include="Content\images\Loading_please_wait.gif" />
+    <Content Include="Content\images\log.jpg" />
+    <Content Include="Content\images\Logo.jpg" />
+    <Content Include="Content\images\LogoSpms.jpg" />
+    <Content Include="Content\images\LogoSpms.png" />
+    <Content Include="Content\images\logout.jpg" />
+    <Content Include="Content\images\Plus-sign.png" />
+    <Content Include="Content\images\approve-icon.png" />
+    <Content Include="Content\images\select_button.png" />
+    <Content Include="Content\images\spinner.gif" />
+    <Content Include="Content\images\UnderConstruction.png" />
+    <Content Include="Content\images\user.jpg" />
+    <Content Include="Content\images\view-icon.png" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\Federation\Views\Web.config" />
+    <Content Include="Areas\Group\Views\Web.config" />
+    <Content Include="Areas\Federation\Views\Bank\AddBank.cshtml" />
+    <Content Include="Images\Apply_Active.gif" />
+    <Content Include="Images\Apply_Over.gif" />
+    <Content Include="Images\SelectedList.png" />
+    <Content Include="Images\select_button.png" />
+    <Content Include="ReferenceDLL\Antlr3.Runtime.dll" />
+    <Content Include="ReferenceDLL\AutoMapper.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.AspNet.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.Core.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.OAuth.Consumer.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.OAuth.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.OpenId.dll" />
+    <Content Include="ReferenceDLL\DotNetOpenAuth.OpenId.RelyingParty.dll" />
+    <Content Include="ReferenceDLL\EntityFramework.dll" />
+    <Content Include="ReferenceDLL\EntityFramework.SqlServer.dll" />
+    <Content Include="ReferenceDLL\log4net.dll" />
+    <Content Include="ReferenceDLL\Microsoft.CSharp.dll" />
+    <Content Include="ReferenceDLL\Newtonsoft.Json.dll" />
+    <Content Include="ReferenceDLL\System.dll" />
+    <Content Include="ReferenceDLL\System.Web.Mvc.dll" />
+    <Content Include="ReferenceDLL\System.Web.Optimization.dll" />
+    <Content Include="ReferenceDLL\WebGrease.dll" />
+    <Content Include="Scripts\BPopup\jquery.bpopup-x.x.x.min.js.txt" />
+    <Content Include="Scripts\Common\AjnaTransliteration.js" />
+    <Content Include="Areas\Federation\Views\Branch\CreateEmployee.cshtml" />
+    <Content Include="Areas\Federation\Views\Employee\EmployeeLookUp.cshtml" />
+    <Content Include="Areas\Group\Views\Member\MemberLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\Branch\ViewBranch.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\ViewDepositInterest.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\ViewLoanInterest.cshtml" />
+    <Content Include="Areas\Federation\Views\Bank\ViewBank.cshtml" />
+    <Content Include="Areas\Federation\Views\Cluster\ViewCluster.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\ViewGroup.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\ViewBalanceSummary.cshtml" />
+    <Content Include="Areas\Group\Views\Member\ViewMember.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\CreateDepositInterestDetails.cshtml" />
+    <Content Include="Areas\Federation\Views\RAP\FederationRAP.cshtml" />
+    <Content Include="Areas\Federation\Views\RAP\GroupRAP.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\GroupAccountTree.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\AddGroupAccountHead.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\EditGroupAccountHead.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\MoveGroupAccountHead.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\DeleteGroupAccountHead.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\ViewBalanceSummary.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\CreateLoanInterestDetails.cshtml" />
+    <Content Include="Areas\Federation\Views\Cluster\ClusterLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\CreateGroup.cshtml" />
+    <Content Include="Areas\Federation\Views\Village\ViewVillage.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\AccountTree.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\AddGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\EditGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\DeleteGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\MoveGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupAccountTree\ViewBalanceSummary.cshtml" />
+    <Content Include="Areas\Federation\Views\Panchayat\ViewPanchayat.cshtml" />
+    <Content Include="Areas\Federation\Views\Receipt\GroupReceiptLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\FederationMeeting\CreateFederationMeeting.cshtml" />
+    <Content Include="Areas\Federation\Views\FederationMeeting\FederationMeetingLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\GroupLoanDisbursementLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\CreateGroupLoanDisbursement.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralPayments\GeneralPaymentsLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralPayments\CreateGeneralPayments.cshtml" />
+    <Content Include="Areas\Federation\Views\JournalEntryVoucher\JournalEntryVoucherLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\JournalEntryVoucher\CreateJournalEntryVoucher.cshtml" />
+    <Content Include="Areas\Federation\Views\ContraEntry\ContraEntryCashWithdrawlLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\ContraEntry\CreateContraEntryCashWithdrawl.cshtml" />
+    <Content Include="Areas\Federation\Views\ContraEntry\CreateContraEntryDeposited.cshtml" />
+    <Content Include="Areas\Federation\Views\ContraEntry\ContraEntryDepositedLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralReceipt\CreateGeneralReceipt.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralReceipt\GeneralReceiptLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanApplication\CreateGroupLoanApplication.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanApplication\GroupLoanApplicationLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanApplication\CreateMemberLoanApplication.cshtml" />
+    <Content Include="Areas\Federation\Views\Employee\ViewEmployee.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanApplication\MemberLoanApplicationLookup.cshtml" />
+    <Content Include="Areas\Group\Views\Leadership\CreateLeadership.cshtml" />
+    <Content Include="Areas\Group\Views\Leadership\LeadershipLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Receipt\CreateGroupReceipt.cshtml" />
+    <Content Include="Areas\Group\Views\MemberReceipt\CreateMemberReceipt.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\Disbursement.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\Schedule.cshtml" />
+    <Content Include="Areas\Group\Views\MemberReceipt\MemberReceiptLookup.cshtml" />
+    <Content Include="Areas\Group\Views\RefundsFromFederation\CreateRefundsFromFederation.cshtml" />
+    <Content Include="Areas\Group\Views\RefundsFromFederation\RefundsFromFederationLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Employee\CreateEmployee.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\GenerateVoucher.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanDisbursement\AdditionalSecuritiesDetails.cshtml" />
+    <Content Include="Areas\Group\Views\GroupJournalEntryOLD\CreateJournalEntryVoucher.cshtml" />
+    <Content Include="Areas\Group\Views\GroupJournalEntryOLD\JournalEntryVoucherLookup.cshtml" />
+    <Content Include="Areas\Group\Views\GeneralReceipt\CreateGeneralReceipt.cshtml" />
+    <Content Include="Areas\Group\Views\GeneralReceipt\GeneralReceiptLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\MemberLoanDisbursementLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\Disbursement.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\Schedule.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\GenerateVoucher.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\AdditionalSecuritiesDetails.cshtml" />
+    <Content Include="Areas\Federation\Views\Deposit\CreateDeposit.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMeeting\CreateGroupMeeting.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\ViewGroupBankDetails.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\ViewMember.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\ViewLoanInterestDetails.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\ViewdepositinterestDetails.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMeeting\GroupMeetingLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanOB\GetLoanOB.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanOB\LoanOBLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\RefundsFromFederation\CreateRefundsFromFederation.cshtml" />
+    <Content Include="Areas\Federation\Views\RefundsFromFederation\RefundsFromFederationLookup.cshtml" />
+    <Content Include="Areas\Group\Views\ContraEntry\CreateContraEntryCashWithdrawl.cshtml" />
+    <Content Include="Areas\Group\Views\ContraEntry\ContraEntryCashWithDrawlLookup.cshtml" />
+    <Content Include="Areas\Group\Views\ContraEntry\CreateContraEntryDeposited.cshtml" />
+    <Content Include="Areas\Group\Views\ContraEntry\ContraEntryDepositedLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\CreateMemberLoanDisbursement.cshtml" />
+    <Content Include="Areas\Group\Views\LoanOB\GetLoanOB.cshtml" />
+    <Content Include="Areas\Group\Views\GroupLoanOB\LoanOBLookup.cshtml" />
+    <Content Include="Areas\Group\Views\GroupLoanOB\GetLoanOB.cshtml" />
+    <Content Include="Areas\Federation\Views\GroupLoanApplication\LoanApplicationView.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralPayments\ViewGeneralPayments.cshtml" />
+    <Content Include="Areas\Federation\Views\GeneralReceipt\ViewGeneralReceipt.cshtml" />
+    <Content Include="Areas\Federation\Views\DepositOB\GetDepositOB.cshtml" />
+    <Content Include="Areas\Federation\Views\DepositOB\DepositLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Receipt\_ReceiptTemplate.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanOB\LoanObSchedule.cshtml" />
+    <Content Include="Areas\Group\Views\GroupDepositOB\CreateDepositOB.cshtml" />
+    <Content Include="Areas\Group\Views\GroupLoanOB\LoanObSchedule.cshtml" />
+    <Content Include="Areas\Group\Views\GroupDepositOB\DepositLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberReceipt\_ReceiptTemplate.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\UpdateOpeningBalance.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\AccountHeadTableView_bak.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\AccountHeadTableView.cshtml" />
+    <Content Include="Areas\Group\Views\GroupAccountTree\_Table.cshtml" />
+    <Content Include="Areas\Group\Views\AccountHeadMapping\AccountHeadMapping.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMeeting\GroupMeetingView.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\AccountHeadTableView.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\_Table.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMemberReceipt\CreateGroupMemberReceipt.cshtml" />
+    <Content Include="Areas\Group\Views\GroupOtherReceipt\CreateOtherReceipt.cshtml" />
+    <Content Include="Areas\Group\Views\GroupOtherReceipt\GroupOtherReceiptLookUp.cshtml" />
+    <Content Include="Areas\Group\Views\GroupOtherReceipt\GroupOtherReceiptView.cshtml" />
+    <Content Include="Areas\Federation\Views\DataEntryStatusReport\DataEntryStatusReport.cshtml" />
+    <Content Include="Areas\Group\Views\GroupOtherReceipt\OtherReceiptesUpload.cshtml" />
+    <Content Include="Areas\Group\Views\GroupGeneralPayment\AddGeneralPayment.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMemberReceipt\GroupMemberReceiptLookUp.cshtml" />
+    <Content Include="Areas\Group\Views\GroupGeneralPayment\GeneralPaymentsLookup.cshtml" />
+    <Content Include="Areas\Group\Views\GroupGeneralPayment\ViewGeneralPayment.cshtml" />
+    <Content Include="Areas\Group\Views\MemberPayment\AddMemberPayment.cshtml" />
+    <Content Include="Areas\Group\Views\MemberPayment\MemberPaymentsLookup.cshtml" />
+    <Content Include="Areas\Group\Views\MemberPayment\ViewMemberPayment.cshtml" />
+    <Content Include="Areas\Federation\Views\Employee\AssignClusterToEmployee.cshtml" />
+    <Content Include="Areas\Federation\Views\Employee\EmployeeClusterDetails.cshtml" />
+    <Content Include="Areas\Group\Views\GroupJournal\CreateGroupJournal.cshtml" />
+    <Content Include="Areas\Group\Views\GroupMemberReceipt\MemberReceiptView.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanApplication\MemberLoanApplicationView.cshtml" />
+    <Content Include="Areas\Group\Views\GroupJournal\GroupJournalLookUp.cshtml" />
+    <Content Include="Areas\Group\Views\GroupJournal\ViewGroupJournal.cshtml" />
+    <Content Include="Areas\Federation\Views\FederationLoanApplication\CreateFedLoanAppln.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\AdditionalSecuritiesDetails.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\CreateMemberLoanDisbursement.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\Disbursement.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\GenerateVoucher.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\MemberLoanDisbursementLookup.cshtml" />
+    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\Schedule.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\CreateMemberLoanDisbursementNew.cshtml" />
+    <Content Include="Areas\Group\Views\BankLoan\CreateBankLoan.cshtml" />
+    <Content Include="Areas\Group\Views\BankLoan\BankLoanApplicationLookup.cshtml" />
+    <None Include="Properties\PublishProfiles\MFIS_PUB.pubxml" />
+    <None Include="Properties\PublishProfiles\raghudesktop.pubxml" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
+    <Content Include="Areas\Federation\Views\Mandal\CreateMandal.cshtml" />
+    <Content Include="Areas\Federation\Views\Mandal\MandalLookUp.cshtml" />
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </Content>
+    <None Include="Properties\PublishProfiles\two.pubxml" />
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\Common\AjnaValidations.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.js" />
+    <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery.bpopup.min.js" />
+    <Content Include="Scripts\jquery.treeview\changelog.txt" />
+    <Content Include="Scripts\jquery.treeview\demo\async.html" />
+    <Content Include="Scripts\jquery.treeview\demo\bg.gif" />
+    <Content Include="Scripts\jquery.treeview\demo\demo.js" />
+    <Content Include="Scripts\jquery.treeview\demo\images.html" />
+    <Content Include="Scripts\jquery.treeview\demo\index.html" />
+    <Content Include="Scripts\jquery.treeview\demo\large.html" />
+    <Content Include="Scripts\jquery.treeview\demo\prerendered.html" />
+    <Content Include="Scripts\jquery.treeview\demo\screen.css" />
+    <Content Include="Scripts\jquery.treeview\demo\simple.html" />
+    <Content Include="Scripts\jquery.treeview\images\file.gif" />
+    <Content Include="Scripts\jquery.treeview\images\folder-closed.gif" />
+    <Content Include="Scripts\jquery.treeview\images\folder.gif" />
+    <Content Include="Scripts\jquery.treeview\images\minus.gif" />
+    <Content Include="Scripts\jquery.treeview\images\plus.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-black-line.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-black.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-default-line.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-default.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-famfamfam-line.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-famfamfam.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-gray-line.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-gray.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-red-line.gif" />
+    <Content Include="Scripts\jquery.treeview\images\treeview-red.gif" />
+    <Content Include="Scripts\jquery.treeview\jquery.treeview.async.js" />
+    <Content Include="Scripts\jquery.treeview\jquery.treeview.css" />
+    <Content Include="Scripts\jquery.treeview\jquery.treeview.js" />
+    <Content Include="Scripts\jquery.treeview\jquery.treeview.min.js" />
+    <Content Include="Scripts\jquery.treeview\jquery.treeview.pack.js" />
+    <Content Include="Scripts\jquery.treeview\lib\jquery.cookie.js" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Areas\Federation\Views\Bank\BankLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanPurpose\CreateLoanPurpose.cshtml" />
+    <Content Include="Areas\Federation\Views\NPA\CreateNPA.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\CreateDepositInterest.cshtml" />
+    <Content Include="Areas\Federation\Views\Occupation\CreateOccupation.cshtml" />
+    <Content Include="Areas\Federation\Views\FundSource\CreateFundSource.cshtml" />
+    <Content Include="Areas\Federation\Views\Organization\CreateOrganization.cshtml" />
+    <Content Include="Areas\Federation\Views\FundSource\FundSourceLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\Branch\CreateBranch.cshtml" />
+    <Content Include="Areas\Federation\Views\Branch\BranchLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\District\CreateDistrict.cshtml" />
+    <Content Include="Areas\Federation\Views\District\DistrictLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\CreateLoanInterest.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\DepositInterestLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Interest\LoanInterestLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\MoveGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\DeleteGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\Panchayat\CreatePanchayat.cshtml" />
+    <Content Include="Areas\Federation\Views\Panchayat\PanchayatLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Depreciation\CreateDepreciation.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\GroupLookUp.cshtml" />
+    <Content Include="Areas\Federation\Views\Cluster\CreateCluster.cshtml" />
+    <Content Include="Areas\Federation\Views\Village\VillageLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Occupation\OccupationLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\Project\CreateProject.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Federation\Views\Project\ProjectLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanPurpose\LoanPurposeLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanSecurityMaster\CreateLoanSecurityMaster.cshtml" />
+    <Content Include="Areas\Federation\Views\LoanSecurityMaster\LoanSecurityMasterLookup.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\AccountTree.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Areas\Federation\Views\AccountTree\AddGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\AccountTree\EditGroupAccountHead.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\Member.cshtml" />
+    <Content Include="Areas\Federation\Views\Group\LeaderShip.cshtml" />
+    <Content Include="Areas\Group\Views\Member\CreateMember.cshtml" />
+    <Content Include="Scripts\jquery.treeview\treelistfilter.jquery.json" />
+    <Content Include="Scripts\jquery.treeview\TreeListFilter.js" />
+    <None Include="Scripts\jquery\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\jquery\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery\jquery-ui-1.8.20.js" />
+    <Content Include="Scripts\jquery\jquery-ui-1.8.20.min.js" />
+    <Content Include="Scripts\jquery\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery\knockout-2.1.0.debug.js" />
+    <Content Include="Scripts\jquery\knockout-2.1.0.js" />
+    <Content Include="Scripts\jquery\modernizr-2.5.3.js" />
+    <Content Include="Scripts\jquery\_references.js" />
+    <Content Include="Scripts\plugins\bootstrap\bootstrap-timepicker.js" />
+    <Content Include="Scripts\plugins\bootstrap\bootstrap.css" />
+    <Content Include="Scripts\plugins\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\plugins\bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\plugins\dataTables\dataTables.bootstrap.css" />
+    <Content Include="Scripts\plugins\dataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\plugins\dataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\plugins\flot\excanvas.min.js" />
+    <Content Include="Scripts\plugins\flot\jquery.flot.js" />
+    <Content Include="Scripts\plugins\flot\jquery.flot.pie.js" />
+    <Content Include="Scripts\plugins\flot\jquery.flot.resize.js" />
+    <Content Include="Scripts\plugins\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\plugins\jquery-1.10.2.js" />
+    <Content Include="Scripts\plugins\metisMenu\jquery.metisMenu.js" />
+    <Content Include="Scripts\plugins\momentDate\moment-with-locales.js" />
+    <Content Include="Scripts\plugins\momentDate\moment.js" />
+    <Content Include="Scripts\plugins\morris\morris-0.4.3.min.css" />
+    <Content Include="Scripts\plugins\morris\morris.js" />
+    <Content Include="Scripts\plugins\morris\raphael-2.1.0.min.js" />
+    <Content Include="Scripts\plugins\pace\pace-theme-big-counter.css" />
+    <Content Include="Scripts\plugins\pace\pace.js" />
+    <Content Include="Scripts\plugins\social-buttons\social-buttons.css" />
+    <Content Include="Scripts\plugins\timeline\timeline.css" />
+    <Content Include="Scripts\Common\Common.js" />
+    <Content Include="Scripts\Common\dashboard-demo.js" />
+    <Content Include="Scripts\Common\flot-demo.js" />
+    <Content Include="Scripts\Common\morris-demo.js" />
+    <Content Include="Scripts\Common\siminta.js" />
+    <Content Include="Scripts\plugins\transliteration\transliteration.css" />
+    <Content Include="Scripts\plugins\transliteration\transliteration.js" />
+    <Content Include="Scripts\TimePicker\jquery.timepicker.css" />
+    <Content Include="Scripts\TimePicker\jquery.timepicker.js" />
+    <Content Include="Scripts\TimePicker\jquery.timepicker.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\_GroupLayout.cshtml" />
+    <Content Include="Views\Shared\_FedarationLayout.cshtml" />
+    <Content Include="Views\Shared\_GroupSideMenu.cshtml" />
+    <Content Include="Views\Shared\_FederationSideMenu.cshtml" />
+    <Content Include="Views\Shared\_Message.cshtml" />
+    <Content Include="Scripts\plugins\transliteration\jsapi" />
+    <Content Include="Views\Login\CreateLogin.cshtml" />
+    <Content Include="Views\Shared\_FederationUnderConstruction.cshtml" />
+    <Content Include="Views\Shared\_GroupUnderConstruction.cshtml" />
+    <Content Include="Views\RoleModules\CreateRoleModules.cshtml" />
+    <Content Include="Views\Roles\Role.cshtml" />
+    <Content Include="Views\Roles\RolesLookUp.cshtml" />
+    <Content Include="Views\ModuleAction\AddModuleAction.cshtml" />
+    <Content Include="Views\ModuleAction\ModuleActionLookup.cshtml" />
+    <Content Include="Views\RoleModules\RoleModulesLookup.cshtml" />
+    <Content Include="Views\TrialBalance\CreateTrialBalance.cshtml" />
+    <Content Include="Views\TrialBalance\TrialBalance.cshtml" />
+    <Content Include="Views\Login\SelectGroup.cshtml" />
+    <Content Include="Views\BalanceSheet\BalanceSheet.cshtml" />
+    <Content Include="Views\GeneralLedger\CreateGeneralLedger.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\GroupCashBook\GroupCashBookLookup.cshtml" />
+    <Content Include="Views\MemberLoanLedger\MemberLoanLedgerLookup.cshtml" />
+    <Content Include="Views\CashBook\CreateCashBook.cshtml" />
+    <Content Include="Views\IncomeAndExpenditure\IncomeAndExpenditure.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\OpeningBalance\GetOpeningBalance.cshtml" />
+    <Content Include="Views\BankBook\GroupBankBook.cshtml" />
+    <Content Include="Views\MemberConfirmationReport\MemberConfirmationReport.cshtml" />
+    <Content Include="Views\MemberConfirmationReport\MemberDemandSheet.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Federation\Views\PaymentsToFederation\" />
+    <Folder Include="Areas\Federation\Views\Shared\" />
+    <Folder Include="Areas\Group\Views\PaymentsToFederation\" />
+    <Folder Include="Areas\Group\Views\Shared\" />
+    <Folder Include="AssetUploads\Employee\" />
+    <Folder Include="AssetUploads\Member\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery.treeview\demo\source.php" />
+    <Content Include="Scripts\jquery.treeview\demo\source.phps" />
+    <Content Include="Scripts\jquery.treeview\todo" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEntities\BusinessEntities.csproj">
+      <Project>{1359797b-6813-45c9-816c-11e8b54e219e}</Project>
+      <Name>BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
+      <Project>{f4c8abcd-cf03-4a55-bab0-1693317b1e08}</Project>
+      <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CoreComponents\CoreComponents.csproj">
+      <Project>{2279d55d-c865-40b7-b7e5-b6a6ffb147ad}</Project>
+      <Name>CoreComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLogic\DataLogic.csproj">
+      <Project>{c67e16d3-324e-46a2-8232-8d06279500a6}</Project>
+      <Name>DataLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{1bcc9fce-4f2a-4de7-b615-db4d741bfe04}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MFIEntityFrameWork\MFIEntityFrameWork.csproj">
+      <Project>{1e48e5d5-db5d-4bb3-98b9-1b2b0b60480b}</Project>
+      <Name>MFIEntityFrameWork</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{48a3c6ab-812c-4692-8821-e06bd8a22fcb}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\FinancialRports\BalanceSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BalanceSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FinancialRports\IncomeAndExpenditure.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>IncomeAndExpenditure.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\FinancialRports\TrialBalance.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>TrialBalance.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\CashBook.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CashBook.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\GeneralLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GeneralLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\GroupCashBook.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GroupCashBook.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\GroupDemondSheet.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>GroupDemondSheet.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\MemberBalanceConformation.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MemberBalanceConformation.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RegistersReports\MemberLoanLedger.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>MemberLoanLedger.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,517 @@
+﻿@{
+    ViewBag.Title = "ViewMember";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@model BusinessEntities.MemberViewDto
+@using CoreComponents;
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">View Members Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                @Html.HiddenFor(model => model.MemberID);
+                                <label>Member Code</label>
+                                @Html.TextBoxFor(model => model.MemberCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                            <div class="form-group">
+                                <label>Group Code</label>
+
+                                @Html.TextBoxFor(d => Model.GroupCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Member Reference ID</label>
+                                @Html.TextBoxFor(model => model.MemberRefCode, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label>Group Name</label><br>
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Name</label>
+                                @Html.TextBoxFor(model => model.MemberName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label>Sur Name</label>
+                                @Html.TextBoxFor(model => model.SurName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Telugu Name</label>
+                                @Html.TextBoxFor(model => model.TEMemberName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label>Telugu SurName</label>
+                                @Html.TextBoxFor(model => model.TESurName, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <img src="@("/" + Model.Photo)" alt="" style="width:90px;height:60px;">
+                            </div>
+                            @*<div class="form-group" style="margin-top: 81px; padding-top: 14px;">
+                                <input type="file" name="Photo" id="Photo" style="position: absolute; opacity: 0">
+                                <input type="text" id="Photo_display" onclick="$('#Photo').click();" value=''
+                                    placeholder="Upload Your Photo (JPG,PNG,GIF,PDF)" title="Upload Your Photo (JPG,PNG,GIF,PDF)"
+                                    class="form-control form-ip upload" />
+                            </div>*@
+                        </div>
+                    </div>
+                    <div>
+                        <label style="color: #A94442;">Cluster : Cluster1, Village : Warangal, Panchayat/Colony : Srinivasa Nagar</label>
+                    </div>
+                    <!-- Nav tabs -->
+
+
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#personaldetails" onclick='movetotab("personaldetails");' role="tab" data-toggle="tab">Personal Details
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#proofs" onclick='movetotab("proofs");' role="tab" data-toggle="tab">KYC data
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#familydetails" onclick='movetotab("familydetails");' role="tab" data-toggle="tab">Income &amp; Family Details
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="#GeneralAccountHead" onclick='movetotab("GeneralAccountHead");' role="tab" data-toggle="tab" style="display: none">View SL Account
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#history" onclick='movetotab("history");' role="tab" data-toggle="tab" style="display: none">View History
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div id="personaldetails" class="tab-pane fade active in">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Panchayat/Colony</label><br>
+                                        @Html.TextBoxFor(m => m.Panchayat, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                    <div style="height: 57px;" class="form-group">
+                                        <label>Gender</label>
+                                        @if (Model.Gender == "M")
+                                        {
+                                            <input type="text" class="form-control" value="Male" disabled="disabled" />
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" value="Female" disabled="disabled" />
+                                            
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mobile Contact Number</label>
+                                        @Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control ", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Date of Admission</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DateOfAdmission.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date of Birth</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", Model.DOB.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date of Retirement</label>
+                                        @{
+                                            @Html.TextBox("ManagerFromDate", (Model.DOB == DateTime.MinValue ? string.Empty : Model.DateOfRetirement.ToDisplayDateFormat()), new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Education Qualification</label>
+                                        @Html.TextBoxFor(m => m.EducationQualification, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Occupation</label>
+                                        @Html.TextBoxFor(m => m.Occupation, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <label>Marital Status</label>
+                                    @Html.TextBox("MaritalStatus", (Model.MaritalStatus == "M" ? "Married" : Model.MaritalStatus == "U" ? "Unmarried" : Model.MaritalStatus == "S" ? "Single" : string.Empty), new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Email</label><br>
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                    <div style="height: 57px;" class="form-group">
+                                        <label>Disablity</label>
+                                        @if (Model.Disability == false)
+                                        {
+                                            <input type="text" class="form-control" value="No" disabled="disabled" />  
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" value="Yes" disabled="disabled" />
+                                        }
+
+                                    </div>
+                                    <label>Religion</label>
+                                    @Html.TextBoxFor(m => m.Religion, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                        <div id="familydetails" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Nominee Name</label>
+                                        @Html.TextBoxFor(model => model.NomineeName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Social Category</label>
+                                        @Html.TextBoxFor(m => m.SocialCategory, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Investment Size</label>
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(model => model.InvestmentSize, new { @class = "form-control", @readonly = "readonly" })
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Nominee Relationship</label>
+                                        @Html.TextBoxFor(m => m.NomineeRelationship, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <label>Monthly Income</label>
+                                    @Html.TextBoxFor(m => m.MonthlyIncome, new { @class = "form-control", @readonly = "readonly" })
+                                    <div class="form-group">
+                                        <label>Dependant/Non-earning members in family</label>
+                                        @Html.TextBoxFor(model => model.NonEarningMembersInFamily, new { @class = "form-control ", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Parent/Guardian/Spouse Name</label>
+                                        @Html.TextBoxFor(model => model.ParentGuardianName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Earning Members in Family</label>
+                                        @Html.TextBoxFor(model => model.EarningMembersInFamily, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <label>Assets in name of Member</label>
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.AssetsInNameOfMember, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <label>Guardian/Spouse Relationship</label>
+                                            @Html.TextBoxFor(m => m.ParentGuardianRelationship, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Income Frequency</label>
+                                        @Html.TextBoxFor(m => m.IncomeFrequency, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="proofs" class="tab-pane fade">
+                            @if (@Model.MemberKYC.Count != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Aadhar Number</label>
+                                            @Html.TextBoxFor(m => m.MemberKYC[0].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label>VoterID</label>
+                                            @Html.TextBoxFor(m => m.MemberKYC[1].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label>PAN Card</label>
+                                            @Html.TextBoxFor(m => m.MemberKYC[2].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <img src="@("/" + Model.MemberKYC[0].FileName)" alt="Aadhar Card" style="width:100px;height:70px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <img src="@("/" + Model.MemberKYC[1].FileName)" alt="Voter Card" style="width:100px;height:70px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <img src="@("/" + Model.MemberKYC[2].FileName)" alt="PAN Card" style="width:100px;height:70px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Ration Card </label>
+                                            @Html.TextBoxFor(m => m.MemberKYC[3].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Job Card</label>
+                                            @Html.TextBoxFor(m => m.MemberKYC[4].KYCNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <img src="@("/" + Model.MemberKYC[3].FileName)" alt="Ration Card" style="width:100px;height:70px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <img src="@("/" + Model.MemberKYC[4].FileName)" alt="Job Card" style="width:100px;height:70px;">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                        <div id="GeneralAccountHead" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>S.L Account</label>
+                                        @Html.TextBoxFor(m => m.AccountHead, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+                                </div>
+                                <div class="col-lg-3">
+                                </div>
+                                <div class="col-lg-3">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="history" class="tab-pane fade">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <div class="form-group has-success">
+                                        <label>Membership Period :</label>
+                                        <label class="control-label" for="inputSuccess">5</label>
+                                        <label>Months</label>
+
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>Leader1 </label>
+                                        &nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">Yes</label>&nbsp;&nbsp;&nbsp;
+                                        <label>From</label>&nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">12/05/2015</label>&nbsp;&nbsp;&nbsp;
+                                        <label>To</label>&nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">12/12/2015</label>&nbsp;&nbsp;&nbsp;
+
+
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>Leader2 </label>
+                                        &nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">No</label>&nbsp;&nbsp;&nbsp;
+                                        <label>From</label>&nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">12/05/2015</label>&nbsp;&nbsp;&nbsp;
+                                        <label>To</label>&nbsp;&nbsp;&nbsp;<label class="control-label" for="inputSuccess">12/12/2015</label>&nbsp;&nbsp;&nbsp;
+
+
+                                    </div>
+
+                                    <div class="form-group has-success">
+                                        <label>No.of Movable Assets Created  :</label>
+                                        <label class="control-label" for="inputSuccess">6</label>
+                                        <label>Value</label>
+                                        <label class="control-label" for="inputSuccess">20,00,000Rs</label>
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <div class="form-group">
+                                            <label>Movable Assets</label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">
+                                                Vehicles
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Animals
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Jewllery
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Equipment
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Others
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>No.of Immovable Assets Created  :</label>
+                                        <label class="control-label" for="inputSuccess">6</label>
+                                        <label>Value</label>
+                                        <label class="control-label" for="inputSuccess">10,00,000Rs</label>
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <div class="form-group">
+                                            <label>Movable Assets</label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">
+                                                Land
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">House
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Production Machines
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">BoreWeells
+
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox">Others
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="form-group has-success">
+                                        <label>Total Savings Balance Rs</label>
+                                        <label class="control-label" for="inputSuccess">50,000</label>
+
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>No.of Loans Taken : </label>
+                                        <label class="control-label" for="inputSuccess">5</label>
+
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>Amount Taken : </label>
+                                        <label class="control-label" for="inputSuccess">5,00,000</label>
+
+                                    </div>
+                                    <div class="form-group has-success">
+                                        <label>Loan OutStanding Amount : </label>
+                                        <label class="control-label" for="inputSuccess">3,00,000</label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; margin-bottom: 13px">
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                        <input type="hidden" id="hdnCurrentTab" name="hdnCurrentTab" value="personaldetails" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Form Elements -->
+    </div>
+
+    <script type="text/javascript">
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("MemberLookUp")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideMember";
+            LoadMenu();
+        });
+        //Tab Select
+        $(function () {
+            Member();
+
+        });
+        var Member = function () {
+            var tabtype = $('#hdnCurrentTab').val();
+            naviageTab = function (tabtype, event) {
+                var actionurl = '';
+                var MemberID = $('#MemberID').val();
+                var isUpdate = (Number(GroupID) && Number(GroupID) > 0);
+                DisplayActiveTab('personaldetails');
+                switch (tabtype) {
+                    case "GeneralAccountHead":
+                        actionurl = '@Url.Action("ViewSLAccounts", "Member")';
+                        $.get(actionurl, { id: MemberID }, function (data) {
+                            if (data) {
+                                $('#bankdetails').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                }//switch
+            },
+            DisplayTab = function (tabType) {
+                var linkId = '';
+                var sectionId = '';
+                $('#personaldetails').attr("class", "tab-pane fade");
+                $('#personaldetails').attr("class", "");
+                $('#hdnCurrentTab').val(tabType);
+                switch (tabType) {
+                    case "GeneralAccountHead":
+                        linkId = 'GeneralAccountHead';
+                        sectionId = 'GeneralAccountHead';
+                        break;
+                }
+
+                $('#' + linkId).attr("class", "active");
+                $('#' + sectionId).attr("class", "tab-pane fade active in");
+            }
+        }
+        DisplayActiveTab = function (tabLinkId) {
+            $('#personaldetails').attr("class", "");
+            $('#' + tabLinkId).attr("class", "active");
+        }
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@using BusinessEntities
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="tblLoaninterest">
+            <thead>
+                <tr>
+                    <th class="text-center" style="display: none">#</th>
+                    <th>Apply TO Loan Principle A/C Head</th>
+                    <th>Apply TO Loan Int A/C Head</th>
+                    <th>Calculation Method</th>
+                    <th>Base</th>
+                    <th>ROI</th>
+                    <th>Penal Interest</th>
+                    <th>From Date</th>
+                </tr>
+            </thead>
+            <tbody id="loaninterestbody">
+
+                @{ List<BusinessEntities.GroupInterestRatesDto> objlst = new List<BusinessEntities.GroupInterestRatesDto>();
+                   if (ViewBag.GroupInterestRates != null)
+                   {
+
+                       objlst = ViewBag.GroupInterestRates;
+
+                   }
+              
+                }
+
+                @if (objlst != null)
+                {
+                    foreach (var item in objlst)
+                    {
+                        indx++;
+                    <tr>
+                        <td class="text-center" style="display: none;">@indx </td>
+                        <td class="text-center" style="display: none;">@indx<input type="hidden" id ="hdnloanentryId_@indx" name ="hdnloanentryId_@indx" /></td>
+                        <td>
+                            <input type="hidden" id ="hdnloanprincipleAChead_@indx" name ="hdnloanprincipleAChead_@indx" value="@item.PrincipalAHID"/>
+                            <span>@item.PrincipalAH</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnloanInterestACHead_@indx" name ="hdnloanInterestACHead_@indx"" value="@item.InterestAHID"/>
+                            <span>@item.InterestAH </span></td>
+                        <td>
+
+                            <input type="hidden" id ="hdnCalMethod_@indx" name ="hdnCalMethod_@indx" value="@item.CaluculationMethodId"/>
+                            <span>@item.CaluculationMethod</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnBase_@indx" name ="hdnBase_@indx" value="@item.Base"/>
+                            <span>@item.BaseText</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnrateofint_@indx" name ="hdnrateofint_@indx" value="@item.ROI"/>
+                            <span>@item.ROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnpenalrateofinterest_@indx" name ="hdnpenalrateofinterest_@indx" value="@item.PenalROI"/>
+                            <span>@item.PenalROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnfromdate_@indx" name ="hdnfromdate_@indx" value="@item.FromDate.ToString("dd/MMM/yyyy")"/>
+                            <span>@item.FromDate.ToString("dd/MMM/yyyy")</span>
+
+                        </td>
+                        <td style="display:none">
+                            <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit Rate" style="cursor: pointer;display:none"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" />
+
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+}
