@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b3c303b6adc1479781f5a7b5e9f21a1b" Name="Diagram1" ZoomLevel="77" >
+        <EntityTypeShape EntityType="MFIEntityFramework.AccountMaster" Width="1.5" PointX="0.17237780623714338" PointY="11.928251644563048" />
+        <EntityTypeShape EntityType="MFIEntityFramework.AccountTransaction" Width="1.5" PointX="4.469407804528907" PointY="5.1471435302622357" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountTransactions_AccountMaster" />
+        <EntityTypeShape EntityType="MFIEntityFramework.RefMaster" Width="1.5" PointX="10.381143913781804" PointY="7.1401674631704424" />
+        <EntityTypeShape EntityType="MFIEntityFramework.RefValueMaster" Width="1.5" PointX="8.1735691391739849" PointY="5.9947856990596211" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountMaster_RefValueMaster" />
+        <AssociationConnector Association="MFIEntityFramework.FK_RefValueMaster_RefMaster" />
+        <EntityTypeShape EntityType="MFIEntityFramework.AccountHead" Width="1.5" PointX="3.2887406792904903" PointY="29.241995512154883" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountHead_AccountHead" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountHead_RefValueMaster" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountMaster_AccountHead" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountMaster_AccountHead1" />
+        <AssociationConnector Association="MFIEntityFramework.FK_AccountTransactions_AccountHead" />
+        <EntityTypeShape EntityType="MFIEntityFramework.ReceiptAppropriationPriority" Width="1.5" PointX="3.2798673730715491" PointY="3.7724556344433013" />
+        <AssociationConnector Association="MFIEntityFramework.FK_ReceiptAppropriationPriority_AccountHead" />
+        <EntityTypeShape EntityType="MFIEntityFramework.SystemSetting" Width="1.5" PointX="3.0621524560554665" PointY="20.881688083001269" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

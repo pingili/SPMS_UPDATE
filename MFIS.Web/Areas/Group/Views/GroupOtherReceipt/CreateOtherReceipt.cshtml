@@ -1,0 +1,307 @@
+﻿@using CoreComponents;
+@using BusinessEntities;
+@model BusinessEntities.GroupOtherRecieptDto
+
+@{
+    ViewBag.Title = "CreateGeneralReceipt";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+<style type="text/css">
+    .form-control {
+        padding: 2px 2px;
+        height: 30px;
+        border-radius: 2px;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    ResultDto res = ViewBag.Result;
+    string voucherNumber = "N/A";
+    if (Model.VoucherNumber != null)
+    {
+        voucherNumber = Model.VoucherNumber;
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    @Html.HiddenFor(m => m.AccountMasterID)
+                    <span class="header">
+                        General/Other Receipt &nbsp;<label>Vocher Number</label>
+                        : @voucherNumber
+                    </span>
+                    @Html.ActionLink("Back to List", "GroupOtherReceiptLookUp", null, new { @class = "btn btn-default pull-right" })
+                    @*<button type="button" class="btn btn-default pull-right" onclick="BackToList()">Back To List</button>*@
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label><br />
+                                @Html.DropDownListFor(m => m.TransactionMode, new List<SelectListItem>
+                                 {
+                                    new SelectListItem{ Text="Cash", Value = "C" },
+                                    new SelectListItem{ Text="Cash Deposit at Bank", Value = "BD" },
+                                    new SelectListItem {Text="Cheque Deposit at Bank",Value="BC" }
+                                 }, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label><br />
+                                @Html.DropDownListFor(m => m.TransactionDate, (SelectList)ViewBag.MonthMeetings, "Select Date", new { @class = "form-control" })
+
+                                <input type="text" value="@Model.TransactionDate.ToDisplayDateFormat()" class="form-control required one-month-enable-date-picker" id="txtTransactionDate" name="txtTransactionDate" placeholder="Select TransactionDate" readonly="true" style="display:none;" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Vocher RefNumber</label>
+                                @Html.TextBoxFor(m => m.VoucherRefNumber, new { @class = "form-control alphanumeric-only" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Collection Agent</label>
+                                @Html.DropDownListFor(m => m.CollectionAgent, (SelectList)ViewBag.slEmp, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <label style="font: 500">From (Cr.)</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                        <div class="col-lg-3">
+                            <label style="font: 500">To (Dr.)</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9" style="padding: 0; margin: 0;">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>General Ledger A/C</label>
+                                    @Html.DropDownListFor(m => m.GLAccountId, (SelectList)ViewBag.lstGLAcHeads, "Select Account Head", new { @class = "form-control required" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Sub Ledger A/C</label>
+                                    <select id="SLAccountId" name="SLAccountId" class="form-control">
+                                        <option value="">Select SL AccountHead</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 dv-cheque">
+                                <div class="form-group">
+                                    <label>Cheque Number</label>
+                                    @Html.TextBoxFor(m => m.ChequeNumber, null, new { @class = "form-control number-only" })
+                                </div>
+                            </div>
+                            <div class="col-lg-4 dv-cheque">
+                                <div class="form-group">
+                                    <label>Cheque Date</label>
+                                    <input type="text" value="@Model.ChequeDate.ToDisplayDateFormat()" class="form-control" id="ChequeDate" name="ChequeDate" placeholder="Select ChequeDate" readonly="true" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Amount</label>
+                                    @Html.TextBox("Amount", Model.Amount.ToLong(), new { @class = "form-control required number-only", @style = "width:95%;", @id = "Amount", @name = "Amount" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Narration</label>
+                                    @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Account Head</label>
+                                    <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3" id="dvToBank">
+                            <div class="form-group">
+                                <label>Group Bank Account</label>
+                                @Html.DropDownListFor(m => m.BankEntryId, (SelectList)ViewBag.slBankAh, "Select Bank Account Head", new { @class = "form-control required" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validateOtherReceipt();">Submit</button>
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return resetall('')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqryUi")
+
+<script type="text/javascript">
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("GroupOtherReceiptLookUp")';
+    }
+
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGeneralReceipts";
+        LoadMenu();
+
+        var slAccoutnID = '@(Model != null && Model.SLAccountId > 0 ? Model.SLAccountId.ToString() : "")';
+        var transactionDate = '@(Model != null ? Model.TransactionDate.ToDisplayDateFormat() : string.Empty)';
+        $('#TransactionDate').val(transactionDate);
+        TransactionModeChange();
+        LoadSlAccountHeadsByGlAhId();
+
+        $('#TransactionMode').on('change', function () {
+            TransactionModeChange();
+        });
+
+        function TransactionModeChange() {
+            var tMode = $('#TransactionMode').val();
+            $('.dv-cheque').hide();
+            if (tMode == "C") {
+                $('#dvToBank').hide();
+                $('#txtToHead').val('Cash In Hand');
+                $('#TransactionDate').show();
+                $('#txtTransactionDate').hide();
+            } else {
+                $('#TransactionDate').hide();
+                $('#txtTransactionDate').show();
+                $('#txtToHead').val('Cash at Bank');
+                $('#dvToBank').show();
+
+                if (tMode == "BC") {
+                    $('.dv-cheque').show();
+                }
+            }
+        }
+
+        $('#GLAccountId').change(function () {
+            LoadSlAccountHeadsByGlAhId();
+        });
+
+        function LoadSlAccountHeadsByGlAhId() {
+            $('#SLAccountId').find('option:gt(0)').remove();
+
+            var glAhId = $('#GLAccountId').val();
+            if (!Number(glAhId)) {
+                return;
+            }
+
+            //Load SL Account Heads of selected GL
+            var optionsList = '';
+            var url = '@Url.Action("GetGroupSubLedgerAccountHeadsByGLAHId")';;
+            $.post(url, { glAHId: Number(glAhId) }, function (data) {
+                debugger;
+                if (data.slAccountHeads) {
+                    $(data.slAccountHeads).each(function (item, value) {
+                        debugger;
+                        optionsList += '<option value="' + value.ID + '"> ' + value.Text + '</option>';
+                    });
+                    $('#SLAccountId').append(optionsList);
+                    $('#SLAccountId').val(slAccoutnID);
+                }
+            }, 'json');
+        }
+
+        //$('#txtTransactionDate').datepicker({
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-10:+20"
+        //});
+        $('#ChequeDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-10:+20",
+            minDate: __currentOpenMonth,
+            defaultDate: __currentOpenMonth
+        });
+    });
+
+    function validateOtherReceipt() {
+        var mode = $('#TransactionMode').val();
+        if (mode == "C") {
+            if ($('#TransactionDate').val() == "") {
+                $('#TransactionDate').css('border-color', 'red');
+                return false;
+            } else {
+                $('#TransactionDate').css('border-color', '');
+            }
+        } else {
+            if ($('#txtTransactionDate').val() == "") {
+                $('#txtTransactionDate').css('border-color', 'red');
+                return false;
+            } else {
+                $('#txtTransactionDate').css('border-color', '');
+            }
+        }
+
+        if ($('#GLAccountId').val() == '') {
+            $('#GLAccountId').css('border-color', 'red');
+            return false;
+        } else {
+            $('#GLAccountId').css('border-color', '');
+        }
+
+        if ($('#SLAccountId').val() == '') {
+            $('#SLAccountId').css('border-color', 'red');
+            return false;
+        } else {
+            $('#SLAccountId').css('border-color', '');
+        }
+
+        debugger;
+        var amount = Number($('#Amount').val());
+
+        if (!amount) {
+            $('#Amount').css('border-color', 'red');
+            return false;
+        } else {
+            $('#Amount').css('border-color', '');
+        }
+
+        if (mode == "BC" && $('#ChequeNumber').val() == '') {
+            $('#ChequeNumber').css('border-color', 'red');
+            return false;
+        } else {
+            $('#ChequeNumber').css('border-color', '');
+        }
+
+        if (mode != "C") {
+            if ($('#BankEntryId').val() == '') {
+                $('#BankEntryId').css('border-color', 'red');
+                return false;
+            } else {
+                $('#BankEntryId').css('border-color', '');
+            }
+        }
+
+        return true;
+    }
+
+    function BindDropDownOptions(id) {
+        $.post('@Url.Action("GetSLAccouts")' + '/' + id, {},
+                  function (data) {
+                      $('#SLAcName').val(data.SLAccounts);
+                  }, 'json');
+    }
+</script>
+

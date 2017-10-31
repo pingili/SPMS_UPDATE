@@ -1,0 +1,451 @@
+﻿@using BusinessEntities;
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateContraEntryCashDeposited";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+
+@model BusinessEntities.ContraEntryDepositedDto
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Form Elements -->
+        @using (Html.BeginForm())
+        {
+            var Ahid = ViewBag.CashInHandDetails;
+            int indx = 0;
+            List<ContraEntryDepositedTransactionsDto> lstContraEntryTransactions = Model != null ? Model.contraEntryDepositedTransactions : null;
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Contra Entry - Cash Deposited From Bank</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+
+                    <div class="row">
+                        @*<input type="hidden" value="@Model.EmployeeID" id="EmployeeID" name="EmployeeID" />*@
+                        <input type="hidden" value="@Model.AHID" id="AHID" name="AHID" />
+                        <input type="hidden" value="@Model.TransactionType" id="TransactionType" name="TransactionType" />
+                        <input type="hidden" value="@Model.AccountMasterID" id="hdnAccountMasterID" name="hdnAccountMasterID" />
+                        <input type="hidden" value="@Model.VoucherNumber" id="hdnVoucherNumber" name="hdnVoucherNumber" />
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Voucher Number</label>
+                                @Html.TextBoxFor(m => Model.VoucherNumber, new { @class = "form-control", @placeholder = "VoucherNumber ", @id = "VoucherNumber", @name = "VoucherNumber", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee Number</label>
+                                @Html.TextBoxFor(m => Model.EmployeeCode, new { @class = "form-control", @disabled = "disabled", @id = "EmployeeCode", @name = "EmployeeCode", @placeholder = "Eployee Number" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(m => Model.EmployeeName, new { @class = "form-control", @disabled = "disabled", @id = "EmployeeName", @name = "EmployeeName", @placeholder = "Employee Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                @{
+            string td = Model.TransactionDate.Ticks > 0 ? Model.TransactionDate.ToString("dd/MMM/yyyy") : string.Empty;
+            <input type="text" value="@td" class="form-control required one-month-enable-date-picker" id="TransactionDate" name="TransactionDate" readonly="true" placeholder="TransactionDate" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Bearer Name</label>
+                                @Html.TextBoxFor(m => Model.PartyName, new { @class = "form-control", @id = "PartyName", @name = "PartyName", @placeholder = "Bearer Name" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Bank Account</label>
+                                @Html.DropDownListFor(m => Model.BankAccount, (SelectList)ViewBag.GroupBanks, "Select Accountant Number", new { @id = "BankAccount", @name = "BankAccount", @class = "form-control required", onchange = "getBankName(this.value);" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Bank Account Name </label>
+                                @Html.TextBoxFor(m => Model.BankAccountName, new { @class = "form-control", @id = "BankAccountName", @name = "BankAccountName", @disabled = "disabled", @placeholder = "BankAccount Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Amount (Cr)</label>
+                                <input type="hidden" id="TotalAmmount" name="TotalAmmount" />
+                                @Html.TextBoxFor(m => Model.DrAmount, new { @class = "form-control CrAmount", @id = "DrAmount", @name = "DrAmount", @placeholder = "Dr Ammount" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-default" style="margin-top: 18px; background-color: orange;" id="addamount" onclick="return AddAmount();">Add</button>
+                            @Html.Hidden("hdnAIndex")
+                            @Html.Hidden("AmountId")
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tbladdamount">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-4">Account Code</th>
+                                    <th>Type</th>
+                                    <th class="col-lg-4">Account Head</th>
+                                    <th class="col-lg-2">Amount (Dr)</th>
+                                    <th class="col-lg-2">Amount (Cr)</th>
+                                    <th class="col-lg-2">Balance</th>
+                                    <th class="col-lg-1">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                @if (lstContraEntryTransactions != null)
+                                {
+                                    foreach (var item in lstContraEntryTransactions)
+                                    {
+                                        if (item.IsMaster) { continue; }
+
+                                        indx++;
+                                        <tr>
+                                            <td class="text-center" style="display: none;">@indx </td>
+                                            <td>
+                                                <input type="hidden" id="hdnAHID_@indx" name="hdnAHID_@indx" value="@item.AHID" />
+                                                <input type="hidden" id="hdnAmountId_@indx" name="hdnAmountId_@item.AmountId" value="@item.AmountId" />
+                                                <input type="hidden" id="hdnBankAccount_@indx" name="hdnBankAccount_@item.BankAccount" value="@item.BankAccount" />
+                                                <span>@item.BankAccount</span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="hdntypeBy_@indx" name="hdntypeBy_@indx" value="@item.Type" />
+                                                <span>@item.Type</span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="hdnAccountName_@indx" name="hdnAccountName_@indx" value="@item.AHName" />
+                                                <span>@item.BankAccountName</span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="hdnDrAmount_@indx" name="hdnDrAmount_@indx" value="@item.DrAmount" class="Amount" />
+                                                <span>@item.DrAmount.ToDisplayCurrencyInRupees() </span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="hdnCrAmount_@indx" name="hdnCrAmount_@indx" value="@item.CrAmount" />
+                                                <span>@item.CrAmount.ToDisplayCurrencyInRupees() </span>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" id="hdnBalance_@indx" name="hdnBalance_@indx" value="@item.ClosingBalance" />
+                                                <span>@item.ClosingBalance </span>
+                                            </td>
+                                            <td>
+                                                <img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" title="Delete " style="cursor: pointer" />
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><span>0</span></td>
+                                    <td>
+                                        @if (ViewBag.TotalCrAmmount != null)
+                                        { @ViewBag.TotalCrAmmount }
+                                        else
+                                        { @Html.LabelFor(m => m.CrTotal, new { @ID = "CrTotal" })}
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span><strong>TotalAmount:</strong></span>
+                                    </td>
+                                    <td>
+                                        <span>To</span>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" id="hdnCashInHandAHID" name="hdnCashInHandAHID" value="@ViewBag.CashInHandDetails.AHID" />
+                                        <span><strong>@ViewBag.CashInHandDetails.AHName</strong></span>
+                                    </td>
+                                    <td>
+                                        @* <span>0</span>*@
+                                    </td>
+                                    <td>
+                                        @*@if (ViewBag.TotalCrAmmount != null)
+                                            { @ViewBag.TotalCrAmmount }
+                                            else
+                                            { @Html.LabelFor(m => m.CrTotal, new { @ID = "CrTotal" })}*@
+                                    </td>
+                                    <td>
+                                        <span><span id="ClosingBalance">@Ahid.ClosingBalance</span></span>
+                                    </td>
+                                    <td>
+                                        <span></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @Html.Hidden("hdnMaxRateIndex", indx)
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Ref. #</label>
+                                        <input class="form-control" value="R0399339" placeholder="R0399339">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Narration</label>
+                                        @Html.TextAreaFor(m => Model.Narration, new { @class = "form-control", @rows = "1", @id = "Narration", @name = "Narration", @placeholder = "Narration" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary loader" onclick="return validate();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("ContraEntryDepositedLookup")';
+        }
+
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideContraEntryCashDepositedInBank";
+            LoadMenu();
+        });
+        function getBankName(id) {
+            $.post('@Url.Action("getBankName")' + '/' + id, {},
+                      function (data) {
+                          $('#BankAccountName').val(data.bankName);
+                      }, 'json');
+            if ($("#BankAccount option:selected").text() == 'Select Accountant Number') { $('#BankAccountName').val(''); }
+        }
+
+        function AddAmount() {
+
+            var AHID = $("#BankAccount").val();
+            var isDupAHID = false;
+            $('input[id^=hdnAHID_]').each(function () {
+                if ($(this).val() == AHID) {
+                    isDupAHID = true;
+                    return false;
+                }
+            });
+
+            if (isDupAHID) {
+                alert('selected Account Head already added.');
+                return false;
+            }
+
+            var AddAmount = true;
+
+            if ($.trim($('#BankAccount').val()) == '' || $.trim($('#BankAccount').val()) == undefined || $.trim($('#BankAccount').val()) == null) {
+                $('#BankAccount').css('border-color', 'red');
+                AddAmount = false;
+                return AddAmount;
+            }
+            else { $('#BankAccount').css('border-color', ''); }
+            if ($.trim($('#DrAmount').val()) == '' || $.trim($('#DrAmount').val()) == 0 || $.trim($('#DrAmount').val()) == null || $.trim($('#DrAmount').val()) == undefined) {
+                $('#DrAmount').css('border-color', 'red');
+                AddAmount = false;
+                return AddAmount;
+            }
+            else { $('#DrAmount').css('border-color', ''); }
+
+            var cashInHandTotal = $('#ClosingBalance').text();
+
+            //if (cashInHandTotal < ($('#DrAmount').val())) {
+            //    AddAmount = false;
+            //    alert("Please Select Equal or Lessthan to Cash In Hand");
+            //    return AddAmount;
+            //}
+
+            var AHID = $("#BankAccount").val();
+            var bankAccount = $("#BankAccount option:selected").text();
+            var bankAcountName = $('#BankAccountName').val();
+            var Type = "By";
+            var DrAmount = $("#DrAmount").val();
+            var CrAmount = 0;
+            var editIndx = $("#hdnAIndex").val();
+            var AmountId = $("#AmountId").val();
+            if (Number(editIndx)) {
+                //update new AddMoney
+                $("#hdnBankAccount_" + editIndx).val(bankAccount);
+                $("#hdnBankAccount_" + editIndx).parent().find('span').text(bankAccount);
+
+                $("#hdntypeBy_" + editIndx).val(Type);
+                $("#hdntypeBy_" + editIndx).parent().find('span').text(Type);
+
+                $("#hdnAccountName_" + editIndx).val(AccountName);
+                $("#hdnAccountName_" + editIndx).parent().find('span').text(AccountName);
+
+                $("#hdnDrAmount_" + editIndx).val(DrAmount);
+                $("#hdnDrAmount_" + editIndx).parent().find('span').text(DrAmount);
+
+                $("#hdnCrAmount_" + editIndx).val(CrAmount);
+                $("#hdnCrAmount_" + editIndx).parent().find('span').text(CrAmount);
+            }
+            else {
+                //Add new Interest Rate
+
+                var newIndex = Number($('#hdnMaxRateIndex').val()) + 1;
+                newIndex = newIndex == 0 ? 1 : newIndex;
+
+                var newRow = loadNewRow(newIndex, AHID, bankAccount, Type, bankAcountName, DrAmount, CrAmount);
+                $("#tbody").append(newRow);
+                $('#hdnMaxRateIndex').val(newIndex);
+            }
+            var total = 0;
+            $($('input[id^="hdnDrAmount_"]')).each(function () {
+                total += parseInt(this.value)
+            });
+            $('#CrTotal').html(total);
+            $('#TotalAmmount').val(total);
+            var Balance = $('#ClosingBalance').text();
+            var totalbalance = parseInt(Balance) - parseInt(CrAmount);
+            $('#ClosingBalance').html(totalbalance);
+            AddAhidBalance(newIndex);
+        };
+
+        function AddAhidBalance(newIndex) {
+            var actionUrl = '@Url.Action("ViewBalanceSummary", "ContraEntry")';
+            var Ahid = 0;
+            $($('input[id^="hdnAHID_"]')).each(function () {
+                Ahid = parseInt(this.value);
+            });
+            var ahid = Ahid;
+            $.post(actionUrl, { ahId: ahid, isFederation: true }, function (response) {
+                if (response.BalanceType === "Dr") {
+                    $("#spnAHbalance_" + newIndex).html(response.ClosingBalance);
+                    $("#hdnBalance_" + newIndex).html(response.ClosingBalance);
+                }
+                else {
+                    var val1 = $('#hdnDrAmount_' + newIndex).val();
+                    var finalBal = parseInt(response.ClosingBalance) - parseInt(val1);
+                    $('input[id^="hdnBalance_' + newIndex + '"]').val(finalBal);
+                    $('input[id^="hdnBalance_' + newIndex + '"]').next('span').text(finalBal);
+                }
+            }, 'json');
+        }
+
+
+        function loadNewRow(newIndex, AHID, bankAccount, Type, bankAcountName, DrAmount, CrAmount, Balance) {
+            var row = '<tr class="gradeA even">';
+            row += '<td class="text-center" style="display:none;">' + newIndex + '<input type="hidden" id ="hdnAHID_' + newIndex + '" name ="hdnAHID_' + newIndex + '" value="' + AHID + '"/></td>';
+            row += '<td><input type="hidden" id ="hdnBankAccount_' + newIndex + '" name ="hdnBankAccount_' + newIndex + '" value="' + bankAccount + '"/> <span>' + bankAccount + '</span></td>';
+            row += '<td><input type="hidden" id ="hdntypeBy_' + newIndex + '" name ="hdntypeBy_' + newIndex + '"value="' + Type + '"/> <span>' + Type + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnAccountName_' + newIndex + '" name ="hdnAccountName_' + newIndex + '" value="' + bankAcountName + '"/> <span>' + bankAcountName + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnDrAmount_' + newIndex + '" name ="hdnDrAmount_' + newIndex + '" value="' + DrAmount + '"/> <span>' + DrAmount + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnCrAmount_' + newIndex + '" name ="hdnCrAmount_' + newIndex + '" value="' + CrAmount + '"/> <span>' + CrAmount + '</span></td>';
+            row += '<td style="text-align: right;"><input type="hidden" id ="hdnBalance_' + newIndex + '" name ="hdnBalance_' + newIndex + '" value="' + Balance + '"/> <span>' + Balance + '</span></td>';
+
+            row += '<td><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + newIndex + ');"</td>';
+            row += '</tr>';
+            return row;
+        }
+
+        function deleteRate(src, indx) {
+            if (confirm('Do you wish to remove select Row details?')) {
+                $(src).parent().parent().remove();
+                var total = 0;
+                $($('input[id^="hdnDrAmount_"]')).each(function () {
+                    total += parseInt(this.value)
+                });
+                $('#CrTotal').html(total);
+                $('#DTotal').html(total);
+                $('#CrTotal').html(total);
+                $('#TotalAmmount').val(total);
+            }
+        }
+
+
+        function validate() {
+            var validate = true;
+            if ($.trim($('#TransactionDate').val()) == '' || $.trim($('#TransactionDate').val()) == undefined || $.trim($('#TransactionDate').val()) == null) {
+                $('#TransactionDate').css('border-color', 'red');
+                validate = false;
+            }
+            else { $('#TransactionDate').css('border-color', ''); }
+            if ($.trim($('#BankAccount').val()) == '' || $.trim($('#BankAccount').val()) == undefined || $.trim($('#BankAccount').val()) == null) {
+                $('#BankAccount').css('border-color', 'red');
+                validate = false;
+            }
+            else { $('#BankAccount').css('border-color', ''); }
+            if ($.trim($('#DrAmount').val()) == '' || $.trim($('#DrAmount').val()) == 0 || $.trim($('#DrAmount').val()) == null || $.trim($('#DrAmount').val()) == undefined) {
+                $('#DrAmount').css('border-color', 'red');
+                validate = false;
+            }
+            else { $('#DrAmount').css('border-color', ''); }
+            //if ($.trim($('#hdnAIndex').val()) == 0) {
+            //    $('#tbladdamount').css('border-color', 'red');
+            //    alert("Please add atleast one transaction");
+            //    alert($('#hdnAIndex').val());
+            //    validate = false;
+            //}
+            //else { $('#tbladdamount').css('border-color', ''); }
+
+            return validate;
+        }
+
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#TransactionDate').datepicker({
+            //    //dateFormat: "HH/MM",
+            //    dateFormat: "dd/M/yy",
+            //    changeMonth: true,
+            //    changeYear: true,
+            //    yearRange: "-60:+0"
+            //});
+        });
+
+    </script>
+
+}

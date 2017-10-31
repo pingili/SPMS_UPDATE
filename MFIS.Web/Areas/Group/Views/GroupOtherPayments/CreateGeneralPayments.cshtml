@@ -1,0 +1,488 @@
+﻿@model BusinessEntities.GeneralPaymentsDto
+@using CoreComponents;
+@using BusinessEntities;
+@{
+    ViewBag.Title = "CreateGeneralPayments";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    List<AddAmountDto> lstAccounts = Model != null ? Model.Addamount : null;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                @*@if (ViewBag.Message != null && ViewBag.Message != string.Empty)
+            //{ 
+                *@@*<div class="panel-heading">
+                    <span class="header">@ViewBag.Message</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+           }
+            else
+           {*@
+                <div class="panel-heading">
+                    <span class="header">General Payments </span>
+                    @Html.ActionLink("Add New General Payments", "CreateGeneralPayments", null, new { @class = "btn btn-default pull-right" })
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>@*
+                if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                <div class="alert alert-success">
+                    <strong>Success!</strong> @ViewBag.Result.Message
+                </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> @ViewBag.Result.Message
+                </div>
+                }
+                *@<div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label><br />
+                                @Html.DropDownListFor(m => m.TransactionMode, new List<SelectListItem>
+                 {
+                    new SelectListItem{ Text="Cash", Value = "C" },
+                    new SelectListItem{ Text="Cash Deposit at Bank", Value = "BD" },
+                    new SelectListItem {Text="Cheque Deposit at Bank",Value="BC" }
+                 }, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label><br />
+                                @Html.DropDownListFor(m => m.TransactionDate, (SelectList)ViewBag.MonthMeetings, "Select Date", new { @class = "form-control" })
+
+                                <input type="text" value="@Model.TransactionDate.ToDisplayDateFormat()" class="form-control required" id="txtTransactionDate" name="txtTransactionDate" placeholder="select TransactionDate" readonly="true" style="display:none;" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Agent Name</label>
+                                @Html.DropDownListFor(m => m.EmployeeName, (SelectList)ViewBag.slEmp, null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Voucher Ref Number</label>
+                                @Html.TextBoxFor(m => m.VoucherRefNumber, new { @class = "form-control alphabet-only", @ID = "VoucherRefNumber" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Party Name</label>
+                                @Html.TextBoxFor(m => m.PartyName, new { @class = "form-control alphabet-only", @ID = "PartyName" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row dv-cheque">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Check Number</label>
+                                @Html.TextBoxFor(m => m.ChequeNumber, new { @class = "form-control alphabet-only", @ID = "ChequeNumber" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Check Date</label>
+                                @Html.TextBoxFor(m => m.ChequeDate, new { @class = "form-control alphabet-only", @ID = "ChequeDate" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Name</label>
+                                @Html.DropDownListFor(c => c.AHID, (SelectList)ViewBag.ahcodes, "Select AccountCode", new { @id = "AHCode", @class = "form-control required", onchange = "getAccountName(this.value);" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Amount(Dr)</label>
+                                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @ID = "Amount" })
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default" style="margin-top: 18px; background-color: orange;" id="addamount" onclick="return AddAmount();">Add</button>
+                                @Html.Hidden("hdnAIndex")
+                                @Html.Hidden("AmountId")
+                            </div>
+                        </div>
+                    </div>
+                    @* <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Account Code</label>
+                                    @Html.DropDownListFor(c => c.AHID, (SelectList)ViewBag.ahcodes, "Select AccountCode", new { @id = "AHCode", @class = "form-control required", onchange = "getAccountName(this.value);" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Account Head Name </label>
+                                    @Html.TextBox("AHName", string.Empty, new { @class = "form-control", @readonly = "true" })
+                                </div>
+
+                            </div>
+                            <div id="slaccounts" style="display:none;">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>SL Account</label>
+                                        @Html.DropDownListFor(c => c.SLAccountId, (SelectList)ViewBag.slaccounts, "Select SLAccountName", new { @id = "SLAccountName", @class = "form-control required"})
+                                        <select name="SLAccountName" id="SLAccountName" class="form-control" onchange="BindDropDownOptions(this.value)">
+                                            <option value="">please select</option>
+                                        </select>
+                                        @Html.TextBox("SLAccount", string.Empty, new { @class="form-control",@readonly="true"})
+                                        @Html.DropDownListFor(c => c.SLAccountName, (SelectList)ViewBag.ahcodes, "Select AccountCode", new { @id = "SLAccountName", @class = "form-control required" })
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>SL Account Name</label>
+                                        @Html.TextBox("SLAcName", string.Empty, new { @class = "form-control", @readonly = "true" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2" id="Amount">
+                                <div class="form-group">
+                                    <label>Amount (Dr)</label>
+                                    @Html.TextBox("DrAmount", string.Empty, new { @class = "form-control required number-only" })
+                                </div>
+
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Transaction Mode</label><br />
+                                    @if(Model.AccountMasterID>0 && Model.TransactionMode=="B"){
+                                <input type="radio" value="C" name="TransactionMode" id="Cash" /><span>&nbsp; Cash &nbsp;</span>
+                                <input type="radio" value="B" name="TransactionMode" id="Bank"  checked="checked" /><span>&nbsp; Bank &nbsp;</span>
+                                }
+                                else
+                                {
+                                <input type="radio" value="C" name="TransactionMode" id="Cash" checked="checked" /><span>&nbsp; Cash &nbsp;</span>
+                                <input type="radio" value="B" name="TransactionMode" id="Bank" /><span>&nbsp; Bank &nbsp;</span>
+                                }
+                                </div>
+                            </div>
+
+
+                        </div>*@
+
+
+                    @*  <div class="row">
+
+                            <div id="TransactionDisplayMode">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Bank Account Number</label>
+                                        @Html.DropDownListFor(model => model.BankAccount, (SelectList)ViewBag.federationbanks, "Select Bank Account", new { @class = "form-control", onchange = "GetFAccountName(this.value);" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Bank Account Name</label>
+                                        @Html.TextBoxFor(m => m.BankAccountName, null, new { @class = "form-control", @id = "BankAccountName", @readonly = "true" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Cheque Number</label>
+                                        @Html.TextBoxFor(m => m.ChequeNumber, null, new { @class = "form-control number-only", @id = "BankAccountName" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Cheque Date</label>
+                                        @{
+                                string chequeDate = Model.ChequeDate.Ticks > 0 ? Model.ChequeDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                            <input type="text" value="@chequeDate" class="form-control" id="ChequeDate" name="ChequeDate" placeholder="select ChequeDate" readonly="true" />
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default" style="margin-top: 18px; background-color: orange;" id="addamount" onclick="return AddAmount();">Add</button>
+                                    @Html.Hidden("hdnAIndex")
+                                    @Html.Hidden("AmountId")
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tbladdamount">
+
+                            @{
+    AddAmountDto obj = new AddAmountDto();
+    var item = obj;
+    if (lstAccounts != null)
+    {
+
+        item = lstAccounts[lstAccounts.Count - 1] as AddAmountDto;
+    }
+                                <thead>
+                                    <th class="col-lg-1">S.No</th>
+                                    <th class="col-lg-2">Account Head</th>
+                                    <th class="col-lg-2" style="display: none;">Sl Account Name</th>
+                                    <th class="col-lg-1 text-right">Amount (Dr)</th>
+                                    <th class="col-lg-1 text-right" style="display: none;">Amount (Cr)</th>
+                                    <th class="col-lg-1 text-right" style="display: none;">Balance</th>
+                                    <th class="col-lg-1">Delete</th>
+                                </thead>
+                             
+                                <tbody id="tbody">
+
+                                    @if (lstAccounts != null)
+                                    {
+                                        for (int i = 0; i < lstAccounts.Count; i++)
+                                        {
+                                            if (lstAccounts[i].DrAmount == 0)
+                                            {
+                                                continue;
+                                            }
+                                            indx++;
+                                        <tr>
+                                            <td class="text-center" style="display: none;">@indx </td>
+                                            <td>
+                                                <input type="hidden" id ="hdntypeBy_@indx" name ="hdntypeBy_@indx" value="By"/>
+                                                <span>@lstAccounts[i].Type</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnAHID_@indx" name ="hdnAHID_@indx" value="@lstAccounts[i].AHID"/>
+                                                <input type="hidden" id ="hdnAmountId_@indx" name ="hdnAmountId_@lstAccounts[i].AHID" value="@lstAccounts[i].AmountId"/>
+                                                @*    <input type="hidden" id ="hdnAccountCode_@indx" name ="hdnAccountCode_@indx" value="@lstAccounts[i].AHCode"/>
+                                                <span>@lstAccounts[i].AHCode</span><*@</td>
+
+                                            <td>
+                                                <input type="hidden" id ="hdnAccountName_@indx" name ="hdnAccountName_@indx" value="@lstAccounts[i].AHName"/>
+                                                <span>@lstAccounts[i].AHName</span></td>
+                                            @* <td>
+                                                <input type="hidden" id ="hdnSLAccountNo_@indx" name ="hdnSLAccountNo_@indx" value="@lstAccounts[i].AHID"/>
+                                                <input type="hidden" id ="hdnSLAccountCode_@indx" name ="hdnSLAccountCode_@indx" value="@lstAccounts[i].SLAccount"/>
+                                                <span>@lstAccounts[i].SLAccount</span></td>*@
+                                            @*<td>
+                                                <input type="hidden" id ="hdnSLAccountName_@indx" name ="hdnSLAccountName_@indx" value="@lstAccounts[i].SLAccountName"/>
+                                                <span>@lstAccounts[i].SLAccountName</span></td>*@
+                                            <td>
+                                                <input type="hidden" id ="hdnDrAmount_@indx" name ="hdnDrAmount_@indx" value="@lstAccounts[i].DrAmount"/>
+                                                <span>@lstAccounts[i].DrAmount.ToDisplayCurrencyInRupees() </span></td>
+                                            <td style="text-align: right; display: none;">
+                                                <input type="hidden" id ="hdnCrAmount_@indx"name ="hdnCrAmount_@indx" value="@lstAccounts[i].CrAmount"/>
+                                                <span class="text-right">@lstAccounts[i].CrAmount.ToDisplayCurrencyInRupees() </span></td>
+                                            <td style="display: none;">
+                                                <input type="hidden" id ="hdnBalance_@indx" name ="hdnBalance_@indx" value="@lstAccounts[i].Balance"/>
+                                                <span>@lstAccounts[i].Balance.ToDisplayCurrencyInRupees() </span></td>
+                                            <td>
+                                                <img src="../../Content/images/delete_btn1.png" onclick="deleteRow(this, @indx);" title="Delete " style="cursor: pointer" /></td>
+
+                                        </tr>
+                                        }
+
+                                    }
+
+                                </tbody>
+                            }
+                        </table>
+                        @Html.Hidden("hdnMaxRateIndex", indx)
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Narration</label>
+                                    @Html.TextBoxFor(m => m.Narration, new { @class = "form-control alphabet-only" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary loader">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+                @*}*@
+            </div>
+
+
+        </div>
+
+    </div>
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var slAccoutnID = '@(Model != null ? Model.SubHeadID : 0)';
+            var transactionDate = '@(Model != null ? Model.TransactionDate.ToDisplayDateFormat() : string.Empty)';
+            $('#TransactionDate').val(transactionDate);
+            TransactionModeChange();
+            LoadSlAccountHeadsByGlAhId();
+
+            function BackToList() {
+                showProgress();
+                window.location.href = '@Url.Content("GroupOtherReceiptLookUp")';
+            }
+
+
+            $('#TransactionMode').on('change', function () {
+                TransactionModeChange();
+            });
+
+            function TransactionModeChange() {
+                var tMode = $('#TransactionMode').val();
+                $('.dv-cheque').hide();
+                if (tMode == "C") {
+                    $('#dvToBank').hide();
+                    $('#txtToHead').val('Cash In Hand');
+                    $('#TransactionDate').show();
+                    $('#txtTransactionDate').hide();
+                } else {
+                    $('#TransactionDate').hide();
+                    $('#txtTransactionDate').show();
+                    $('#txtToHead').val('Cash at Bank');
+                    $('#dvToBank').show();
+
+                    if (tMode == "BC") {
+                        $('.dv-cheque').show();
+                    }
+                }
+            }
+            //$('#txtTransactionDate').Datepicker({
+
+            //    dateFormat: "dd/M/yy",
+            //    changeMonth: true,
+            //    changeYear: true,
+            //    yearRange: "-10:+20"
+            //});
+            $('#GLAccountId').change(function () {
+                LoadSlAccountHeadsByGlAhId();
+            });
+
+            function LoadSlAccountHeadsByGlAhId() {
+                $('#SLAccountId').find('option:gt(0)').remove();
+
+                var glAhId = $('#GLAccountId').val();
+                if (!Number(glAhId)) {
+                    return;
+                }
+
+                //Load SL Account Heads of selected GL
+                var optionsList = '';
+                var url = '@Url.Action("GetGroupSubLedgerAccountHeadsByGLAHId")';;
+                $.post(url, { glAHId: Number(glAhId) }, function (data) {
+                    debugger;
+                    if (data.slAccountHeads) {
+                        $(data.slAccountHeads).each(function (item, value) {
+                            debugger;
+                            optionsList += '<option value="' + value.ID + '"> ' + value.Text + '</option>';
+                        });
+                        $('#SLAccountId').append(optionsList);
+                        $('#SLAccountId').val(slAccoutnID);
+                    }
+                }, 'json');
+            }
+
+            $('#ChequeDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-10:+20"
+            });
+        });
+        function AddAmount() {
+            var AHID = $("#AHCode").val();
+            var AccountName = $("#AHCode option:selected").text();
+            var Amount = $("#Amount").val();
+          //  var SLAccountCode = $("#SLAccountName option:selected").text();
+           var editIndx = $.trim($("#hdnAIndex").val());
+            if (Number(editIndx)) {
+                //update new AddMoney
+                $("#hdnAccountCode_" + editIndx).val(AHID);
+                $("#hdnAccountCode_" + editIndx).parent().find('span').text(AHID);
+                $("#hdnAccountName_" + editIndx).val(AccountName);
+                $("#hdnAccountName_" + editIndx).parent().find('span').text(AccountName);
+                $("#hdnDrAmount_" + editIndx).val(Amount);
+                $("#hdnDrAmount_" + editIndx).parent().find('span').text(Amount);
+            } else {
+                //Add new Interest Rate
+
+                var newIndex = Number($('#hdnMaxRateIndex').val()) + 1;
+                newIndex = newIndex == 0 ? 1 : newIndex;
+
+                var newRow = loadNewRow(newIndex, AHID, AccountName, Amount);
+                $("#tbody").append(newRow);
+                $('#hdnMaxRateIndex').val(newIndex);
+            }
+            var total = 0;
+            $($('input[id^="hdnDrAmount_"]')).each(function () {
+                total += parseInt(this.value)
+            });
+            $('#CrTotal').html(total);
+            $('#DTotal').html(total);
+            $('#CTotal').html(total);
+            $('#AmountTotal').val(total);
+            $('#CRAmountTotal').val(total);
+            var Balance = $('#Balance').text();
+            var totalbalance = parseInt(Balance) - parseInt(DrAmount);
+            $('#Balance').html(totalbalance);
+            AddAhidBalance(newIndex);
+            clearControls()
+
+        };
+        function loadNewRow(newIndex, AHID, AccountName, Amount) {
+            var row = '<tr class="gradeA even">';
+            row += '<td class="text-center" style="display:none;">' + newIndex + '<input type="hidden" id ="hdnAHID_' + newIndex + '" name ="hdnAHID_' + newIndex + '" value="' + AHID + '"/></td>';
+            row += '<td><input type="hidden" id ="hdntypeBy_' + newIndex + '" name ="hdntypeBy_' + newIndex + '"value="' + newIndex + '"/> <span>' + newIndex + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnAccountCode_' + newIndex + '" name ="hdnAccountCode_' + newIndex + '" value="' + AHID + '"/> <span>' + AccountName + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnDrAmount_' + newIndex + '" name ="hdnDrAmount_' + newIndex + '" value="' + Amount + '"/> <span>' + Amount + '</span></td>';
+            //row += '<td><input type="hidden" id ="hdnSLAccountNo_' + newIndex + '" name ="hdnSLAccountNo_' + newIndex + '" value="' + SLAccountNo + '"/> <span>' + SLAccountCode + '</span></td>';
+            //row += '<td><input type="hidden" id ="hdnSLAccountName_' + newIndex + '" name ="hdnSLAccountName_' + newIndex + '" value="' + SLAccountName + '"/> <span>' + SLAccountName + '</span></td>';
+            //row += '<td style="text-align: right;"><input type="hidden" id ="hdnDrAmount_' + newIndex + '"  class="col-lg-1 text-right" name ="hdnDrAmount_' + newIndex + '" value="' + DrAmount + '"/> <span>' + DrAmount + '</span></td>';
+            //row += '<td style="text-align: right;"><input type="hidden" id ="hdnCrAmount_' + newIndex + '" name ="hdnCrAmount_' + newIndex + '" value="' + CrAmount + '"/> <span>' + CrAmount + '</span></td>';
+            //row += '<td style="text-align: right;"><input type="hidden" id ="hdnBalance_' + newIndex + '" name ="hdnBalance_' + newIndex + '" value="' + Balance + '"/> <span>' + Balance + '</span></td>';
+            row += '<td><img src="../../Content/images/delete_btn1.png" onclick="deleteRow(this, ' + newIndex + ');"</td>';
+            row += '</tr>';
+            return row;
+        }
+        function clearControls() {
+            $("#AHCode").val('');
+            $("#SLAccountName").val('');
+            $("#SLAcName").val('');
+            $("#AHName").val('');
+            $("#DrAmount").val('');
+        }
+        function BindDropDownOptions(id) {
+            $.post('@Url.Action("GetSLAccouts")' + '/' + id, {},
+                  function (data) {
+                      $('#SLAcName').val(data.SLAccounts);
+                  }, 'json');
+        }
+        function deleteRow(src, indx) {
+            if (confirm('Do you wish to remove select Row details?')) {
+                $(src).parent().parent().remove();
+                var total = 0;
+                $($('input[id^="hdnDrAmount_"]')).each(function () {
+                    total += parseInt(this.value)
+                });
+                $('#CrTotal').html(total);
+                $('#DTotal').html(total);
+                $('#CTotal').html(total);
+                $('#AmountTotal').val(total);
+                $('#CRAmountTotal').val(total);
+                //var Balance = $('#Balance').text();
+                //var totalbalance = parseInt(Balance) - parseInt(CrAmount);
+                //$('#Balance').html(totalbalance);
+            }
+        }
+    </script>
+}

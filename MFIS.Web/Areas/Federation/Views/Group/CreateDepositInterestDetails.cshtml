@@ -1,0 +1,286 @@
+﻿@model BusinessEntities.GroupInterestRatesDto
+
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    <div class="col-lg-4">
+        <div class="form-group">
+            @Html.Hidden("hdnGDIIndex")
+            @Html.Hidden("hdnGDIRId")
+
+            <label>Apply To deposit Principal A/C Head</label>
+            @Html.DropDownListFor(d => d.PrincipalAHID, (SelectList)ViewBag.PrincipleAcHeads, "Select Principle A/C head", new { @class = "form-control", @id = "ddldepositprincipleACHead", @name = "ddldepositprincipleACHead" })
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Apply To deposit Interest A/C Head</label>
+            @Html.DropDownListFor(d => d.InterestAHID, (SelectList)ViewBag.InterestAcHeads, "Select Interest A/C head", new { @class = "form-control", @id = "ddldepositInterestACHead", @name = "ddldepositInterestACHead" })
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Base</label>
+            @Html.DropDownListFor(d => d.Base, (SelectList)ViewBag.BaseTypes, "Select Base", new { @class = "form-control", @id = "ddldepositBase", @name = "ddldepositBase" })
+
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label>Rate Of Interest</label>
+            @Html.TextBoxFor(m => m.ROI, new { @id = "txtdepositRateOfInterest", @name = "txtdepositRateOfInterest", @class = "form-control decimal-two-digit-only" , @onkeypress="return validateFloatKeyPress(this, event)", @onchange="validateInterestRate(this);" })
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group date" id="datetimep">
+            <label>From Date</label>
+            @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control", @id = "txtdepositFromDate", @name = "txtdepositFromDate", @onchange="validateInterestRate(this);" })
+
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <br />
+        <div class="form-group">
+            <button type="button" onclick="return CreatedepositInterest();" id="btndepositinterest" class="btn btn-outline btn-primary">ADD</button>
+            <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="tbldepositinterest">
+            <thead>
+                <tr>
+                    <th class="text-center" style="display: none">#</th>
+                    <th>Apply TO Deposit Principle A/C Head</th>
+                    <th>Apply TO Deposit Int A/C Head</th>
+                    <th>Base</th>
+                    <th>ROI</th>
+                    <th>From Date</th>
+
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="depositinterestbody">
+                @{ List<BusinessEntities.GroupInterestRatesDto> objlst = new List<BusinessEntities.GroupInterestRatesDto>();
+                   if (ViewBag.GroupInterestRates != null)
+                   {
+
+                       objlst = ViewBag.GroupInterestRates;
+
+                   }
+              
+                }
+
+                @if (objlst != null)
+                {
+                    foreach (var item in objlst)
+                    {
+                        indx++;
+                    <tr>
+                        <td class="text-center" style="display: none;">@indx </td>
+                        <td class="text-center" style="display: none;">@indx<input type="hidden" id ="hdndepositentryId_@indx" name ="hdndepositentryId_@indx" value="@item.GroupInterestID" /></td>
+                        <td>
+                            <input type="hidden" id ="hdndepositprincipleAChead_@indx" name ="hdndepositprincipleAChead_@indx" value="@item.PrincipalAHID"/>
+                            <span>@item.PrincipalAH</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositInterestACHead_@indx" name ="hdndepositInterestACHead_@indx"" value="@item.InterestAHID"/>
+                            <span>@item.InterestAH </span></td>
+                        <td>
+                            <input type="hidden" id ="hdndepositBase_@indx" name ="hdndepositBase_@indx" value="@item.Base"/>
+                            <span>@item.BaseText</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositrateofint_@indx" name ="hdndepositrateofint_@indx" value="@item.ROI"/>
+                            <span>@item.ROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositfromdate_@indx" name ="hdndepositfromdate_@indx" value="@item.FromDate.ToString("dd/MMM/yyyy")"/>
+                            <span>@item.FromDate.ToString("dd/MMM/yyyy")</span>
+
+                        </td>
+                        <td>
+                            <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" />
+
+                        </td>
+                    </tr>
+                    }
+                }
+
+            </tbody>
+
+        </table>
+        @Html.Hidden("hdnMaxDepIntIndex", indx)
+    </div>
+}
+<script type="text/javascript">
+    @section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+ 
+    }
+    $(function () {
+        $('#txtdepositFromDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0"
+        });
+        $('#txtdepositToDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+30"
+        });
+    });
+    var tblindex = 1;
+    var arrofint = new Array();
+    function CreatedepositInterest() {
+        var depositprincipleACheadID = $("#ddldepositprincipleACHead").val();
+        var depositprincipleAChead = $("#ddldepositprincipleACHead option:selected").text();
+        var depositInterestACHead = $("#ddldepositInterestACHead option:selected").text();
+        var depositInterestACHeadID = $("#ddldepositInterestACHead").val();
+
+        var Base = $("#ddldepositBase  option:selected").text();
+        var BaseID = $("#ddldepositBase").val();
+        var rateOfInterest = $("#txtdepositRateOfInterest").val();
+        var FromDate = $('#txtdepositFromDate').val();
+        var editIndx = $("#hdnGDIIndex").val();
+        var html = "";
+        var errmsg = '';
+        if ($.trim(depositprincipleACheadID) == '')
+            errmsg += 'Select Principle AChead.\r\n';
+        if ($.trim(depositInterestACHeadID) == '')
+            errmsg += 'Select Interest ACHead.\r\n';
+
+        if ($.trim(BaseID) == '')
+            errmsg += 'Select Base.\r\n';
+        if ($.trim(rateOfInterest) == '')
+            errmsg += 'Enter Rate Of Interest.\r\n';
+
+        if ($.trim(FromDate) == '')
+            errmsg += 'Enter From Date.\r\n';
+
+        if (errmsg != '') {
+            alert(errmsg)
+            return false;
+        }
+
+        if (Number(editIndx)) {
+            //update new Interest Rate
+            $("#hdndepositInterestACHead_" + editIndx).val(depositInterestACHeadID);
+            $("#hdndepositInterestACHead_" + editIndx).parent().find('span').text(depositInterestACHead);
+
+
+            $("#hdndepositBase_" + editIndx).val(BaseID);
+            $("#hdndepositBase_" + editIndx).parent().find('span').text(Base);
+
+            $("#hdndepositrateofint_" + editIndx).val(rateOfInterest);
+            $("#hdndepositrateofint_" + editIndx).parent().find('span').text(rateOfInterest);
+
+            $("#hdndepositfromdate_" + editIndx).val(FromDate);
+            $("#hdndepositfromdate_" + editIndx).parent().find('span').text(FromDate);
+
+
+            $("#hdndepositprincipleAChead_" + editIndx).val(depositprincipleACheadID);
+            $("#hdndepositprincipleAChead_" + editIndx).parent().find('span').text(depositprincipleAChead);
+
+
+
+
+        }
+        else {
+            //Add new Interest Rate  
+            if ($('#hdnMaxDepIntIndex').val() != null || $('#hdnMaxDepIntIndex').val() != '') {
+                $('#hdnMaxDepositIntIndex').val($('#hdnMaxDepIntIndex').val());
+            }
+            var newIndex = Number($('#hdnMaxDepIntIndex').val()) + 1;
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, depositInterestACHead, depositInterestACHeadID, depositprincipleAChead, depositprincipleACheadID, Base, BaseID, rateOfInterest, FromDate);
+            $("#depositinterestbody").append(newRow);
+            $('#hdnMaxDepIntIndex').val(newIndex);
+            $('#hdnMaxDepositIntIndex').val(newIndex);
+
+        }
+        cleardepositInterestDetails();
+    }
+
+
+
+    function loadNewRow(index, depositInterestACHead, depositInterestACHeadID, depositprincipleAChead, depositprincipleACheadID, Base, BaseID, rateOfInterest, FromDate) {
+        var row = '<tr class="gradeA even">';
+        row += '<td class="text-center" style="display:none;">' + index + '<input type="hidden" id ="hdndepositentryId_' + index + '" name ="hdndepositentryId_' + index + '" /></td>';
+        row += '<td><input type="hidden" id ="hdndepositprincipleAChead_' + index + '" name ="hdndepositprincipleAChead_' + index + '" value="' + depositprincipleACheadID + '"/> <span>' + depositprincipleAChead + '</span></td>';
+        row += '<td><input type="hidden" id ="hdndepositInterestACHead_' + index + '" name ="hdndepositInterestACHead_' + index + '" value="' + depositInterestACHeadID + '"/> <span>' + depositInterestACHead + '</span></td>';
+        row += '<td><input type="hidden" id ="hdndepositBase_' + index + '" name ="hdndepositBase_' + index + '" value="' + BaseID + '"/> <span>' + Base + '</span></td>';
+        row += '<td><input type="hidden" id ="hdndepositrateofint_' + index + '" name ="hdndepositrateofint_' + index + '" value="' + rateOfInterest + '"/> <span>' + rateOfInterest + '</span></td>';
+        row += '<td><input type="hidden" id ="hdndepositfromdate_' + index + '" name ="hdndepositfromdate_' + index + '" value="' + FromDate + '"/> <span>' + FromDate + '</span></td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + index + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + index + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+    function editRate(src, indx) {
+        showProgress();
+        $("#ddldepositprincipleACHead").val($("#hdndepositprincipleAChead_" + indx).val());
+        $("#ddldepositInterestACHead").val($("#hdndepositInterestACHead_" + indx).val());
+        $("#ddldepositBase").val($("#hdndepositBase_" + indx).val());
+        $("#txtdepositRateOfInterest").val($("#hdndepositrateofint_" + indx).val());
+        $("#txtdepositFromDate").val($("#hdndepositfromdate_" + indx).val());
+        $("#hdnGDIIndex").val(indx);
+        $('#btndepositinterest').text('Update');
+        hideProgress();
+    }
+
+    function deleteRate(src, indx) {
+        if (confirm('Do you wish to remove select rate details?')) {
+            showProgress();
+            cleardepositInterestDetails();
+            $(src).parent().parent().remove();
+            hideProgress();
+        }
+    }
+    function cleardepositInterestDetails() {
+        $("#ddldepositprincipleACHead").val('');
+        $("#ddldepositInterestACHead").val('');
+        $("#ddldepositBase").val('');
+        $("#txtdepositRateOfInterest").val('');
+        $("#txtdepositFromDate").val('');
+        $("#hdnGDIIndex").val('');
+        $('#btndepositinterest').text('ADD');
+    }
+    function isNumericAllowed(txt, evt) {
+        var eventtype = (evt.type) ? evt.type : event.type;
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (navigator.appName != 'Microsoft Internet Explorer' && eventtype == 'keypress') {
+
+            if (evt.ctrlKey)
+                return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+        else if (navigator.appName != 'Netscape' && eventtype == 'keydown') {
+            if (evt.ctrlKey)//control key
+                return true;
+            if (charCode == 37 || charCode == 38 || charCode == 39 || charCode == 40 || charCode == 46)//delete.
+                return true;
+            if (evt.shiftKey) {//shift key
+                if (charCode == 35 || charCode == 36 || charCode == 37 || charCode == 38 || charCode == 39 || charCode == 40)
+                    return true;
+                else
+                    return false;
+            }
+            if (charCode > 31 && ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && (charCode)))
+                return false;
+            return true;
+        }
+    }
+
+    
+ 
+  
+</script>

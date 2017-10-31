@@ -1,0 +1,266 @@
+﻿@using BusinessEntities
+@using CoreComponents;
+@model CashBookReportDto
+
+@{
+    bool isGroup = ViewBag.isGroup;
+    ViewBag.Title = "CreateCashBook";
+    if (isGroup)
+    {
+        Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    }
+
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="header">Group Cash Book</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="col-lg-12">
+
+                <div class="form-group col-lg-2">
+                    <label>Group Code : @ViewBag.GroupCode</label>
+
+
+                </div>
+                <div class="form-group col-lg-2">
+                    <label>Group Name : @ViewBag.GroupName</label>
+
+                </div>
+
+                <div class="form-group col-lg-2">
+                    <label>Village/Town :@ViewBag.Village </label>
+                </div>
+                <div class="form-group col-lg-2">
+                    <label>Cluster Name :  @ViewBag.Cluster</label>
+                </div>
+                <div class="form-group col-lg-2">
+                    <label>Meeting Day :  @ViewBag.MeetingDay</label>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                @{
+
+                                    <input type="text" class="form-control Date-Only financial-year-begin-date-picker" id="FromDate" name="FromDate" placeholder="Enter From Date" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                @{
+
+                                    <input type="text" class="form-control Date-Only financial-year-begin-date-picker" id="ToDate" name="ToDate" placeholder="Enter To Date" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group" style="margin-top: 20px">
+                                <label></label>
+                                @{
+
+                                    <button type="submit" class="btn btn-outline btn-primary loader">Go</button>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (ViewBag.FromDate != null)
+                {
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-10">
+                                <strong>@String.Format("Cash Book From  {0}  to  {1} ", ViewBag.FromDate, ViewBag.ToDate)</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.memberReceipts.Count > 0)
+                {
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="tblmoduleActiondetails">
+                                <tbody style="text-align: center; font-size: smaller">
+                                    @* <tr>
+                                            <th>Opening Balance</th>
+                                            <th>@Model.openingBalaceDetails.OpeningBalance</th>
+                                        </tr>*@
+                                    <tr>
+                                        <th>MEMBER NAME</th>
+                                        <th>PARTICULERS</th>
+                                        <th>Date</th>
+                                        <th style="text-align: center">RECEIPT NO</th>
+                                        <th colspan="2" style="text-align: center">SAVINGS</th>
+                                        <th colspan="2" style="text-align: center">BIG LOAN</th>
+                                        <th colspan="2" style="text-align: center">SMALL LOAN</th>
+                                        <th colspan="2" style="text-align: center">HOUSING LOAN</th>
+                                        <th style="text-align: center">OTHERS</th>
+                                        <th style="text-align: center">TOTAL AMOUNT</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th style="text-align: right"></th>
+                                        <td></td>
+                                        <td></td>
+                                        <th style="text-align: center">REGULAR </th>
+                                        <th style="text-align: center">SPECIAL</th>
+                                        <th style="text-align: center">PRIN</th>
+                                        <th style="text-align: center">INT</th>
+                                        <th style="text-align: center">PRIN</th>
+                                        <th style="text-align: center">INT</th>
+                                        <th style="text-align: center">PRIN</th>
+                                        <th style="text-align: center">INT</th>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="11" style="text-align: center; font-size: small;">Opening Balance</th>
+                                        <th colspan="3" style="text-align: Right; font-size: small;">@Model.openingBalaceDetails.OpeningBalance</th>
+                                    </tr>
+                                    @foreach (var a in Model.memberReceipts)
+                                    {
+
+                                        <tr class="gradeA odd">
+
+                                            <td>@a.MemberName</td>
+                                            <td>@a.Particulers</td>
+                                            <td>@a.ReceiptDate.ToDisplayDateFormat()</td>
+                                            <td>@a.ReceiptNo</td>
+                                            <td style="text-align: right">@a.RegularSavings</td>
+                                            <td style="text-align: right">@a.SpecialSavings</td>
+                                            <td style="text-align: right">@a.BigLoanPrin</td>
+                                            <td style="text-align: right">@a.BigLoanInt</td>
+                                            <td style="text-align: right">@a.SmallLoanPrin</td>
+                                            <td style="text-align: right">@a.SmallLoanInt</td>
+                                            <td style="text-align: right">@a.HousigLoanPrin</td>
+                                            <td style="text-align: right">@a.HousingLoanInt</td>
+                                            <td style="text-align: right">@a.Others</td>
+                                            <td style="font-weight: bold; text-align: right">@a.TotalReceipt</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="4">Totals </td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.RegularSavings)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.SpecialSavings) </td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.BigLoanPrin)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.BigLoanInt)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.SmallLoanPrin)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.SmallLoanInt)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.HousigLoanPrin)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.HousingLoanInt)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.Others)</td>
+                                        <td style="text-align: right">@Model.memberReceipts.Sum(l => l.TotalReceipt)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover" id="tblmoduleActiondetails">
+                                <tbody style="text-align: center; font-size: smaller">
+                                    <tr>
+                                        <th>Voucher Number</th>
+                                        <th>Date</th>
+                                        <th>PARTICULARS</th>
+                                        <th style="text-align: center">Amount</th>
+
+                                    </tr>
+                                    @foreach (var obj in Model.accountVouchers)
+                                    {
+                                        <tr>
+                                            <th>@obj.ReceiptNo </th>
+                                            <th>@obj.ReceiptDate.ToDisplayDateFormat()</th>
+                                            <th>@obj.Particulars</th>
+                                            <th style="text-align: right">@obj.DrAmount</th>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <th colspan="3">Closing Balance</th>
+                                        <th style="text-align: right">@Model.openingBalaceDetails.ClosingBalance</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3">Total</th>
+                                        <th style="text-align: right">@(Model.accountVouchers.Sum(l => l.DrAmount) + Model.openingBalaceDetails.ClosingBalance)</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="form-group" style="margin-left: 16px;">
+                            <button type="button" id="btnSave" class="btn btn-outline btn-primary" onclick="GetPdf();">DownLoad Report</button>
+                            <button type="submit" id="btnExcel" class="btn btn-outline btn-primary">Export To Excel</button>
+                        </div>
+                    </div>
+                }
+                else if (ViewBag.FromDate != null)
+                {
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-10">
+                                <strong style="color: red;">No Records Found !</strong>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+
+
+    @section Scripts {
+
+        @Scripts.Render("~/bundles/jqueryui")
+        @Styles.Render("~/Content/cssjqryUi")
+        <script src="~/Scripts/Common/Common.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                menuLink = "menuAnaliticalReports";
+                subMenuLink = "lnkSideCashBook";
+                LoadMenu();
+            });
+
+            //$('#FromDate').datepicker({
+            //    dateFormat: "dd/M/yy",
+            //    changeMonth: true,
+            //    changeYear: true,
+            //    yearRange: "-60:+100"
+
+            //});
+
+            //$('#ToDate').datepicker({
+            //    dateFormat: "dd/M/yy",
+            //    changeMonth: true,
+            //    changeYear: true,
+            //    yearRange: "-60:+100"
+
+            //});
+
+
+            function GetPdf() {
+                window.location.href = '@Url.Content("~/CashBook/ExportsReports/")';
+            }
+
+            function GetCashBook() {
+                window.location.href = '@Url.Content("~/CashBook/GetCashBook/")';
+            }
+        </script>
+    }
+}

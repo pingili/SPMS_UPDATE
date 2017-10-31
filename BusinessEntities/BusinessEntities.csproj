@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1359797B-6813-45C9-816C-11E8B54E219E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessEntities</RootNamespace>
+    <AssemblyName>BusinessEntities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountHeadDto.cs" />
+    <Compile Include="AccountheadMappingDto.cs" />
+    <Compile Include="AccountHeadViewBalanceDto.cs" />
+    <Compile Include="BalanceSheetDto.cs" />
+    <Compile Include="BankMasterDTO.cs" />
+    <Compile Include="BankMasterLookupDto.cs" />
+    <Compile Include="BranchDto.cs" />
+    <Compile Include="CashBookReportDto.cs" />
+    <Compile Include="ClusterDto.cs" />
+    <Compile Include="ContraEntryDepositedDto.cs" />
+    <Compile Include="ContraEntryWithDrawlDto.cs" />
+    <Compile Include="DepositOBDto.cs" />
+    <Compile Include="CurrentUser.cs" />
+    <Compile Include="DepositDto.cs" />
+    <Compile Include="DisbursementVoucherDto.cs" />
+    <Compile Include="DistrictLookupDto.cs" />
+    <Compile Include="DepreciationDto.cs" />
+    <Compile Include="EmployeeDto.cs" />
+    <Compile Include="EmployeeKYCDto.cs" />
+    <Compile Include="EmployeeLookupDto.cs" />
+    <Compile Include="FederationDto.cs" />
+    <Compile Include="FederationLoanApplicationDto.cs" />
+    <Compile Include="FederationMeetingDTO.cs" />
+    <Compile Include="FederationMeetingLookupDto.cs" />
+    <Compile Include="FedReports.cs" />
+    <Compile Include="FundSourceLookup.cs" />
+    <Compile Include="GeneralLedgerDto.cs" />
+    <Compile Include="GeneralPaymentsDto.cs" />
+    <Compile Include="GeneralPaymentsLookupDto.cs" />
+    <Compile Include="GeneralReceiptDto.cs" />
+    <Compile Include="GeneralReceiptLookupDto.cs" />
+    <Compile Include="GropReceiptLookupDto.cs" />
+    <Compile Include="GroupCashBookDto.cs" />
+    <Compile Include="GroupInfo.cs" />
+    <Compile Include="GroupInterestRatesDto.cs" />
+    <Compile Include="GroupLoanApplicationDto.cs" />
+    <Compile Include="GroupLoanApplicationLookupDto.cs" />
+    <Compile Include="GroupLoanDisbursementDto.cs" />
+    <Compile Include="GroupLoanDisbursementLookupDto.cs" />
+    <Compile Include="GroupLookupDto.cs" />
+    <Compile Include="GroupMasterDTO.cs" />
+    <Compile Include="GroupMeetingDto.cs" />
+    <Compile Include="GroupMeetingLookupDto.cs" />
+    <Compile Include="GroupMemberReceiptDto.cs" />
+    <Compile Include="GroupOtherJournalDto.cs" />
+    <Compile Include="GroupOtherReceiptLookUpDto.cs" />
+    <Compile Include="GroupOtherReceiptViewDto.cs" />
+    <Compile Include="GroupOtherRecieptDto.cs" />
+    <Compile Include="JournalLookupDto.cs" />
+    <Compile Include="LoanMasterDto.cs" />
+    <Compile Include="LoanOBDto.cs" />
+    <Compile Include="BankLoanDto.cs" />
+    <Compile Include="MemberConfirmationDemandDto.cs" />
+    <Compile Include="MemberLoanLedgerDto.cs" />
+    <Compile Include="MemberRefundsDto.cs" />
+    <Compile Include="MemberReceiptLookupDto.cs" />
+    <Compile Include="ModuleDto.cs" />
+    <Compile Include="ModulesDTO.cs" />
+    <Compile Include="PaymentsToFederationLookUpDto.cs" />
+    <Compile Include="ModuleActionDto.cs" />
+    <Compile Include="ReceiptMasterDto.cs" />
+    <Compile Include="InterestLookupDto.cs" />
+    <Compile Include="InterestRatesDto.cs" />
+    <Compile Include="LeadershipDto.cs" />
+    <Compile Include="LeadershipLookupDto.cs" />
+    <Compile Include="LoanApplicationDto.cs" />
+    <Compile Include="LoanPurposeLookupDto.cs" />
+    <Compile Include="LoanSecurityDto.cs" />
+    <Compile Include="DistrictDto.cs" />
+    <Compile Include="LoanSecurityMasterDto.cs" />
+    <Compile Include="LoanSecurityMasterLookupDto.cs" />
+    <Compile Include="MandalDto.cs" />
+    <Compile Include="FundSourceDto.cs" />
+    <Compile Include="LoanPurposeDto.cs" />
+    <Compile Include="MemberDto.cs" />
+    <Compile Include="MemberKYCDto.cs" />
+    <Compile Include="MemberLoanApplicationDto.cs" />
+    <Compile Include="MemberLookupDto.cs" />
+    <Compile Include="NPADto.cs" />
+    <Compile Include="Nullable.cs" />
+    <Compile Include="OccupationDto.cs" />
+    <Compile Include="InterestMasterDto.cs" />
+    <Compile Include="OccupationLookupDto.cs" />
+    <Compile Include="OrganizationDto.cs" />
+    <Compile Include="PanchayatDto.cs" />
+    <Compile Include="PanchayatLookupDto.cs" />
+    <Compile Include="PanchayatViewDto.cs" />
+    <Compile Include="ProjectDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RAPDto.cs" />
+    <Compile Include="ReferenceValueDTO.cs" />
+    <Compile Include="RefundsFromFederationLookUpDto.cs" />
+    <Compile Include="ResultDto.cs" />
+    <Compile Include="RoleModulesDto.cs" />
+    <Compile Include="RoleDto.cs" />
+    <Compile Include="SelectGroupDto.cs" />
+    <Compile Include="SelectListDto.cs" />
+    <Compile Include="StateDto.cs" />
+    <Compile Include="StatusMasterDto.cs" />
+    <Compile Include="TrialBalanceDto.cs" />
+    <Compile Include="TypeQueriesDto.cs" />
+    <Compile Include="VillageDto.cs" />
+    <Compile Include="VillageLookupDto.cs" />
+    <Compile Include="VillageViewDto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RepaymentDto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreComponents\CoreComponents.csproj">
+      <Project>{2279d55d-c865-40b7-b7e5-b6a6ffb147ad}</Project>
+      <Name>CoreComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,111 @@
+﻿@model MFIS.Web.Models.OpeningBalanceModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "GetOpeningBalance";
+    if (ViewBag.IsGroup == null)
+    {
+        Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    }
+    
+    List<MFIS.Web.Models.OpeningBalanceModelLiabilities> lstLiabilities = Model.openingBalanceModelLiabilities;
+    List<MFIS.Web.Models.OpeningBalanceModelAssets> lstAssets = Model.openingBalanceModelAssets;
+
+    int lCount = lstLiabilities != null ? lstLiabilities.Count : 0;
+    int aCount = lstAssets != null ? lstAssets.Count : 0;
+    int totalRows = lCount >= aCount ? lCount : aCount;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group - Opening Balance Report</span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped table-bordered table-hover" id="tblOpeningBalanceLiabilities">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2">S.No</th>
+                                    <th class="text-center" colspan="2">Liabilities</th>
+                                    <th class="text-center" colspan="2">Assets</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Account Head</th>
+                                    <th class="text-center">Amount</th>
+                                    <th class="text-center">Account Head</th>
+                                    <th class="text-center">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < totalRows; i++)
+                                {
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(i + 1)</td>
+                                        @if (i < lCount)
+                                        {
+                                            <td class="text-center">@(lstLiabilities[i].LiabilitiesAHName + " - " + lstLiabilities[i].LiabilitiesAHCode) </td>
+                                            <td class="text-right">@(Convert.ToDecimal(lstLiabilities[i].LiabilitiesOpeningBalance).ToDisplayCurrencyInRupees())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                        }
+                                        @if (i < aCount)
+                                        {
+                                            <td class="text-center">@(lstAssets[i].AssetAHName + " - " + lstAssets[i].AssetAHCode) </td>
+                                            <td class="text-right">@(Convert.ToDecimal(lstAssets[i].AssetOpeningBalance).ToDisplayCurrencyInRupees())</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                        }
+                                    </tr>
+                                }
+                                <tr class="gradeA odd">
+                                    <td class="text-center header" style="font-size:medium" colspan="2" >Total : </td>
+                                    <td class="text-right">@Convert.ToDecimal(@Model.LiabilitiesTotal).ToDisplayCurrencyInRupees()</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-right">@Convert.ToDecimal(@Model.AssetTotal).ToDisplayCurrencyInRupees()</td>
+                                 
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script src="~/Scripts/jquery.bpopup.min.js"></script>
+    <script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+    <script src="~/Scripts/plugins/momentDate/moment.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            menuLink = "menuAnaliticalReports";
+            subMenuLink = "lnkSideOpeningBalanceSheet";
+            LoadMenu();
+            $('#tblOpeningBalanceLiabilities').dataTable({
+                "bSort": false
+            });
+            $('#tblOpeningBalanceAssets').dataTable({
+                "bSort": false
+            });
+        });
+    </script>
+    <script src="~/Scripts/Common/Common.js"></script>
+}

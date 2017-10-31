@@ -1,0 +1,135 @@
+﻿@model List<BusinessEntities.PanchayatLookupDto>
+@using CoreComponents;
+
+@{
+    ViewBag.Title = "PanchayatLookup";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Panchayat Lookup</span>
+                    <input type="button" class="btn btn-default pull-right" onclick="addPanchayat();" value="Add New Panchayat" />
+                </div>
+                @if (Result != null)
+                {
+                    if (Result.ObjectId > 0)
+                    {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div> 
+                    }
+                    else
+                    {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                    }
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesPanchayat">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Panchayat Code<br />
+                                    </th>
+                                    <th>Panchayat </th>
+                                    <th>Village/Town</th>
+                                    <th>Cluster</th>
+                                    <th>Mandal</th>
+                                    <th>District</th>
+                                    <th>State</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var obj in Model)
+                                {
+                                    bool isActive = obj.StatusCode == Utilities.Constants.StatusCodes.Active;
+                                    string inActiveTitle = isActive ? "In-Active" : "Active";
+                                    string deleteTitle = "Delete";
+                                    string encryptPanchayatId = obj.PanchayatID.EncryptString();
+                                    
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(Model.IndexOf(obj) + 1) </td>
+                                        <td>@obj.PanchayatCode</td>
+                                        <td>@obj.Panchayat</td>
+                                        <td>@obj.Village</td>
+                                        <td>@obj.Cluster</td>
+                                        <td>@obj.Mandal</td>
+                                        <td>@obj.District</td>
+                                        <td>@obj.State</td>
+                                        <td class="text-center">
+                                            <img src="~/@(isActive ? "Content/images/Circle_Green.png" : "Content/images/Circle_Red.png")" title="@obj.Status" />
+                                        </td>
+                                        <td class="text-center ">
+                                            <img src="~/Content/images/view-icon.png" style="cursor: pointer; width: 16px; height: 16px;" title="View" onclick="ViewPanchayat('@encryptPanchayatId');" />
+                                            <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditPanchayat('@encryptPanchayatId');"/>
+                                            <img style="cursor: pointer" onclick="ActiveInactivePanchayat('@encryptPanchayatId', '@obj.StatusCode');" src="~/@(isActive ? "Content/images/Circle_Red.png" : "Content/images/Circle_Green.png")" title="@inActiveTitle" />
+                                             <img style="cursor: pointer" onclick="DeletePanchayat('@encryptPanchayatId');" src="~/Content/images/delete_btn1.png" title="@deleteTitle" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+    
+}
+
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    function addPanchayat() {
+        showProgress();
+        window.location.href = '@Url.Action("CreatePanchayat","Panchayat")';
+    }
+    function ViewPanchayat(id) {
+        showProgress();
+        window.location.href = '@Url.Content("ViewPanchayat?id=")' + id
+       }
+    function EditPanchayat(id) {
+        showProgress();
+           window.location.href = '@Url.Content("CreatePanchayat?id=")' + id
+    }
+    function DeletePanchayat(encpanchayatID) {
+        if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
+            return false;
+        showProgress();
+        window.location.href = '@Url.Content("DeletePanchayat?Id=")' + encpanchayatID;
+    }
+
+    function ActiveInactivePanchayat(encpanchayatID, currentStatusCode) {
+        if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+            return false;
+        showProgress();
+        window.location.href = '@Url.Content("ActiveInactivePanchayat?Id=")' + encpanchayatID;
+    }
+
+
+
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSidePanchayat";
+        LoadMenu();
+
+        $('#dataTablesPanchayat').dataTable({
+            "bSort": false
+        });
+    });
+</script>

@@ -1,0 +1,352 @@
+﻿@model BusinessEntities.GroupInterestRatesDto
+
+
+@using (Html.BeginForm())
+{
+    int indx = 0;
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            @Html.Hidden("hdnGLIIndex")
+            @Html.Hidden("hdnGLIRId")
+
+            <label>Apply To Loan Principal A/C Head</label>
+            @Html.DropDownListFor(d => d.PrincipalAHID, (SelectList)ViewBag.PrincipleAcHeads, "Select Principle A/C head", new { @class = "form-control", @id = "ddlloanprincipleACHead", @name = "ddlloanprincipleACHead" })
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Apply To Loan Interest A/C Head</label>
+            @Html.DropDownListFor(d => d.InterestAHID, (SelectList)ViewBag.InterestAcHeads, "Select Interest A/C head", new { @class = "form-control", @id = "ddlloanInterestACHead", @name = "ddlloanInterestACHead" })
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Calculation Method</label>
+            @Html.DropDownListFor(d => d.CaluculationMethod, (SelectList)ViewBag.CalcTypes, "Select Calculation", new { @class = "form-control", @id = "ddlCalculationMethod", @name = "ddlCalculationMethod" })
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <label>Base</label>
+            @*<input class="form-control" value="30602004475" />*@
+            @Html.DropDownListFor(d => d.Base, (SelectList)ViewBag.BaseTypes, "Select Base", new { @class = "form-control", @id = "ddlBase", @name = "ddlBase" })
+
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label>Rate Of Interest</label>
+            @*<input class="form-control" value="30602004475" />*@
+            @*@Html.TextBoxFor(m => m.ROI, new { @id = "txtRateOfInterest", @name = "txtRateOfInterest",@class = "form-control decimal-two-digit-only"})*@
+            @Html.TextBox("txtRateOfInterest", string.Empty, new { @class = "form-control  decimal-two-digit-only", @placeholder = "Enter Rate Of Interest", @id = "txtRateOfInterest", @onkeypress="return validateFloatKeyPress(this, event)", @onchange="validateInterestRate(this);" })
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label>Penal Interest Rate</label>
+            @*<input class="form-control" value="30602004475" />*@
+            @*@Html.TextBoxFor(m => m.PenalROI, new { @id = "txtPenalInterest", @name = "txtPenalInterest",@class = "form-control decimal-two-digit-only"})*@
+            @Html.TextBox("txtPenalInterest", string.Empty, new { @class = "form-control decimal-two-digit-only", @placeholder = "Enter Penal Rate", @id = "txtPenalInterest", @onkeypress="return validateFloatKeyPress(this, event)", @onchange="validateInterestRate(this);" })
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group date" id="datetimep">
+            <label>From Date</label>
+            @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control", @id = "txtFromDate", @name = "txtFromDate" })
+
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <br />
+        <div class="form-group">
+            <button type="button" onclick="return CreateloanInterest();" id="btnloaninterest" class="btn btn-outline btn-primary">ADD</button>
+            <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="tblLoaninterest">
+            <thead>
+                <tr>
+                    <th class="text-center" style="display: none">#</th>
+                    <th>Apply TO Loan Principle A/C Head</th>
+                    <th>Apply TO Loan Int A/C Head</th>
+                    <th>Calculation Method</th>
+                    <th>Base</th>
+                    <th>ROI</th>
+                    <th>Penal Interest</th>
+                    <th>From Date</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="loaninterestbody">
+
+                @{ List<BusinessEntities.GroupInterestRatesDto> objlst = new List<BusinessEntities.GroupInterestRatesDto>();
+                   if (ViewBag.GroupInterestRates != null)
+                   {
+
+                       objlst = ViewBag.GroupInterestRates;
+
+                   }
+              
+                }
+
+                @if (objlst != null)
+                {
+                    foreach (var item in objlst)
+                    {
+                        indx++;
+                    <tr>
+                        <td class="text-center" style="display: none;">@indx </td>
+                        <td class="text-center" style="display: none;">@indx<input type="hidden" id ="hdnloanentryId_@indx" name ="hdnloanentryId_@indx" value="@item.GroupInterestID" /></td>
+                        <td>
+                            <input type="hidden" id ="hdnloanprincipleAChead_@indx" name ="hdnloanprincipleAChead_@indx" value="@item.PrincipalAHID"/>
+                            <span>@item.PrincipalAH</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnloanInterestACHead_@indx" name ="hdnloanInterestACHead_@indx"" value="@item.InterestAHID"/>
+                            <span>@item.InterestAH </span></td>
+                        <td>
+
+                            <input type="hidden" id ="hdnCalMethod_@indx" name ="hdnCalMethod_@indx" value="@item.CaluculationMethodId"/>
+                            <span>@item.CaluculationMethod</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnBase_@indx" name ="hdnBase_@indx" value="@item.Base"/>
+                            <span>@item.BaseText</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnrateofint_@indx" name ="hdnrateofint_@indx" value="@item.ROI"/>
+                            <span>@item.ROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnpenalrateofinterest_@indx" name ="hdnpenalrateofinterest_@indx" value="@item.PenalROI"/>
+                            <span>@item.PenalROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdnfromdate_@indx" name ="hdnfromdate_@indx" value="@item.FromDate.ToString("dd/MMM/yyyy")"/>
+                            <span>@item.FromDate.ToString("dd/MMM/yyyy")</span>
+
+                        </td>
+                        <td>
+                            <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" />
+
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        @Html.Hidden("hdnMaxLoanIndex", indx)
+    </div>
+}
+<script type="text/javascript">
+    $('#txtFromDate').datepicker({
+
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+0"
+    });
+    $('#txtToDate').datepicker({
+
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+30"
+    });
+
+    var tblindex = 1;
+    var arrofint = new Array();
+
+    function CreateloanInterest() {
+        var loanprincipleACheadID = $("#ddlloanprincipleACHead").val();
+        var loanprincipleAChead = $("#ddlloanprincipleACHead option:selected").text();
+        var loanInterestACHead = $("#ddlloanInterestACHead option:selected").text();
+        var loanInterestACHeadID = $("#ddlloanInterestACHead").val();
+        var CalMethod = $("#ddlCalculationMethod option:selected").text();
+        var CalMethodID = $("#ddlCalculationMethod").val();
+        var Base = $("#ddlBase  option:selected").text();
+        var BaseID = $("#ddlBase").val();
+        var rateOfInterest = $("#txtRateOfInterest").val();
+        var PenalInterest = $("#txtPenalInterest ").val();
+        var FromDate = $('#txtFromDate').val();
+        var editIndx = $("#hdnGLIIndex").val();
+        var html = "";
+        var errmsg = '';
+        if ($.trim(loanprincipleACheadID) == '')
+            errmsg += 'Select Principle AChead.\r\n';
+        if ($.trim(loanInterestACHeadID) == '')
+            errmsg += 'Select Interest ACHead.\r\n';
+
+        if ($.trim(CalMethodID) == '')
+            errmsg += 'Select Cal Method.\r\n';
+        if ($.trim(BaseID) == '')
+            errmsg += 'Select Base.\r\n';
+        if ($.trim(rateOfInterest) == '')
+            errmsg += 'Enter Rate Of Interest.\r\n';
+        if ($.trim(PenalInterest) == '')
+            errmsg += 'Enter Penal Interest.\r\n';
+        if ($.trim(FromDate) == '')
+            errmsg += 'Enter From Date.\r\n';
+        if (errmsg != '') {
+            alert(errmsg);
+            return false;
+        }
+
+        if (Number(editIndx)) {
+            //update new Interest Rate
+            $("#hdnloanInterestACHead_" + editIndx).val(loanInterestACHeadID);
+            $("#hdnloanInterestACHead_" + editIndx).parent().find('span').text(loanInterestACHead);
+
+            $("#hdnbranchcode_" + editIndx).val(CalMethodID);
+            $("#hdnbranchcode_" + editIndx).parent().find('span').text(CalMethod);
+
+            $("#hdnBase_" + editIndx).val(BaseID);
+            $("#hdnBase_" + editIndx).parent().find('span').text(Base);
+
+            $("#hdnrateofint_" + editIndx).val(rateOfInterest);
+            $("#hdnrateofint_" + editIndx).parent().find('span').text(rateOfInterest);
+
+            $("#hdnfromdate_" + editIndx).val(FromDate);
+            $("#hdnfromdate_" + editIndx).parent().find('span').text(FromDate);
+
+            $("#hdnloanprincipleAChead_" + editIndx).val(loanprincipleACheadID);
+            $("#hdnloanprincipleAChead_" + editIndx).parent().find('span').text(loanprincipleAChead);
+        }
+        else {
+            //Add new Interest Rate
+            if ($('#hdnMaxLoanIndex').val() != null || $('#hdnMaxLoanIndex').val() != '') {
+                $('#hdnMaxIntIndex').val($('#hdnMaxLoanIndex').val());
+            }
+            var newIndex = (Number($('#hdnMaxLoanIndex').val()) + 1);
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, loanInterestACHead, loanInterestACHeadID, loanprincipleAChead, loanprincipleACheadID, CalMethod, CalMethodID, Base, BaseID, rateOfInterest, PenalInterest, FromDate);
+            $("#loaninterestbody").append(newRow);
+            $('#hdnMaxLoanIndex').val(newIndex);
+            $('#hdnMaxIntIndex').val(newIndex);
+        }
+        clearLoanInterestDetails();
+    }
+
+
+
+    function loadNewRow(index, loanInterestACHead, loanInterestACHeadID, loanprincipleAChead, loanprincipleACheadID, CalMethod, CalMethodID, Base, BaseID, rateOfInterest, PenalInterest, FromDate) {
+        var row = '<tr class="gradeA even">';
+        row += '<td class="text-center" style="display:none;">' + index + '<input type="hidden" id ="hdnloanentryId_' + index + '" name ="hdnloanentryId_' + index + '" /></td>';
+        row += '<td><input type="hidden" id ="hdnloanprincipleAChead_' + index + '" name ="hdnloanprincipleAChead_' + index + '" value="' + loanprincipleACheadID + '"/> <span>' + loanprincipleAChead + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnloanInterestACHead_' + index + '" name ="hdnloanInterestACHead_' + index + '" value="' + loanInterestACHeadID + '"/> <span>' + loanInterestACHead + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnCalMethod_' + index + '" name ="hdnCalMethod_' + index + '" value="' + CalMethodID + '"/> <span>' + CalMethod + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnBase_' + index + '" name ="hdnBase_' + index + '" value="' + BaseID + '"/> <span>' + Base + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnrateofint_' + index + '" name ="hdnrateofint_' + index + '" value="' + rateOfInterest + '"/> <span>' + rateOfInterest + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnpenalrateofinterest_' + index + '" name ="hdnpenalrateofinterest_' + index + '" value="' + PenalInterest + '"/> <span>' + PenalInterest + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnfromdate_' + index + '" name ="hdnfromdate_' + index + '" value="' + FromDate + '"/> <span>' + FromDate + '</span></td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + index + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + index + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+    function editRate(src, indx) {
+
+        $("#ddlloanprincipleACHead").val($("#hdnloanprincipleAChead_" + indx).val());
+        $("#ddlloanInterestACHead").val($("#hdnloanInterestACHead_" + indx).val());
+        $("#ddlCalculationMethod").val($("#hdnCalMethod_" + indx).val());
+        $("#ddlBase").val($("#hdnBase_" + indx).val());
+        $("#txtRateOfInterest").val($("#hdnrateofint_" + indx).val());
+        $("#txtPenalInterest").val($("#hdnpenalrateofinterest_" + indx).val());
+        $("#txtFromDate").val($("#hdnfromdate_" + indx).val());
+        $("#hdnGLIIndex").val(indx);
+        $('#btnloaninterest').text('Update');
+    }
+
+    function deleteRate(src, indx) {
+        if (confirm('Do you wish to remove select rate details?')) {
+            clearLoanInterestDetails();
+            $(src).parent().parent().remove();
+        }
+    }
+    function clearLoanInterestDetails() {
+        $("#ddlloanprincipleACHead").val('');
+        $("#ddlloanInterestACHead").val('');
+        $("#ddlCalculationMethod").val('');
+        $("#ddlBase").val('');
+        $("#txtRateOfInterest").val('');
+        $("#txtPenalInterest").val('');
+        $("#txtFromDate").val('');
+        $("#hdnGLIIndex").val('');
+        $('#btnloaninterest').text('ADD');
+    }
+    function isNumericAllowed(txt, evt) {
+        var eventtype = (evt.type) ? evt.type : event.type;
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (navigator.appName != 'Microsoft Internet Explorer' && eventtype == 'keypress') {
+
+            if (evt.ctrlKey)
+                return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+        else if (navigator.appName != 'Netscape' && eventtype == 'keydown') {
+            if (evt.ctrlKey)//control key
+                return true;
+            if (charCode == 37 || charCode == 38 || charCode == 39 || charCode == 40 || charCode == 46)//delete.
+                return true;
+            if (evt.shiftKey) {//shift key
+                if (charCode == 35 || charCode == 36 || charCode == 37 || charCode == 38 || charCode == 39 || charCode == 40)
+                    return true;
+                else
+                    return false;
+            }
+            if (charCode > 31 && ((charCode < 48 || charCode > 57) && (charCode < 96 || charCode > 105) && (charCode)))
+                return false;
+            return true;
+        }
+    }
+
+    @section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    $(function () {
+        $("#txtFromDate").datepicker({
+            numberOfMonths: 1,
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0",
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() + 1);
+                $("#txtToDate").datepicker("option", "minDate", dt);
+            }
+        });
+        $("#txtToDate").datepicker({
+            numberOfMonths: 1,
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0",
+            onSelect: function (selected) {
+                var dt = new Date(selected);
+                dt.setDate(dt.getDate() - 1);
+                $("#txtFromDate").datepicker("option", "maxDate", dt);
+            }
+        });
+        $('.decimal-two-digit-only').on('keydown', 'input[type="text"]', function (e) {
+            
+            var el = $(this).get(0);
+            var isValid = validateFloatKeyPress(el, e);
+            return isValid;
+        });
+    });
+    }
+</script>

@@ -1,0 +1,131 @@
+﻿@using CoreComponents;
+@using BusinessEntities;
+@model BusinessEntities.GroupOtherReceiptViewDto
+
+@{
+    ViewBag.Title = "CreateGeneralReceipt";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    ResultDto res = ViewBag.Result;
+    string voucherNumber = "N/A";
+    if (Model.VoucherNumber != null)
+    {
+        voucherNumber = Model.VoucherNumber;
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">General/Other Receipt &nbsp;<label>Vocher Number</label>
+                        : @voucherNumber </span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList()">Back To List</button>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label>&nbsp;&nbsp;:&nbsp;@Model.TransactionMode
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label>&nbsp;&nbsp;:@Model.TransactionDate.ToDisplayDateFormat()
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Vocher RefNumber</label>&nbsp;:&nbsp;@Model.VoucherRefNumber
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Collection Agent</label>:@Model.CollectionAgent
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <label style="font: 500">From (Cr.)</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                        <div class="col-lg-3">
+                            <label style="font: 500">To (Dr.)</label>
+                            <hr style="margin: 3px;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9" style="padding: 0; margin: 0;">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>General Ledger A/C</label>:@Model.GLAccountName
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Sub Ledger A/C</label>
+                                    @Model.SLAccountName
+                                </div>
+                            </div>
+                            <div class="col-lg-4 dv-cheque">
+                                <div class="form-group">
+                                    <label>Cheque Number</label>
+                                    @Model.ChequeNumber
+                                </div>
+                            </div>
+                            <div class="col-lg-4 dv-cheque">
+                                <div class="form-group">
+                                    <label>Cheque Date</label>:@Model.StrChequeDate
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Amount</label>:@Model.Amount.ToDisplayCurrencyInRupeesWithComma()
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Narration</label>:@Model.Narration
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Account Head</label>
+                                    <label>@(!string.IsNullOrEmpty(Model.BankName) ? "Cash at Bank" : "Cash In Hand")</label>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.BankName))
+                            {
+                                <div class="col-lg-12" id="dvToBank">
+                                    <div class="form-group">
+                                        <label>Group Bank Account</label>:@Model.BankName
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default pull-rightrt" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("GroupOtherReceiptLookUp")';
+    }
+
+</script>
+
+

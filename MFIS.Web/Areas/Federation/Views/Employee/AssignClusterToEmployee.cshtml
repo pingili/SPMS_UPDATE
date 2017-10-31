@@ -1,0 +1,78 @@
+﻿@model BusinessEntities.ClusterAssignmentDto
+
+@{
+    ViewBag.Title = "AssignClusterToEmployee";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+
+    int index = 0;
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Add/Update Cluster Assignments</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="List();">Back to List</button>
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @Html.DropDownList("EmployeeId", (SelectList)ViewBag.EmployeeList, "Select Employee", new { @class = "form-control", @placeholder = "EmployeeName", @ID = "EmployeeID", onchange = "GetCluster(this.value)" })
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        @foreach (var Cluster in ViewBag.Clusterlist)
+                        {
+                            index++;
+                            <div class="col-lg-1">
+                                <label class="checkbox-inline adjc-right-60">
+                                    <input type="checkbox" id="Checkcluster_@index" name="Checkcluster_@index" CLUSTER_ID="@Cluster.Value" />
+                                </label>
+                            </div>
+                            <div class="col-lg-5">
+                                <input type="hidden" id="hdnClusterID_@index" name="hdnClusterID_@index" value="@Cluster.Value" />
+                                <label>@Cluster.Text</label>
+                            </div>
+                        }
+                    </div>
+                    @Html.Hidden("hdnIndex", index)
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary loader" id="submit">Save</button>
+                        <button type="button" id="btnClearAll" class="btn btn-outline btn-primary">Reset</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+        </div>
+        <!-- end page-wrapper -->
+    </div>
+
+
+}
+<script type="text/javascript">
+    $(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideAssignCluster";
+        LoadMenu();
+    });
+    function GetCluster(id) {
+        $.post('@Url.Action("Getcluster")' + '/' + id, {},
+                function (data) {
+                    $(data.ClusterCheck).each(function () {
+                        if ($('input[type="checkbox"][CLUSTER_ID="' + this.ClusterID + '"]')) {
+                            $('input[type="checkbox"][CLUSTER_ID="' + this.ClusterID + '"]').attr('checked', 'checked');
+                        }
+                    });
+
+                }, 'json');
+    }
+    function List() {
+        showProgress();
+        window.location.href = '@Url.Action("EmployeeClusterDetails", "Employee")';
+    }
+</script>

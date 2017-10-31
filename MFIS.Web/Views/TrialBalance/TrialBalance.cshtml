@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "TrialBalance";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Organisation Name(As per Master)</span>
+                    <div class="panel-heading">
+                        <span class="header">Organisation Address(As per Master)</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesTrialBalance">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" class="text-center">PARTICULARS</th>
+                                    <th colspan="2" class="text-center">OPENING BALANCE</th>
+                                    <th colspan="2" class="text-center">TRANSACTIONS</th>
+                                    <th colspan="2" class="text-center">CLOSING</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">AH CODE</td>
+                                    <td class="text-center">ACCOUNT HEAD NAME</td>
+                                    <td class="text-center">DEBIT</td>
+                                    <td class="text-center">CREDIT</td>
+                                    <td class="text-center">DEBIT</td>
+                                    <td class="text-center">CREDIT</td>
+                                    <td class="text-center">DEBIT</td>
+                                    <td class="text-center">CREDIT</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">A</td>
+                                    <td class="text-center">B</td>
+                                    <td class="text-center">C</td>
+                                    <td class="text-center">D</td>
+                                    <td class="text-center">E</td>
+                                    <td class="text-center">F</td>
+                                    <td class="text-center">G</td>
+                                    <td class="text-center">H</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">I</td>
+                                    <td class="text-center">J</td>
+                                    <td class="text-center">K</td>
+                                    <td class="text-center">L</td>
+                                    <td class="text-center">M</td>
+                                    <td class="text-center">N</td>
+                                    <td class="text-center">O</td>
+                                    <td class="text-center">P</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Q</td>
+                                    <td class="text-center">R</td>
+                                    <td class="text-center">S</td>
+                                    <td class="text-center">T</td>
+                                    <td class="text-center">U</td>
+                                    <td class="text-center">V</td>
+                                    <td class="text-center">W</td>
+                                    <td class="text-center">X</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-center">TOTAL</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="panel-footer">
+                    <button type="button" id="cmd" class="btn btn-default pull-right" onclick="DownloadPdf();">Download as PDF</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="DownloadPdf();">Convert To Excel Format</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function GetPdf()
+    {
+        window.location.href = '@Url.Content("~/Reports/FinancialRports/TrialBalance.rpt")';
+
+    }
+</script>

@@ -1,0 +1,110 @@
+﻿@model MFIS.Web.Areas.Federation.Models.FundSourceModel
+
+@{
+    ViewBag.Title = "CreateFundSource";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage FundSource Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.FundSourceID" id="DistrictID" name="FundSourceID" />
+
+                    <div class="col-lg-4">
+                        @if (@Model.FundSourceID > 0)
+                        {
+                            <div class="form-group">
+                                @* <label>FundSource Code</label>*@
+                                @Html.DisplayNameFor(model => model.FundSourceCode)
+                                @Html.TextBoxFor(model => model.FundSourceCode, new { @class = "form-control", @placeholder = "Enter FundSourceCode", @readonly = "readonly", maxlength = "16" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            @* <label>FundSource Name</label>*@
+                            @Html.DisplayNameFor(mode => mode.FundSourceName)
+
+                            @Html.TextBoxFor(model => model.FundSourceName, new { @class = "form-control alphabet-only", @placeholder = "Enter FundSource Name", @ID = "FundSourceName", maxlength = "30" })
+
+
+                            @* <input class="form-control" placeholder="Ongole" maxlength="20">*@
+                        </div>
+                        <div class="form-group">
+                            <label>FundSource(Telugu)</label><br />
+                            @Html.TextBoxFor(model => model.TEFundSourseName, new { @class = "form-control alphanumeric-only required", @placeholder = "Enter Fund Name in Telugu ", @id = "txtfundTeluguName", maxlength = "100" })
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+
+                        <button type="submit" class="btn btn-outline btn-primary loader" id="btn-save">@(Model.FundSourceID > 0 ? "Save" : "Submit")</button>
+
+                        <button type="button" id="ClearAll" class="btn btn-outline btn-primary">Reset</button>
+
+                        <button type="button" class="btn btn-default pull-right loader" onclick="BackToList();">Back To List</button>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        CustomTransliteration(['txtfundTeluguName']);
+        function clearAllfields() {
+            $('#FundSourceName').val("");
+        }
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("~/Federation/FundSource/FundSourceLookup")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuMaster";
+            subMenuLink = "lnkSideFundSource";
+            LoadMenu();
+        });
+        $(document).ready(function () {
+            $("#ClearAll").click(function () {
+                $("#FundSourceName").val('');
+            });
+            //$('[name="btn-save"]')
+            //$('#btn-save').on('click', function () {
+            //    showProgress();
+            //});
+        });
+
+    </script>
+}
+<script src="~/Scripts/Common/Common.js"></script>
+
+
+
+
+
+
+

@@ -1,0 +1,172 @@
+﻿@model List<BusinessEntities.DataEntryStatusReportDto>
+@{
+    ViewBag.Title = "Data Entry Status Report";
+    if (ViewBag.IsGroup == null)
+    {
+        Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    }
+
+    int counter = 0;
+}
+<style>
+    #tblDataEntryStatus {
+        font-size: 10px;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Data Entry Status Report (April 2016 to March 2017)</span>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tblDataEntryStatus">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" rowspan="2">S.No</th>
+                                    <th class="text-center" rowspan="2">Cluster</th>
+                                    <th class="text-center" rowspan="2">Group</th>
+                                    <th class="text-center" rowspan="2" title="Sangam OB">SOB</th>
+                                    <th class="text-center" rowspan="2" title="Member OB">MOB</th>
+                                    <th class="text-center" colspan="3">Apr</th>
+                                    <th class="text-center" colspan="3">May</th>
+                                    <th class="text-center" colspan="3">Jun</th>
+                                    <th class="text-center" colspan="3">Jul</th>
+                                    <th class="text-center" colspan="3">Aug</th>
+                                    <th class="text-center" colspan="3">Sep</th>
+                                    <th class="text-center" colspan="3">Oct</th>
+                                    <th class="text-center" colspan="3">Nov</th>
+                                    <th class="text-center" colspan="3">Dec</th>
+                                    <th class="text-center" colspan="3">Jan</th>
+                                    <th class="text-center" colspan="3">Feb</th>
+                                    <th class="text-center" colspan="3">Mar</th>
+                                    <th class="text-center" colspan="3">Tot</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">N</th>
+                                    <th class="text-center">T</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (BusinessEntities.DataEntryStatusReportDto obj in Model)
+                                {
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(++counter)</td>
+                                        <td class="text-center" title="Cluster">@(string.Format("{0} ({1})", obj.ClusterName, obj.ClusterCode))</td>
+                                        <td class="text-center" title="Group">@(string.Format("{0} ({1})", obj.GroupName, obj.GroupCode))</td>
+                                        <td class="text-center" title="Sangam OB">@(obj.GroupOBStatus)</td>
+                                        <td class="text-center" title="Member OB">@(obj.SavingsMemberCount)</td>
+
+
+                                        <td class="text-center" title="April Conducted">@(obj.AprC > 0 ? obj.AprC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="April Not Conducted">@(obj.AprN > 0 ? obj.AprN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="April Total">@(obj.AprC + obj.AprN > 0 ? (obj.AprC + obj.AprN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="May Conducted">@(obj.MayC > 0 ? obj.MayC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="May Not Conducted">@(obj.MayN > 0 ? obj.MayN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="May Total">@(obj.MayC + obj.MayN > 0 ? (obj.MayC + obj.MayN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="June Conducted">@(obj.JunC > 0 ? obj.JunC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="June Not Conducted">@(obj.JunN > 0 ? obj.JunN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="June Total">@(obj.JunC + obj.JunN > 0 ? (obj.JunC + obj.JunN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="July Conducted">@(obj.JulC > 0 ? obj.JulC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="July Not Conducted">@(obj.JulN > 0 ? obj.JulN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="July Total">@(obj.JulC + obj.JulN > 0 ? (obj.JulC + obj.JulN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="August Conducted">@(obj.AugC > 0 ? obj.AugC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="August Not Conducted">@(obj.AugN > 0 ? obj.AugN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="August Total">@(obj.AugC + obj.AugN > 0 ? (obj.AugC + obj.AugN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="September Conducted">@(obj.SepC > 0 ? obj.SepC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="September Not Conducted">@(obj.SepN > 0 ? obj.SepN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="September Total">@(obj.SepC + obj.SepN > 0 ? (obj.SepC + obj.SepN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="October Conducted">@(obj.OctC > 0 ? obj.OctC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="October Not Conducted">@(obj.OctN > 0 ? obj.OctN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="October Total">@(obj.OctC + obj.OctN > 0 ? (obj.OctC + obj.OctN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="November Conducted">@(obj.NovC > 0 ? obj.NovC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="November Not Conducted">@(obj.NovN > 0 ? obj.NovN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="November Total">@(obj.NovC + obj.NovN > 0 ? (obj.NovC + obj.NovN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="December Conducted">@(obj.DecC > 0 ? obj.DecC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="December Not Conducted">@(obj.DecN > 0 ? obj.DecN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="December Total">@(obj.DecC + obj.DecN > 0 ? (obj.DecC + obj.DecN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="January Conducted">@(obj.JanC > 0 ? obj.JanC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="January Not Conducted">@(obj.JanN > 0 ? obj.JanN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="January Total">@(obj.JanC + obj.JanN > 0 ? (obj.JanC + obj.JanN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="Feb Conducted">@(obj.FebN > 0 ? obj.FebN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="Feb Not Conducted">@(obj.FebC > 0 ? obj.FebC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="Feb Total">@(obj.FebC + obj.FebN > 0 ? (obj.FebC + obj.FebN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="March Conducted">@(obj.MarC > 0 ? obj.MarC.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="March Not Conducted">@(obj.MarN > 0 ? obj.MarN.ToString() : string.Empty)</td>
+                                        <td class="text-center" title="March Total">@(obj.MarC + obj.MarN > 0 ? (obj.MarC + obj.MarN).ToString() : string.Empty)</td>
+
+                                        <td class="text-center" title="Conducted">@(obj.AprC + obj.MayC + obj.JunC + obj.JulC + obj.AugC + obj.SepC + obj.OctC + obj.NovC + obj.DecC + obj.JanC + obj.FebC + obj.MarC)</td>
+                                        <td class="text-center" title="Not Conducted">@(obj.AprN + obj.MayN + obj.JunN + obj.JulN + obj.AugN + obj.SepN + obj.OctN + obj.NovN + obj.DecN + obj.JanN + obj.FebN + obj.MarN)</td>
+                                        <td class="text-center" title="Total">@(obj.AprC + obj.AprN + obj.MayC + obj.MayN + obj.JunC + obj.JunN + obj.JulC + obj.JulN + obj.AugC + obj.AugN + obj.SepC + obj.SepN + obj.OctC + obj.OctN + obj.NovC + obj.NovN + obj.DecC + obj.DecN + obj.JanC + obj.JanN + obj.FebN + obj.FebC + obj.MarC + obj.MarN)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        menuLink = "menuAnaliticalReports";
+        subMenuLink = "lnkSideDataEntryStatus";
+        LoadMenu();
+    });
+</script>

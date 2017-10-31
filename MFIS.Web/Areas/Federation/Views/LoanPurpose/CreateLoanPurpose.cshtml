@@ -1,0 +1,111 @@
+﻿@model MFIS.Web.Areas.Federation.Models.LoanPurposeModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateLoanPurpose";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string ecnloanpurposeId = Model.LoanPurposeID > 0 ? Model.LoanPurposeID.EncryptString() : string.Empty;    
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Loan Purpose Details</span>
+                    @Html.ActionLink("Add New Loan Purpose", "CreateLoanPurpose", null, new { @class = "btn btn-default pull-right" })
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.LoanPurposeID" id="LoanPurposeID" name="LoanPurposeID" />
+
+                    <div class="col-lg-4">
+                        @if (@Model.LoanPurposeID > 0)
+                        {
+                            <div class="form-group">
+                                @Html.DisplayNameFor(model => model.LoanPurposeCode)
+                                @Html.TextBoxFor(model => model.LoanPurposeCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label>Project Purpose</label><br />
+                            @Html.DropDownListFor(d => Model.Project, (SelectList)ViewBag.Projects, "Select Project", new { @class = "form-control", @ID = "ddlproject" })
+                        </div>
+                        <div class="form-group">
+                            <label>Loan Purpose</label><br />
+                            @Html.TextBoxFor(model => model.Purpose, new { @class = "form-control alphabet-only", @placeholder = "Loan Purpose", @ID = "txtLoanpurpose", maxlength = "64" })
+
+                        </div>
+                        <div class="form-group">
+                            <label>Loan Purpose(Telugu)</label><br />
+                            @Html.TextBoxFor(model => model.TELoanPurpose, new { @class = "form-control alphanumeric-only", @placeholder = "Enter Loanpurpose Name in Telugu ", @id = "txtloanpurposeName", maxlength = "100" })
+                        </div>
+@*                        <div class="form-group">
+                            <label>Project Master</label><br />
+                            @Html.DropDownListFor(d => Model.Category, (SelectList)ViewBag.LoanPurpose, "Select Project", new { @class = "form-control", @ID = "ddlcategory" })
+                        </div>*@
+                        
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.LoanPurposeID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary">Submit</button>
+                        }
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return clearAllfields('@ecnloanpurposeId');">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+
+        </div>
+        <!-- end page-wrapper -->
+
+    </div>
+}
+<script type="text/javascript">
+    CustomTransliteration(['txtloanpurposeName']);
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("~/Federation/LoanPurpose/LoanPurposeLookup")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuMaster";
+        subMenuLink = "lnkSideLoanPurpose";
+        LoadMenu();
+    });
+    function clearAllfields(ecnloanpurposeId) {
+        if (ecnloanpurposeId != '') {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("CreateLoanPurpose?id=")' + ecnloanpurposeId;
+        }
+        else {
+            $('#txtLoanpurpose').val("");
+            $('#ddlcategory').find('option:first').attr('selected', 'selected');
+            $('#ddlproject').find('option:first').attr('selected', 'selected');
+            
+            return true;
+        }
+    }
+</script>
+<script src="~/Scripts/Common/Common.js"></script>

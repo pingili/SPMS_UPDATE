@@ -1,0 +1,276 @@
+﻿@model MFIS.Web.Areas.Federation.Models.AccountHeadModel
+
+@using System.Collections.Generic;
+@using BusinessEntities;
+
+@{
+    ViewBag.Title = "AccountTree";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    var lstAccountHeadDtos = new List<AccountHeadDto>();
+    if (ViewBag.AccountHeads != null)
+    {
+        lstAccountHeadDtos = ViewBag.AccountHeads;
+    }
+}
+<link href="~/Scripts/jquery.treeview/jquery.treeview.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.treeview/jquery.treeview.js"></script>
+<script src="~/Scripts/jquery.treeview/jquery.treeview.async.js"></script>
+<script src="~/Scripts/jquery.treeview/jquery.treeview.pack.js"></script>
+<script src="~/Scripts/jquery.treeview/TreeListFilter.js"></script>
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Form Elements -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span id="spnTitle" class="header">Group Accounting Structure</span>
+
+                <button type="button" class="btn btn-default pull-right" onclick="Tableview();">Table View</button>
+                @*<button type="button" class="btn btn-default pull-right" onclick="MapHeads();">Account Head Mappaing</button>*@
+            </div>
+
+            <div>
+            </div>
+            @if (TempData["SuccessMsg"] != null)
+            {
+                ResultDto result = TempData["SuccessMsg"] as ResultDto;
+                if (result != null && result.ObjectId > 0 && !string.IsNullOrEmpty(result.Message))
+                {
+                <div class="alert alert-success">
+                    <strong>Success!</strong> @result.Message
+                </div>
+                }
+                else if (result != null && result.ObjectId < 0 && !string.IsNullOrEmpty(result.Message))
+                {
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> @result.Message
+                </div>
+                }
+            }
+
+
+            <div class="panel-body">
+                <div class="col-lg-5">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>Accounting Tree</strong>
+                            <div class="pull-right" id="treecontrol" style="display: block;">
+                                <a title="Collapse the entire tree below" href="#">Collapse All</a> |
+                                <a title="Expand the entire tree below" href="#">Expand All</a> |
+                                <a title="Toggle the tree below, opening closed branches, closing open branches" href="#">Toggle All</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="dvSearchAccountHeadTree" class="form-group" style="display: none;">
+                                <input class="form-control" placeholder="Search" name="filter" id="filter" />
+                            </div>
+
+                            <ul id="red" class="treeview-red treeview">
+                                <!--Major Category Starts -->
+                                @foreach (var majorCategoryAh in lstAccountHeadDtos.FindAll(f => f.ParentAHID == 0))
+                                {
+                                    <!-- LEVEL 1 -->
+                                    <li class="expandable">
+                                        <div class="hitarea expandable-hitarea"></div>
+                                        <div class="hitarea expandable-hitarea"></div>
+                                        <span class="">@majorCategoryAh.AHName</span>
+                                        <ul style="display: none;">
+                                            <!--Sub Category Starts-->
+                                            @foreach (var subCategoryAh in lstAccountHeadDtos.FindAll(f => f.ParentAHID == majorCategoryAh.AHID))
+                                            {
+                                                <!-- LEVEL 2 -->
+                                                <li class="expandable">
+                                                    <div class="hitarea expandable-hitarea"></div>
+                                                    <div class="hitarea expandable-hitarea"></div>
+                                                    <span class="">@subCategoryAh.AHName</span>
+                                                    <ul style="display: none;">
+                                                        <!--Major Group Starts-->
+                                                        @foreach (var majorGroupAh in lstAccountHeadDtos.FindAll(f => f.ParentAHID == subCategoryAh.AHID))
+                                                        {
+                                                            <!-- LEVEL 3 -->
+                                                            <li class="expandable">
+                                                                <div class="hitarea expandable-hitarea"></div>
+                                                                <div class="hitarea expandable-hitarea"></div>
+                                                                <span class="">@majorGroupAh.AHName</span>
+                                                                <ul style="display: none;">
+                                                                    <!--SubGroup Starts -->
+                                                                    @foreach (var accountHeadSubGroupDto in lstAccountHeadDtos.FindAll(f => f.ParentAHID == majorGroupAh.AHID))
+                                                                    {
+
+                                                                        if (lstAccountHeadDtos.FindAll(f => f.ParentAHID == accountHeadSubGroupDto.AHID).Count < 1)
+                                                                        {
+                                                                        <!-- LEVEL 4 NO CHILDS -->
+                                                                        <li class="last"><span>@accountHeadSubGroupDto.AHName-@accountHeadSubGroupDto.AHCode</span></li>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <!-- LEVEL 4 WITH CHILDS -->
+                                                                        <li class="expandable">
+                                                                            <div class="hitarea expandable-hitarea"></div>
+                                                                            <div class="hitarea expandable-hitarea"></div>
+                                                                            <span>@accountHeadSubGroupDto.AHName-@accountHeadSubGroupDto.AHCode</span>
+                                                                            <ul style="display: none;">
+                                                                                @foreach (var accountHeadlastDto in lstAccountHeadDtos.FindAll(f => f.ParentAHID == accountHeadSubGroupDto.AHID))
+                                                                                {
+                                                                                    if (lstAccountHeadDtos.FindAll(l => l.ParentAHID == accountHeadlastDto.AHID).Count < 1)
+                                                                                    {
+                                                                                    <!-- LEVEL 5 NO CHILDS -->
+                                                                                    <li class="last"><span>@accountHeadlastDto.AHName-@accountHeadlastDto.AHCode</span></li>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                    <!-- LEVEL 5 WITH CHILDS -->
+                                                                                    <li class="expandable">
+                                                                                        <div class="hitarea expandable-hitarea"></div>
+                                                                                        <div class="hitarea expandable-hitarea"></div>
+                                                                                        <span>@accountHeadlastDto.AHName-@accountHeadlastDto.AHCode</span>
+                                                                                        <ul style="display: none;">
+                                                                                            @foreach (var slAccount in lstAccountHeadDtos.FindAll(f => f.ParentAHID == accountHeadlastDto.AHID))
+                                                                                            {
+                                                                                                <!-- LEVEL 6 NOTHING BUT SLAccounts -->
+                                                                                                <li class="last"><span>@slAccount.AHName-@slAccount.AHCode</span></li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                    </li>
+                                                                                    <!--END LEVEL 5 WITH CHILDS -->
+                                                                                    }
+                                                                                }
+                                                                            </ul>
+
+                                                                        </li>
+                                                                        }
+
+                                                                    }
+                                                                    <!--SubGroup Ends -->
+
+                                                                </ul>
+
+
+                                                            </li>
+                                                        }
+                                                        <!--Major Group Ends-->
+                                                    </ul>
+                                                </li>
+
+                                            }
+                                            <!--Sub Category Ends Here-->
+                                        </ul>
+
+                                    </li>
+                                }
+                                <!--Major Category Ends -->
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="panel-group" id="accordion">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class=""><strong>Update Opening Balance</strong></a>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.Partial("~/Areas/Group/Views/GroupAccountTree/UpdateOpeningBalance.cshtml")
+                            }
+                        </div>
+
+                        @* <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed"><strong>Edit Account Head/Sub Group</strong></a>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.Partial("~/Areas/Federation/Views/AccountTree/EditGroupAccountHead.cshtml")
+                            }
+                        </div>
+                        <!--Move Function begin-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed"><strong>Move Account Head/Sub Group</strong></a>
+                            </div>
+                            @using (Html.BeginForm("MoveSubGroupOrAccountHead", "AccountTree", FormMethod.Post, new { id = "formMoveAccountHead" }))
+                            {
+                                @Html.Partial("~/Areas/Federation/Views/AccountTree/MoveGroupAccountHead.cshtml")
+                            }
+                        </div>
+                        <!--Move Function end-->
+                        <!--Delete Function Start-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed"><strong>Delete Account Head/Sub Group</strong></a>
+                            </div>
+                            @using (Html.BeginForm("DeleteSubGroupAccountHead", "AccountTree", FormMethod.Post))
+                            {
+                                @Html.Partial("~/Areas/Federation/Views/AccountTree/DeleteGroupAccountHead.cshtml")
+                            }
+                        </div>*@
+                        <!--Delete Function End-->
+                        <!--Opening Balances Start-->
+
+                        @*  <div class="panel panel-default">
+                            <div class="panel-heading">
+
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><strong>View Balance Summary</strong> </a>
+
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.Partial("~/Areas/Group/Views/GroupAccountTree/ViewBalanceSummary.cshtml")
+                            }
+                        </div>*@
+
+                        <!--Opening Balances End-->
+                    </div>
+
+                </div>
+                <div class="col-lg-6">
+                </div>
+            </div>
+            <div class="panel-footer">
+                &nbsp;
+            </div>
+        </div>
+        <!-- End Form Elements -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#red").treeview({
+            animated: "fast",
+            collapsed: true,
+            control: "#treecontrol",
+        });
+        $('#treecontrol a[title~="Expand"]').click();
+    });
+
+    function Tableview() {
+        window.location.href = '@Url.Content("AccountHeadTableView")';
+
+    }
+    function MapHeads() {
+        window.location.href = '@Url.Action("AccountHeadMapping", "AccountHeadMapping")';
+
+    }
+    $(document).ready(function () {
+        if ('@ViewBag.IsFederation' == 'True') {
+            menuLink = "menuMaster";
+            subMenuLink = "lnkSideFederationAccountingTree";
+            $('#spnTitle').html('Federation Accounting Structure');
+        }
+        else {
+            menuLink = "menuMaster";
+            subMenuLink = "lnkSideGroupAccountingTree";
+            $('#spnTitle').html('Group Accounting Structure');
+        }
+        LoadMenu();
+
+    });
+
+    $(function () {
+        $('#filter').treeListFilter('#red', 200);
+    });
+    //CustomTransliteration(['TE_AHName', 'txtAddSubGroupTEAHName']);
+</script>

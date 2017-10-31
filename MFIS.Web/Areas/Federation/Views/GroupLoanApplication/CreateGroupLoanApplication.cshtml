@@ -1,0 +1,250 @@
+﻿@model MFIS.Web.Areas.Federation.Models.GroupLoanApplicationModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateGroupLoanApplication";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptGroupLoanId = Model.LoanMasterId > 0 ? Model.LoanMasterId.EncryptString() : string.Empty;
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group Loan Application   <label> LoanCode : @(Model.LoanMasterId > 0 ? Model.LoanCode : "N/A") @(!string.IsNullOrWhiteSpace(Model.Status) ? string.Format("({0})", Model.Status) : string.Empty)</label></span> 
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    @Html.HiddenFor(M => M.LoanCode)
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    @Html.HiddenFor(m => m.LoanMasterId)
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Code</label><br>
+                                @Html.DropDownListFor(d => Model.GroupID, (SelectList)ViewBag.GroupNames, "Select Group", new { @class = "form-control required", onchange = "getGroupName(this.value);" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Application Date</label><br>
+                                @{
+    string loanapplicationdate = Model.LoanApplicationDate.Ticks > 0 ? Model.LoanApplicationDate.ToString("dd/MMM/yyyy") : string.Empty;
+                    <input type="text" value="@loanapplicationdate" class="form-control required" id="LoanApplicationDate" name="LoanApplicationDate" readonly="true" placeholder="Select LoanApplicationDate" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Amount</label>
+                                @Html.TextBox("LoanAmountApplied", Model.LoanAmountApplied.ToDisplayCurrencyInRupees(), new { @class = "form-control required number-only", @ID = "LoanAmountApplied", @Name = "LoanAmountApplied" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>NoOfInstallments</label>
+                                <input type="text" maxlength="3" name="NoofInstallmentsProposed" id="NoofInstallmentsProposed" class="form-control required number-only" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label><br>
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Village Code</label><br>
+                                @Html.TextBoxFor(model => model.VillageCode, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Village Name</label><br>
+                                @Html.TextBoxFor(model => model.VillageName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Cluster Code</label>
+                                @Html.TextBoxFor(model => model.ClusterCode, new { @class = "form-control", @readonly = "true" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Cluster Name</label>
+                                @Html.TextBoxFor(model => model.ClusterName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Project Purpose</label>
+                                @Html.DropDownListFor(m => m.ProjectID, (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control", onchange = "BindLoanPurposeByProjectId(this.id)" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Purpose</label>
+                                @Html.DropDownListFor(d => Model.LoanPurpose, (SelectList)ViewBag.LoanPurposeName, "Select LoanPurpose", new { @class = "form-control required", @ID = "LoanPurpose" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>FundSourse</label>
+                                @Html.DropDownListFor(d => Model.FundSourse, (SelectList)ViewBag.FundSourse, "Select FundSourse", new { @class = "form-control", @ID = "FundSourse" })
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Mode</label>
+                                <select name="Mode" id="Mode" class="form-control" readonly="true">
+                                    <option selected="selected" value="1045">Monthly</option>
+                                    <option value="1044">Weekly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-outline btn-primary" onclick="return validation();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary" onclick="return clearPanchyatData('@encryptGroupLoanId');">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        function getGroupName(id) {
+            $.post('@Url.Action("GetGroupName")' + '/' + id, {},
+                   function (data) {
+                       $('#GroupName').val(data.GroupName);
+                       $('#ClusterName').val(data.ClusterName);
+                       $('#ClusterCode').val(data.ClusterCode);
+                       $('#VillageCode').val(data.VillageCode);
+                       $('#VillageName').val(data.VillageName);
+                   }, 'json');
+        }
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("GroupLoanApplicationLookup")';
+        }
+        $(document).ready(function () {
+            $('#LoanApplicationDate').datepicker({
+                //dateFormat: "HH/MM",
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+        $(document).ready(function () {
+            if ('@Model.NoofInstallmentsProposed' != null && '@Model.NoofInstallmentsProposed' != '' && '@Model.NoofInstallmentsProposed' != '0')
+                $('#NoofInstallmentsProposed').val('@Model.NoofInstallmentsProposed');
+            if ('@Model.Mode' != null && '@Model.Mode' != '' && '@Model.Mode' != '0')
+                $('#Mode').val('@Model.Mode');
+        });
+        function validation() {
+            var validate = true;
+            if ($.trim($('#GroupID').val()) == '' && $.trim($('#LoanApplicationDate').val()) == '' && $.trim($('#LoanPurpose').val()) == '' && $.trim($('#LoanAmountApplied').val()) == '0' && $.trim($('#NoofInstallmentsProposed').val()) == '') {
+                $('#GroupID,#LoanApplicationDate,#LoanPurpose,#LoanAmountApplied,#NoofInstallmentsProposed').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#GroupID,#LoanApplicationDate,#LoanPurpose,#LoanAmountApplied,#NoofInstallmentsProposed').css('border-color', '');
+
+            }
+            if ($.trim($('#GroupID').val()) == '') {
+                $('#GroupID').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#GroupID').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanAmountApplied').val()) == '0') {
+
+                $('#LoanAmountApplied').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanAmountApplied').css('border-color', '');
+
+            }
+            if ($.trim($('#NoofInstallmentsProposed').val()) == '') {
+                $('#NoofInstallmentsProposed').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#NoofInstallmentsProposed').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanPurpose').val()) == '') {
+                $('#LoanPurpose').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanPurpose').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanApplicationDate').val()) == '') {
+                $('#LoanApplicationDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanApplicationDate').css('border-color', '');
+
+            }
+            return validate;
+        }
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideGroupLoanApplication";
+            LoadMenu();
+        });
+
+        function clearPanchyatData(encryptGroupLoanId) {
+
+            if (encryptGroupLoanId != null) {
+                window.location.href = '@Url.Content("CreateGroupLoanApplication?id=")' + encryptGroupLoanId;
+            }
+            else {
+                clearAllData();
+            }
+        }
+
+        function BindLoanPurposeByProjectId(id) {
+            var value = $('#' + id).val();
+            var action = '@Url.Action("GetLoanPurposeByProjectID", "GroupLoanApplication")';
+            $.post(action, { ProjectID: value }, function (response) {
+                $('#LoanPurpose').html(response).prepend("<option value='' selected='Selected'>Select LoanPurpose</option>");
+            });
+        }
+
+
+
+    </script>
+
+}

@@ -1,0 +1,461 @@
+﻿@using BusinessEntities;
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateLoanInterest";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+@model BusinessEntities.InterestMasterDto
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- Form Elements -->
+        @using (Html.BeginForm())
+        {
+            int indx = 0;
+            List<InterestRatesDto> lstInterestRates = Model != null ? Model.InterestRates : null;
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Loan Interest Rate Master</span>
+                    <button onclick="BackToList();" class="btn btn-default pull-right" type="button">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <input type="hidden" value="@Model.InterestID" id="InterestID" name="InterestID" />
+                        <div class="col-lg-4">
+                            @if (@Model.InterestID > 0)
+                            {
+                                <div class="form-group">
+                                    <label>Code </label>
+                                    @Html.TextBoxFor(model => model.InterestCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label>Base</label>
+                                @Html.DropDownListFor(b => b.Base, (SelectList)ViewBag.BaseTypes, "--Select Base--", new { @class = "form-control required" })
+                            </div>
+                            <div class="form-group" style="display: none;">
+                                <label>Panel Account Head</label>
+                                @Html.DropDownListFor(c => c.PenalAHID, (SelectList)ViewBag.PenalAcHeads, "--Select Penal AHID--", new { disabled = "disabled", @class = "form-control" })
+                            </div>
+
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                @Html.TextBoxFor(model => model.InterestName, new { @class = "form-control alphabet-only required", @placeholder = "Enter Interest Name", @maxlength = "64" })
+                            </div>
+
+                            <div class="form-group">
+                                <label>Calculation Method</label>
+                                @Html.DropDownListFor(c => c.CaluculationMethod, (SelectList)ViewBag.CalcTypes, "--Select CaluculationMethod Method--", new { @class = "form-control required" })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Principal Account Head</label>
+                                @Html.DropDownListFor(c => c.PrincipalAHID, (SelectList)ViewBag.PrincipleAcHeads, "--select Principal Account Head---", new { @class = "form-control" })
+
+                            </div>
+                            <div class="form-group">
+                                <label>Interest Account Head</label>
+                                @Html.DropDownListFor(c => c.InterestAHID, (SelectList)ViewBag.InterestAcHeads, "--Select Interest Account head--", new { @class = "form-control required" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>Interest Rates Details</strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Rate of Interest (ROI) </label>
+                                    @Html.TextBox("txtROI", string.Empty, new { @class = "form-control  required decimal-two-digit-only", @placeholder = "Enter Rate Of Interest", @id = "txtROI", @onkeypress = "return validateFloatKeyPress(this, event)", @onchange = "validateInterestRate(this);" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Penal Rate of Interest</label>
+                                    @Html.TextBox("txtPROI", string.Empty, new { @class = "form-control  required decimal-two-digit-only", @placeholder = "Enter Penal Rate", @id = "txtPROI", @onkeypress = "return validateFloatKeyPress(this, event)", @onchange = "validateInterestRate(this);" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group date" id="datetimep">
+                                    <label>FromDate</label>
+                                    @Html.TextBox("txtFromDate", string.Empty, new { @class = "form-control required", @id = "txtFromDate", @placeholder = "DD/MM/YYY", @readonly = "readonly" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Todate</label>
+                                    @Html.TextBox("txtToDate", string.Empty, new { @class = "form-control required", @id = "txtToDate", @placeholder = "DD/MM/YYY", @readonly = "readonly" })
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3 pull-right">
+                                <div class="form-group">
+                                    <button id="btnAddRate" name="btnAddRate" type="button" onclick="return AddUpdateRate();" class="btn btn-outline btn-primary">Add Rates</button>
+                                    <button id="btnClearRate" type="button" onclick="clearRateControls();" class="btn btn-outline btn-primary">Clear</button>
+                                    @Html.Hidden("hdnIRIndex")
+                                    @Html.Hidden("hdnIRId")
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="tblInterestRates">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="display: none;">#</th>
+                                            <th>ROI</th>
+                                            <th>Penal Rate</th>
+                                            <th>FromDate</th>
+                                            <th>ToDate</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (lstInterestRates != null)
+                                        {
+                                            foreach (var item in lstInterestRates)
+                                            {
+                                                indx++;
+                                            <tr>
+                                                <td class="text-center" style="display: none;">@indx </td>
+                                                <td>
+                                                    <input type="hidden" id ="hdnRateId_@indx" name ="hdnRateId_@indx" value="@item.IntrestRateID"/>
+                                                    <input type="hidden" id ="hdnROI_@indx" name ="hdnROI_@indx" value="@item.ROI"/>
+                                                    <span>@item.ROI</span></td>
+                                                <td>
+                                                    <input type="hidden" id ="hdnPROI_@indx" name ="hdnPROI_@indx" value="@item.PenalROI"/>
+                                                    <span>@item.PenalROI</span></td>
+                                                <td>
+                                                    <input type="hidden" id ="hdnFDate_@indx" name ="hdnFDate_@indx" value="@item.FromDate.ToDisplayDateFormat()"/>
+                                                    <span>@item.FromDate.ToDisplayDateFormat() </span></td>
+                                                <td>
+                                                    <input type="hidden" id ="hdnToDate_@indx" name ="hdnToDate_@indx" value="@item.ToDate.ToDisplayDateFormat()"/>
+                                                    <span>@item.ToDate.ToDisplayDateFormat()</span></td>
+                                                <td>
+                                                    <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit " style="cursor: pointer">
+                                                    <img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);"title="Delete " style="cursor: pointer"</td>
+                                            </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                @Html.Hidden("hdnMaxRateIndex", indx)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.InterestID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary" onclick="return validateRequest();">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary" onclick="return validateRequest();">Submit</button>
+                            
+                        }
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return ResetInterest();">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("LoanInterestLookup")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuMaster";
+        subMenuLink = "lnkSideFederationLoanInterest";
+        LoadMenu();
+        $('.decimal-two-digit-only').on('keydown', 'input[type="text"]', function (e) {
+            
+            var el = $(this).get(0);
+            var isValid = validateFloatKeyPress(el, e);
+            return isValid;
+        });
+    });
+
+    var id_tblInterestRates = '#tblInterestRates'
+
+    function AddUpdateRate() {
+        
+        var PenalROI = $.trim($("#txtPROI").val());
+        var ROI = $.trim($("#txtROI").val());
+        var FromDate = $.trim($("#txtFromDate").val());
+        var ToDate = $.trim($("#txtToDate").val());
+        var fdate = new Date(FromDate);
+        var tdate = new Date(ToDate);
+        var indx = $('#hdnMaxRateIndex').val() == "" ? 0 : parseInt($('#hdnMaxRateIndex').val());
+        var btntext = $('#btnAddRate').text();
+        if (btntext == 'Add Rates') {
+            for (var i = 1; i <= indx; i++) {
+                var ofdate = new Date($('#hdnFDate_' + i).val());
+                var otdate = new Date($('#hdnToDate_' + i).val());
+
+                if ((ofdate <= fdate && fdate <= otdate) ||
+                    (ofdate <= tdate && tdate <= otdate) ||
+                    (fdate <= ofdate && ofdate <= tdate) ||
+                    (fdate <= otdate && otdate <= tdate)) {
+                    alert('given date range already exists.');
+                    return false;
+                }
+            }
+        }
+        var editIndx = $.trim($("#hdnIRIndex").val());
+        var InterestRateId = $.trim($("#hdnIRId").val());
+        var errmsg = '';
+        if ($.trim($('#txtROI').val()) == '' && $.trim($('#txtPROI').val()) == '' && $.trim($('#txtFromDate').val()) == '' && $.trim($('#txtToDate').val()) == '') {
+            $('#txtROI,#txtPROI,#txtFromDate,#txtToDate').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#txtROI,#txtPROI,#txtFromDate,#txtToDate').css('border-color', '');
+        }
+        if ($.trim($('#txtROI').val()) == '') {
+            $('#txtROI').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#txtROI').css('border-color', '');
+        }
+        if ($.trim($('#txtPROI').val()) == '') {
+            $('#txtPROI').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#txtPROI').css('border-color', '');
+        }
+        if ($.trim($('#txtFromDate').val()) == '') {
+            $('#txtFromDate').css('border-color', 'red');
+            return false;
+        } else {
+            $('#txtFromDate').css('border-color', '');
+        }
+        if ($.trim($('#txtToDate').val()) == '') {
+            $('#txtToDate').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#txtToDate').css('border-color', '');
+        }
+        if (startdate != "" && enddate != "") {
+            var startdate = $("#txtFromDate").val();
+            var enddate = $("#txtToDate").val();
+            var d1 = Date.parse(startdate);
+            var d2 = Date.parse(enddate);
+            if (d1 > d2) {
+                alert("Start date should be less than or equal to End date.");
+                return false;
+
+            }
+        }
+
+        if (errmsg != '') {
+            alert(errmsg)
+            return false;
+        }
+        if (Number(editIndx)) {
+            //update new Interest Rate
+            $("#hdnPROI_" + editIndx).val(PenalROI);
+            $("#hdnPROI_" + editIndx).parent().find('span').text(PenalROI);
+
+            $("#hdnROI_" + editIndx).val(ROI);
+            $("#hdnROI_" + editIndx).parent().find('span').text(ROI);
+
+            $("#hdnFDate_" + editIndx).val(FromDate);
+            $("#hdnFDate_" + editIndx).parent().find('span').text(FromDate);
+
+            $("#hdnToDate_" + editIndx).val(ToDate);
+            $("#hdnToDate_" + editIndx).parent().find('span').text(ToDate);
+        } else {
+            //Add new Interest Rate
+
+            var newIndex = Number($('#hdnMaxRateIndex').val()) + 1;
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, ROI, PenalROI, FromDate, ToDate);
+
+            $("#tblInterestRates tbody").append(newRow);
+            $('#hdnMaxRateIndex').val(newIndex);
+        }
+
+        clearRateControls();
+    }
+
+    function loadNewRow(index, roi, proi, fromDate, toDate) {
+        var row = '<tr class="gradeA even">';
+        row += '<td class="text-center" style="display:none;">' + index + '<input type="hidden" id ="hdnRateId_' + index + '" name ="hdnRateId_' + index + '" value="0"/></td>';
+        row += '<td><input type="hidden" id ="hdnROI_' + index + '" name ="hdnROI_' + index + '" value="' + roi + '"/> <span>' + roi + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnPROI_' + index + '" name ="hdnPROI_' + index + '" value="' + proi + '"/> <span>' + proi + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnFDate_' + index + '" name ="hdnFDate_' + index + '" value="' + fromDate + '"/> <span>' + fromDate + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnToDate_' + index + '" name ="hdnToDate_' + index + '" value="' + toDate + '"/> <span>' + toDate + '</span></td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + index + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + index + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+    function editRate(src, indx) {
+        $("#txtPROI").val($("#hdnPROI_" + indx).val());
+        $("#txtROI").val($("#hdnROI_" + indx).val());
+        $("#txtFromDate").val($("#hdnFDate_" + indx).val());
+        $("#txtToDate").val($("#hdnToDate_" + indx).val());
+        $("#hdnIRId").val($("#hdnRateId_" + indx).val());
+        $("#hdnIRIndex").val(indx);
+        $('#btnAddRate').text('Update Rates');
+    }
+
+    function deleteRate(src, indx) {
+        if (confirm('Do you wish to remove select rate details?')) {
+            clearRateControls();
+            $(src).parent().parent().remove();
+        }
+    }
+
+    function clearRateControls() {
+        $("#txtPROI").val('');
+        $("#txtROI").val('');
+        $("#txtFromDate").val('');
+        $("#txtToDate").val('');
+        $("#hdnIRId").val('');
+        $("#hdnIRIndex").val('');
+        $('#btnAddRate').text('Add Rates');
+    }
+    function ResetInterest() {
+        $('#Base').val('');
+        $('#InterestAHID').val('');
+        $('#InterestName').val('');
+        $('#CaluculationMethod').val('');
+        $('#PrincipalAHID').val('');
+        $('#PenalAHID').val('');
+    }
+
+    function validateRequest() {
+        var base = $.trim($('#Base').val());
+        var iAhid = $.trim($('#InterestAHID').val());
+        var name = $.trim($('#InterestName').val());
+        var cal = $.trim($('#CaluculationMethod').val());
+        //  var pahid = $.trim($('#PrincipalAHID').val());
+        var penalAhid = $.trim($('#PenalAHID').val());
+
+        if ($.trim($('#Base').val()) == '' && $.trim($('#InterestAHID').val()) == '' && $.trim($('#InterestName').val()) == '' && $.trim($('#CaluculationMethod').val()) == '') {
+            $('#Base,#InterestAHID,#InterestName,#CaluculationMethod').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#Base,#InterestAHID,#InterestName,#CaluculationMethod').css('border-color', '');
+
+        }
+        if ($.trim($('#Base').val()) == '') {
+            $('#Base').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#Base').css('border-color', '');
+
+        }
+        if ($.trim($('#InterestAHID').val()) == '') {
+            $('#InterestAHID').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#InterestAHID').css('border-color', '');
+
+        }
+        if ($.trim($('#InterestName').val()) == '') {
+            $('#InterestName').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#InterestName').css('border-color', '');
+
+        }
+        if ($.trim($('#CaluculationMethod').val()) == '') {
+            $('#CaluculationMethod').css('border-color', 'red');
+            return false;
+        }
+        else {
+            $('#CaluculationMethod').css('border-color', '');
+
+        }
+
+        //if ($.trim($('#PrincipalAHID').val()) == '') {
+        //    $('#PrincipalAHID').css('border-color', 'red');
+        //    return false;
+        //}
+        //else {
+        //    $('#PrincipalAHID').css('border-color', '');
+
+        //}
+        //if ($.trim($('#PenalAHID').val()) == '') {
+        //    $('#PenalAHID').css('border-color', 'red');
+        //    return false;
+        //}
+        //else {
+        //    $('#PenalAHID').css('border-color', '');
+        //}
+
+        var errMsg = '';
+        if ($('#tblInterestRates tr:gt(0)').length < 1)
+            errMsg += "Add atleast one interest rate details";
+        if (errMsg != '') {
+            alert(errMsg);
+        }
+        return true;
+    }
+
+</script>
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#txtFromDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+50",
+                onSelect: function (date) {
+                    var adddate = new Date(date)
+                    adddate.setDate(adddate.getDate() + 1)
+                    $('#txtToDate').datepicker("option", "minDate", adddate)
+                }
+            });
+            $('#txtToDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+50"
+            });
+        });
+    </script>
+
+}

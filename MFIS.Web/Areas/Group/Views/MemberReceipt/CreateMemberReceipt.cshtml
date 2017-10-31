@@ -1,0 +1,390 @@
+﻿@{
+    ViewBag.Title = "CreateMemberReceipt";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using BusinessEntities
+@using CoreComponents
+
+@model BusinessEntities.ReceiptMasterDto
+
+@using (Html.BeginForm(FormMethod.Post))
+{
+    var Ahid = ViewBag.CashInHandDetails;
+    int indx = 0;
+    List<ReceiptTranscationDto> lstGroupReceiptTranscation = Model != null ? Model.lstGroupReceiptTranscationDto : null;
+   
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Member Receipt </span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <!-- <div class="panel-heading">
+                                            <strong>Interest Rate</strong>
+                                        </div>-->
+                        <div class="col-lg-3">
+                            <input type="hidden" value="@Model.AccountMasterID" id="AccountMasterID" name="AccountMasterID" />
+                            <input type="hidden" value="@Model.AHID" id="AHID" name="AHID" />
+
+                            @*<div class="form-group">
+                                <label>
+                                    Receipt Number    
+                                </label>
+                                <input class="form-control" disabled="disabled" maxlength="8" placeholder="R0001" />
+                            </div>*@
+                            <div class="form-group">
+                                @if (Model.AccountMasterID > 0)
+                                {
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.VoucherNumber)
+                                        @Html.TextBoxFor(m => m.VoucherNumber, new { @class = "form-control", @readonly = "readonly", @placeholder = "M-101010109" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Member Name</label>
+                                @*<input type="hidden" value="@Model.MemberId" id="MemberId" name="MemberId" />*@
+                                @Html.DropDownListFor(d => Model.MemberId, (SelectList)ViewBag.MemberCodes, "Select MemberCode", new { @class = "form-control required", @id = "MemberId", onchange = "GetName(this.value);getReceiptTemplate();"})
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Member Code</label>
+                                @Html.TextBoxFor(model => model.MemberName, new { @class = "form-control", @id = "membername", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        </div>
+                       @* <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                <input type="hidden" id ="EmployeeID" name ="EmployeeID" value="@Model.EmployeeID"/>
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", maxlength = "32", @placeholder = "Enter Employee Name" })
+                            </div>
+                        </div>*@
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                @{
+    string TransactionDate = Model.TransactionDate.Ticks > 0 ? Model.TransactionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                    <input type="text" value="@TransactionDate" class="form-control" id="TransactionDate" name="TransactionDate" readonly="true" placeholder="Select TransactionDate" />
+            }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Tanscation Mode</label><br>
+                                <input type="radio" name="TransactionMode" id="Cash" value="C" checked="">&nbsp; Cash &nbsp;
+                                <input type="radio" name="TransactionMode" id="Bank" value="B">&nbsp; Bank &nbsp;    
+                            </div>
+                        </div>
+                        <div class="col-lg-2" id="Amount">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                @Html.TextBox("Amount", Model.Amount.ToDisplayCurrencyInRupees(), new { @class = "form-control", @id = "money", onkeypress = "return validateNumbersOnly(event);",onblur="TotalCalucuation1();" })
+                                @*<input class="form-control" />*@
+                            </div>
+                        </div>
+                        <div id="TransactionDisplayMode">
+                             <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Cheque Number</label>
+                                    @Html.TextBoxFor(model => model.ChequeNumber, new { @class = "form-control", @placeholder = "Enter ChequeNumber" })
+                                </div>
+                            </div>
+                             <div class="col-lg-2">
+                              <div class="form-group">
+                                    <label>Cheque Date</label>
+                                    @{
+                                //string ChequeDate = Model.ChequeDate.Ticks > 0 ? Model.ChequeDate.ToString("dd/MMM/yyyy") : string.Empty;   
+                                        <input type="text"  class="form-control" id="ChequeDate" name="ChequeDate" readonly="true" placeholder="Select ChequeDate" />
+                                    }
+                                </div>
+                                 </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>AccountNumber</label>
+                                    @Html.TextBoxFor(model => model.FederationBankAccountNumber, new { @class = "form-control", maxlength = "32", @placeholder = "Enter Payee BankAccountNumber", @id = "FederationBankAccountNumber" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Bank AccountName</label>
+                                    @Html.TextBoxFor(model => model.FederationBankAccountName, new { @class = "form-control", @id = "accountName", @placeholder = "Enter Payee BankAccountName" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive" id="table-responsive">
+                        @Html.Partial("_ReceiptTemplate", Model)
+                    </div>
+                    <div class="row">
+                         <div class="TransactionDisplayMode">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Group Bank Account Number</label>
+                                    @Html.DropDownListFor(d => Model.GroupBankAccountNumber, (SelectList)ViewBag.GroupBanks, "Select AccountNo", new { @class = "form-control required", onchange = "GetMName(this.value);", @id="GroupBankAccountNumber" })
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Group Bank Account Name</label>
+                                    @Html.TextBoxFor(model => model.GroupBankAccountName, new { @class = "form-control", @id = "GroupBankAccountName", @readonly = "readonly", @placeholder = "Federation Bank Account Name" })
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>PartyName</label>
+                                @Html.TextBoxFor(model => model.PartyName, new { @class = "form-control", @id = "PartyName", @placeholder = "Enter party Name" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Reference Number : </label>
+                                @Html.TextBoxFor(model => model.VoucherRefNumber, new { @class = "form-control", @placeholder = "Enter ReferenceNumber" })
+
+                                @*<input class="form-control" type="text" placeholder="R48484" />*@
+                            </div>
+                        </div>
+                       
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(e => e.Narration, 2, 5, new { @class = "form-control address-only" })
+                                @* <textarea class="form-control" rows="1" style="height: 35px;"></textarea>*@
+                            </div>
+
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary loader" onclick="return validation();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary" >Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+         $('#TransactionDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0"
+        });
+        $('#ChequeDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0"
+        });
+    });
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("MemberReceiptLookUp")';
+    }
+    function GetName(id) {
+      
+        $.post('@Url.Action("GetAccountName")' + '/' + id, {},
+               function (data) {
+                   //$('#accountName').val(data.AccountName);
+                   $('#membername').val(data.MemberCode);
+                   $('#MemberId').val(data.memberId);
+               }, 'json');
+    }
+    function GetMName(id) {
+        $.post('@Url.Action("GetName")' + '/' + id, {},
+               function (data) {
+                $('#GroupBankAccountName').val(data.AccountName);
+                   $('#hdnCashInHandAHID').val(id);
+                   $('#AHIDs').html(data.AccountName);
+               }, 'json');
+
+    }
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGroupReceipt";
+        LoadMenu();
+    });
+    if ($('#Cash').val() == "C") {
+        $('#TransactionDisplayMode').hide();
+        $('#Amount').show();
+    }
+    $("#Bank").click(function () {
+
+        $('#TransactionDisplayMode').show();
+    });
+    $("#Cash").click(function () {
+
+        $('#TransactionDisplayMode').hide();
+        $('#Amount').show();
+    });
+
+
+
+
+    //function SumOfAmount() {
+    //    alert('hai');
+    //    var mny = $('#money').val();
+    //    var total = 0;
+    //    $('#CrAmount').each(function () {
+    //        total += parseInt(this.value);
+    //    });
+    //    $('#DrTotal').html(total);
+    //}
+
+
+    //$('input.Amount').change(function () {
+    //    var mny = $('#money').val();
+    //    var total = 0;
+    //    $('input.Amount').each(function () {
+    //        total += parseInt(this.value);
+    //    });
+    //    $('#DrTotal').html(total);
+    //});
+    function validation() {
+        //money
+        var mny =parseFloat( $('#money').val());
+        var lblamount= $("#Balance").html();
+        if (mny != lblamount) {
+                alert("Please enter Valid Amount and is Equal To:    " + mny);
+                return false;
+            }
+
+    }
+    //function validation() {
+    //    var mny = $('#money').val();
+    //    if ($('#CrTotal').text() != $('#money').val()) {
+    //        alert("Please enter Valid Amount and is Equal To:    " + mny);
+    //        return false;
+    //    }
+    //    $('#tblgropureceipt input[type="text"]').each(function () {
+    //        txt = this;
+    //        if ($.trim($(txt).val()) == '') {
+    //            alert('Please provide DrAmount.');
+    //            return false;
+    //        }
+    //    });
+    //    if ($.trim($('#money').val()) === '') {
+    //        alert('please enter Amount');
+    //        return false;
+    //    }
+    //    if ($('#Bank').val() == "B") {
+
+    //        var AcNo = $('#FederationBankAccountNumber').val();
+    //        var AcName = $('#accountName').val();
+    //        var ChequeNumber = $('#ChequeNumber').val();
+    //        var ChequeDate = $('#ChequeDate').val();
+    //        if (AcNo == '') {
+    //            alert('please enter AccountNumber');
+    //            return false;
+    //        } if (AcName == '') {
+    //            alert('please enter AccountName');
+    //            return false;
+    //        } if (ChequeNumber == '') {
+    //            alert('please enter cheque number.');
+    //            return false;
+    //        }
+    //        if (ChequeDate == '') {
+    //            alert(' please enter Cheque Date');
+    //            return false;
+    //        }
+    //    }
+    //    return Confirm('Do you wish to save GroupReceipt Details?');
+    //}
+    //For Numbers only in textbox
+    function validateNumbersOnly(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+        if ((unicode == 8) || (unicode == 9) || (unicode > 47 && unicode < 58)) {
+            return true;
+        }
+        else {
+            window.alert("This field accepts only Numbers");
+            return false;
+        }
+    }
+    $(document).ready(function () {
+        if ('@Model.MemberCode' != null && '@Model.MemberCode' != '' && '@Model.MemberCode' != '0')
+            $('#MemberCode').val('@Model.MemberCode');
+
+        if ('@Model.GroupBankAccountNumber' != null && '@Model.GroupBankAccountNumber' != '' && '@Model.GroupBankAccountNumber' != '0')
+            $('#GroupBankAccountNumber').val(@Model.GroupBankAccountNumber);
+
+        @* if ('@Model.EducationQualification' != null && '@Model.EducationQualification' != '' && '@Model.EducationQualification' != '0')
+            $('#EducationQualification').val(@Model.EducationQualification);
+
+        if ('@Model.SocialCategory' != null && '@Model.SocialCategory' != '' && '@Model.SocialCategory' != '0')
+            $('#SocialCategory').val('@Model.SocialCategory');
+
+        if ('@Model.NomineeRelationship' != null && '@Model.NomineeRelationship' != '' && '@Model.NomineeRelationship' != '0')
+            $('#NomineeRelationship').val(@Model.NomineeRelationship);
+
+        if ('@Model.BloodGroup' != null && '@Model.BloodGroup' != '' && '@Model.BloodGroup' != '0')
+            $('#BloodGroup').val(@Model.BloodGroup);*@
+
+        $('#TransactionDate').change(function () {
+            getReceiptTemplate();
+
+        });
+
+    });
+    function getReceiptTemplate() {
+        $('#money').val('');
+        var MemberId = $('#MemberId').val();
+        var transactiondate = $('#TransactionDate').val();
+
+        if (MemberId != '' && MemberId > 0 && transactiondate != '') {
+            $.post('@Url.Action("GetReceiptTemplate", "MemberReceipt")',
+                { MemberId: MemberId, transactiondate: transactiondate },
+                function (data) {
+                    $('#table-responsive').html('');
+                    $('#table-responsive').html(data);
+                });
+        }
+
+    }
+
+    //$('#GroupBankAccountNumber').change(function () {
+    //});
+
+</script>

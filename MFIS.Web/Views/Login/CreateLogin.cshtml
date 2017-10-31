@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "CreateLogin";
+    Layout = null;
+}
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMS - TIRUPATI</title>
+
+    <link href="~/Scripts/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/main-style.css" rel="stylesheet" />
+    <link href="~/Content/css/site.css" rel="stylesheet" />
+
+    <script src="~/Scripts/plugins/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Scripts/Common/Common.js"></script>
+
+</head>
+<body class="body-Login-back" style="background-color: rgb(35, 91, 126) !important;">
+    <script>
+
+        function Login() {
+            //var federation = document.getElementById('Federation').checked;
+            var username = document.getElementById('txtuserid').value;
+            var federation = $('#ddlLoginMode').val();
+            var isFederation = federation.toLowerCase() == 'federation';
+
+            localStorage.setItem("username", username);
+            var password = document.getElementById('txtpassword').value;
+            if (username == '' || password == '') {
+                alert('please enter username and password');
+                return false;
+            }
+            showProgress();
+            $.post(
+                '@Url.Action("CreateLogin", "Login")',
+                $('form').serialize(),
+                        function (data) {
+                            hideProgress();
+                            if (data.isSueecess == false)
+                                alert(data.message);
+                            else {
+                                if (isFederation == true) {
+                                    document.forms[0].action = '@Url.Action("InitialLanching", "Login")';
+                                    document.forms[0].submit();
+                                } else {
+                                    window.location.href = '@Url.Action("SelectGroup", "Login")';
+                                }
+                            }
+                        });
+                    }
+    </script>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default" style="border: solid 1px #C0C15B;">
+                        <div align="center">
+                            <img alt="logo" src="~/Content/images/LogoSpms.png" />
+                        </div>
+                        <div align="center">
+                            <span class="marquee-banner" style="color: rgb(214, 155, 17);"><b>Mana Sangam Software</b></span>
+                        </div>
+                        <div>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Login user name" value="" name="username" id="txtuserid" autofocus="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Password" name="password" value="" id="txtpassword" type="password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <select id="ddlLoginMode" name="ddlLoginMode" class="form-control">
+                                            <option value="Group">Group Login</option>
+                                            <option value="Federation">Federation Login</option>
+                                        </select>
+                                    </div>
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <input class="btn btn-lg btn-success btn-block" type="submit" name="submitButton" value="Login" onclick="javascript: return Login();" />
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

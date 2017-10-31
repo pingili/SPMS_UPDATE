@@ -1,0 +1,309 @@
+﻿@model BusinessEntities.ReceiptMasterDto
+@using BusinessEntities
+@using CoreComponents
+@{
+    ViewBag.Title = "CreateRefundsFromFederation";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm()) { 
+ //int indx = 0;
+    //List<ReceiptTranscationDto> lstGroupReceiptTranscation = Model != null ? Model.lstGroupReceiptTranscationDto : null;
+   
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Refunds From Federation</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+              @*  @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }*@
+                <div class="panel-body">
+                    <div class="row">
+                        <!-- <div class="panel-heading">
+                                            <strong>Interest Rate</strong>
+                                        </div>-->
+                        <div class="col-lg-3">
+                           @* <input type="hidden" value="@Model.AccountMasterID" id="AccountMasterID" name="AccountMasterID" />
+                            <input type="hidden" value="@Model.AHID" id="AHID" name="AHID" />*@
+
+                            <div class="form-group">
+                                <label>
+                                    Receipt Number    
+                                </label>
+                                <input class="form-control" disabled="disabled" maxlength="8" placeholder="R0001" />
+                            </div>
+                        </div>
+                       <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Code</label><br>
+                                @Html.DropDownListFor(d => Model.GroupID, (SelectList)ViewBag.GroupNames, "Select Group", new { @class = "form-control required", onchange = "getGroupName(this.value);" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label><br>
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Code</label>
+                                @*<input type="hidden" id ="EmployeeID" name ="EmployeeID" value="@Model.EmployeeID"/>*@
+                                @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "form-control", @readonly = "readonly", maxlength = "32" })
+                                @*<input class="form-control" type="text" placeholder="Enter Employee Code"  id="EmployeeCode" />*@
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control", @readonly = "readonly", maxlength = "32", @placeholder = "Enter Employee Name" })
+                                @*<input class="form-control" type="text" placeholder="Enter Employee Name" />*@
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                @{
+                //string TransactionDate = Model.TransactionDate.Ticks > 0 ? Model.TransactionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                    <input type="text" value="10/11/1990" class="form-control" id="TransactionDate" name="TransactionDate" readonly="true" placeholder="Select TransactionDate" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Tanscation Mode</label><br>
+                                <input type="radio" name="TransactionMode" id="Cash" value="C" checked="">&nbsp; Cash &nbsp;
+                                <input type="radio" name="TransactionMode" id="Bank" value="B">&nbsp; Bank &nbsp;    
+                            </div>
+                        </div>
+                        <div class="col-lg-2" id="Amount">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @id = "money",onkeypress="return validateNumbersOnly(event);" })
+                                @*<input class="form-control" />*@
+                            </div>
+                        </div>
+                        <div id="TransactionDisplayMode">
+
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>AccountNumber</label>
+                                    @Html.TextBoxFor(model => model.FederationBankAccountNumber, new { @class = "form-control", maxlength = "32", @placeholder = "Enter GroupBankAccountNumber" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Bank AccountName</label>
+                                    @Html.TextBoxFor(model => model.FederationBankAccountName, new { @class = "form-control", @id = "accountName", @placeholder = "Enter GroupBankAccountName" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Cheque Number</label>
+                                    @Html.TextBoxFor(model => model.ChequeNumber, new { @class = "form-control", @placeholder = "Enter ChequeNumber" })
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <label>Cheque Date</label>
+                                    @{
+                //string ChequeDate = Model.ChequeDate.Ticks > 0 ? Model.ChequeDate.ToString("dd/MMM/yyyy") : string.Empty;   
+                                        <input type="text" value="10/11/1990" class="form-control" id="ChequeDate" name="ChequeDate" readonly="true" placeholder="Select ChequeDate" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="Table1">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <!--<th>A/C Type</th>-->
+                                    <th>S.L A/C No</th>
+                                    <th>To: Account Head</th>
+                                    <th class="col-sm-1">Opening Balance</th>
+                                    <th>Cash Receipt(Dr)</th>
+                                    <th class="col-sm-1">Closing Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                               @* @if (lstGroupReceiptTranscation != null)
+                                {
+                                    foreach (var item in lstGroupReceiptTranscation)
+                                    {
+                                        indx++;
+                                        
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@indx</td>
+                                        <td id="AHCode">
+                                            @item.AHCode
+                                            <input type="hidden" id ="AHID_@indx" name ="AHID_@indx" value="@item.AHID"/>
+                                        </td>
+                                        <td>@item.AHName
+                                            <input type="hidden" id ="AHName_@indx" name ="AHName_@indx" value="@item.AHName"/>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id ="OpeningBalance_@indx" name ="OpeningBalance_@indx" value="@item.OpeningBalance"/>
+                                            @item.OpeningBalance</td>
+                                        <td id="Dramount">
+                                            <input type="text" id ="DrAmount_@indx" name ="DrAmount_@indx" value="@item.DrAmount" class="Amount" onkeypress="return validateNumbersOnly(event);"/>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" id ="ClosingBalance_@indx" name ="ClosingBalance_@indx" value="@item.ClosingBalance"/>
+                                            @item.ClosingBalance</td>
+                                    </tr>
+                                    }
+                                }*@
+                                <tr class="gradeA odd">
+                                    <td></td>
+                                    <td class="text-right"><strong>Total</strong><span id="formattext"></span> </td>
+                                    <td colspan="4" class="text-center"><strong id="total"></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @*  @Html.Hidden("hdnTransactions")*@
+                        @*<input type="hidden" id ="index" name ="index" value="@indx"/>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Reference Number : </label>
+                                @Html.TextBoxFor(model => model.ReferenceNumber, new { @class = "form-control", @placeholder = "Enter ReferenceNumberReferenceNumber" })
+
+                                @*<input class="form-control" type="text" placeholder="R48484" />*@
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>PartyName</label>
+                                @Html.TextBoxFor(model => model.PartyName, new { @class = "form-control", @id = "PartyName", @placeholder = "Enter party Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(e => e.Narration, 2, 5, new { @class = "form-control address-only" })
+                                @* <textarea class="form-control" rows="1" style="height: 35px;"></textarea>*@
+                            </div>
+                           
+                        </div>
+                         
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary " onclick="return validation();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#TransactionDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#ChequeDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+        });
+    </script>
+}
+<script>
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("RefundsFromFederationLookup")';
+    }
+
+    function getGroupName(id) {
+        $.post('@Url.Action("GetGroupName")' + '/' + id, {},
+           function (data) {
+               $('#GroupName').val(data.GroupName);
+           }, 'json');
+}
+    var ReceiptMatster = function () {
+
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideRefundsFromFederation";
+        LoadMenu();
+    }
+    if ($('#Cash').val() == "C") {
+        $('#TransactionDisplayMode').hide();
+        $('#Amount').show();
+    }
+    $("#Bank").click(function () {
+
+        $('#TransactionDisplayMode').show();
+    });
+    $("#Cash").click(function () {
+
+        $('#TransactionDisplayMode').hide();
+        $('#Amount').show();
+    });
+    $('input.Amount').keypress(function (event) {
+        var code = event.keyCode || eve.charCode;
+        if (obj.keyCode < 48 || obj.keyCode > 57 && obj.keyCode != 46) {
+            return false;
+        }
+    });
+</script>
+<script>
+    $('input.Amount').change(function () {
+        var mny = $('#money').val();
+        var total = 0;
+        $('input.Amount').each(function () {
+            total += parseInt(this.value);
+        });
+        $('#CrTotal').html(total);
+    });
+    function validation() {
+        var mny = $('#money').val();
+        if ($('#CrTotal').text() != $('#money').val()) {
+            alert("Please enter Valid Amount and is Equal To:    " + mny);
+            return false;
+        }
+    }
+
+
+    function validateNumbersOnly(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode;
+        if ((unicode == 8) || (unicode == 9) || (unicode > 47 && unicode < 58)) {
+            return true;
+        }
+        else {
+            window.alert("This field accepts only Numbers");
+            return false;
+        }
+    }
+</script>

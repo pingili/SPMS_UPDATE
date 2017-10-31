@@ -1,0 +1,459 @@
+﻿@Html.Hidden("ParentAHID")
+@Html.Hidden("EditAHID")
+@{
+    var lstMajorCategory = new List<BusinessEntities.AccountHeadDto>();
+    if (ViewBag.AccountHeads != null)
+    {
+        lstMajorCategory = ViewBag.AccountHeads;
+        ViewBag.AHID = lstMajorCategory.FindAll(f => f.ParentAHID == 0).Any() ? lstMajorCategory.FindAll(f => f.ParentAHID == 0).First().AHID : 0;
+
+    }
+}
+<div id="collapseTwo" class="panel-collapse collapse" style="height: auto;">
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdEditSubGroup" type="radio" value="4" onclick="EditSubGroupAccountHead(this.id)">Edit Sub Group
+            </label>
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdEditAccountHead" type="radio" checked="checked" value="5" onclick="EditSubGroupAccountHead(this.id)">Edit Account Head
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Major Category</label>
+            <br>
+            @{
+                int i = 0;
+                foreach (var majorCategory in lstMajorCategory.FindAll(f => f.ParentAHID == 0))
+                {
+
+                    if (i == 0)
+                    {
+                        i++;
+                <label class="radio-inline">
+                    <input name="AHType" id="rdEdit@(majorCategory.AHName)" type="radio" checked="checked" value="@majorCategory.AHType" onclick="BindEditDropDownOptions('ddlEditSubCategory', '@majorCategory.AHID    ',this.id)">@majorCategory.AHName
+                </label>
+                    }
+
+                    else
+                    {
+                <label class="radio-inline">
+                    <input name="AHType" id="rdEdit@(majorCategory.AHName)" type="radio" value="@majorCategory.AHType" onclick="BindEditDropDownOptions('ddlEditSubCategory', '@majorCategory.AHID    ',this.id)">@majorCategory.AHName
+                </label>
+                    }
+                }
+
+            }
+
+        </div>
+
+        <div class="form-group">
+            <label>Sub Category </label>
+            <select id="ddlEditSubCategory" class="form-control" onchange="BindEditDropDownOptions('ddlEditMajorGroup', this.value)" onfocus="RemoveValidation(this.id)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Major Group </label>
+            <select id="ddlEditMajorGroup" class="form-control" onchange="BindEditDropDownOptions('ddlEditSubGroup', this.value)" onfocus="RemoveValidation(this.id)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+
+
+        <!--This is for Add Account Head : Begin-->
+        <div id="dvEditSubGroup" class="form-group">
+            <label>Sub Group </label>
+            <select id="ddlEditSubGroup" class="form-control" onchange="SubEditGroupChange(this.value)" onfocus="RemoveValidation(this.id)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <!--This is for Add Sub Group : Begin-->
+        <div id="dvEditSubGroupCode" style="display: none;" class="form-group col-lg-4">
+            <label>Sub Group Code</label>
+            <input class="form-control caps-only" id="txtEditSubGroupAHCode" name="SubGroupAHCode" placeholder="Enter Sub Group Code" onfocus="RemoveValidation(this.id)">
+        </div>
+        <div id="dvEditSubGroupTEName" style="display: none;" class="form-group col-lg-8">
+            <label>Sub Group Telugu Name</label>
+            <input class="form-control caps-only" placeholder="Enter Sub Group Telugu Name" id="txtAddSubGroupTEAHName" name="SubGroupTEAHName" onfocus="RemoveValidation(this.id);">
+        </div>
+        <div id="dvEditSubGroupName" style="display: none;" class="form-group">
+            <label>Sub Group Name</label>
+            <input class="form-control caps-only" placeholder="Enter Sub Group Name" id="txtEditSubGroupAHName" name="SubGroupAHName" onfocus="RemoveValidation(this.id)">
+        </div>
+        <!--This is for Add Sub Group : End-->
+        <div id="dvSearchAccountHead" class="form-group">
+            <label>Search Head/Account</label>
+            <select id="ddlSearchGroupAccountHead" class="form-control" onchange="SetEditAccountHeadCodeAndName();" onfocus="RemoveValidation(this.id)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <div id="dvEditAccountHeadCode" class="form-group col-lg-4">
+            <label>Account Head Code</label>
+            <input class="form-control" placeholder="Enter Account Head Code" id="txtEditAHCode" name="AHCode" onfocus="RemoveValidation(this.id)" />
+            @*@Html.TextBoxFor(model => model.AHCode, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div id="dvEditAccountHeadTeluguName" class="form-group col-lg-8">
+            <label>Account Head Telugu Name</label>
+            <input class="form-control alphabet-only" placeholder="Account Head Telugu Name" name="TE_AHName" id="txtAHTeluguName" onfocus="RemoveValidation(this.id);" />
+        </div>
+        <div id="dvEditAccountHeadName" class="form-group">
+            <label>Account Head Name</label>
+            <input class="form-control" placeholder="Enter Account Head Name" name="AHName" id="txtEditAHName" onfocus="RemoveValidation(this.id)" />
+            @*@Html.TextBoxFor(model => model.AHName, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div id="dvReceipt" class="form-group">
+            <label>Receipt Template</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdEditMemberTransactionYes" type="radio" checked="checked" value="true">Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdEditMemberTransactionNo" type="radio" value="false">No
+            </label>
+        </div>
+
+        <div id="dvEditSubLedger" class="form-group">
+            <label>Sub Ledger Account</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdEditIsSLAccountYes" type="radio" checked="checked" value="true" onclick="IsEditSLA(this.id);" />Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdEditIsSLAccountNo" type="radio" value="false" onclick="IsEditSLA(this.id);" />No
+            </label>
+        </div>
+        <div id="dvEditOpenBalance" class="form-group" style="display: none;">
+            <label>Opening Balance</label>
+            <br>
+            <input class="form-control adjc-left-80" placeholder="Enter Opening Balance" name="OpeningBalance" id="txtEditOpeningBalance" onfocus="RemoveValidation(this.id)">
+
+            <select class="form-control adjc-right-20" id="ddlEditOpeningBalanceType" disabled="disabled">
+                <option value="Dr">Dr</option>
+                <option value="Cr">Cr</option>
+            </select>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group" style="margin-left: 16px;">
+            <button type="button" class="btn btn-outline btn-primary" onclick="EditAccountHeadDetails();">Submit</button>
+            <button type="button" class="btn btn-outline btn-primary" onclick="EditClearValues();">Reset</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var accountHeadLevel = document.getElementById("rdEditAccountHead").checked ? 5 : 4;
+    var rdbaccounthead = '';
+    function EditAccountHeadDetails() {
+        var isValid = true;
+        
+        if ($('#ddlEditSubCategory').val() == "") {
+            $('#ddlEditSubCategory').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlEditSubCategory').removeClass('required');
+
+
+        if ($('#ddlEditMajorGroup').val() == "") {
+            $('#ddlEditMajorGroup').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlEditMajorGroup').removeClass('required');
+
+        var isSubGroup = document.getElementById('rdEditSubGroup').checked ? true : false;
+
+        if (isSubGroup) {
+            if ($('#txtEditSubGroupAHName').val() == "") {
+                $('#txtEditSubGroupAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtEditSubGroupAHName').removeClass('required');
+
+            if ($('#txtEditSubGroupAHCode').val() == "") {
+                $('#txtEditSubGroupAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtEditSubGroupAHCode').removeClass('required');
+        }
+        else {
+            if ($('#txtEditAHCode').val() == "") {
+                $('#txtEditAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtEditAHCode').removeClass('required');
+
+            if ($('#txtEditAHName').val() == "") {
+                $('#txtEditAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtEditAHName').removeClass('required');
+
+            if ($('#ddlEditSubGroup').val() == "") {
+                $('#ddlEditSubGroup').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#ddlEditSubGroup').removeClass('required');
+
+            if ($('#ddlSearchGroupAccountHead').val() == "") {
+                $('#ddlSearchGroupAccountHead').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#ddlSearchGroupAccountHead').removeClass('required');
+
+
+        }
+
+        var isSla = document.getElementById('rdEditIsSLAccountNo').checked ? true : false;
+
+        if (isSla) {
+            if ($('#txtEditOpeningBalance').val() == "") {
+                $('#txtEditOpeningBalance').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtEditOpeningBalance').removeClass('required');
+        }
+
+        if (isValid) {
+
+            var code = '';
+            if (isSubGroup)
+                code = $('#txtAddSubGroupAHCode').val();
+            else
+                code = $('#txtAddAHCode').val();
+
+            $.post('@Url.Action("CheckAccountHeadCode", "AccountTree", new { Area = "Federation" })',
+                    { code: code, isFedaration: $('#IsFederation').val(),ahid: $('#EditAHID').val() },
+                    function (data) {
+                        isValid = data.issuccess;
+                        if (!isValid) {
+                            alert('Account head code is already exists, please enter diffrent code.');
+                        }
+                        else {
+
+                            var actionUrl = '@Url.Action("AddEditSubGroupAccountHead", "AccountTree")';
+                            document.forms[1].action = actionUrl;
+                            document.forms[1].submit();
+                        }
+                    });
+                }
+            }
+
+
+
+            function BindEditDropDownOptions(id, parentAhid, rbId) {
+                accountHeadLevel = document.getElementById("rdEditAccountHead").checked ? 5 : 4;
+                rdbaccounthead = rbId;
+                if (id == "ddlEditSubCategory")
+                    EditClearValues();
+
+                if (id == "ddlEditSubGroup") {
+                    LoanMajorGroupLevelDropDowns("SubGroup", parentAhid, accountHeadLevel);
+                    return;
+                }
+                else {
+                    var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+                    $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id, isFederation: $('#IsFederation').val() }, function (response) {
+                        $("#" + id).html(response.DropDownOptions);
+                        $("#" + id).prepend("<option value='' selected='selected'>Please select</option>");
+                    }, 'json');
+                }
+                try {
+                    if (rbId.toLowerCase() == "rdeditassets" || rbId.toLowerCase() == "rdeditincome")
+                        $('#ddlEditOpeningBalanceType').val("Dr");
+                    else
+                        $('#ddlEditOpeningBalanceType').val("Cr");
+                    if(accountHeadLevel==5){
+                        if(rbId.toLowerCase() == "rdeditincome" || rbId.toLowerCase() == "rdeditexpenditure") {
+                            $('#dvEditOpenBalance').hide();
+                        }
+                        else{
+                            $('#dvEditOpenBalance').show();
+                        }
+                        
+                    }
+                } catch (e) {
+
+                }
+            }
+
+            function LoanMajorGroupLevelDropDowns(id, parentAhid, accountHeadLevel) {
+                var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+                $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id, isFederation: $('#IsFederation').val() }, function (response) {
+                    if (response.SubGroupOptions != null && response.SubGroupOptions != "") {
+                        $("#ddlEditSubGroup").html(response.SubGroupOptions);
+                        $("#ddlEditSubGroup").prepend("<option value='' selected='selected'>Please select</option>");
+                    }
+
+                    if (response.AccountHeadOptions != null && response.AccountHeadOptions != "") {
+                        $("#ddlSearchGroupAccountHead").html(response.AccountHeadOptions);
+                        $("#ddlSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+                        localStorage.setItem("SearchAccountHeadOptions", response.AccountHeadOptions);
+                    }
+
+                }, 'json');
+            }
+
+
+            $(document).ready(function () {
+                var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+                localStorage.removeItem("SearchAccountHeadOptions");
+                $.post(actionUrl, { parentAhid: '@ViewBag.AHID', accountHeadLevel: 0, Id: "ddlEditSubCategory", isFederation: $('#IsFederation').val() }, function (response) {
+                    $("#ddlEditSubCategory").html(response.DropDownOptions);
+                    $("#ddlEditSubCategory").prepend("<option value='' selected='selected'>Please select</option>");
+                }, 'json');
+
+                $(".caps-only").bind('keyup', function (e) {
+                    this.value = this.value.toUpperCase();
+                });
+            });
+
+
+            function EditSubGroupAccountHead(id) {
+                EditClearValues();
+                if (id == "rdEditAccountHead") {
+                    $('#dvEditAccountHeadCode').show();
+                    $('#dvEditAccountHeadName').show();
+                    $('#dvEditSubLedger').show();
+                    $('#dvEditSubGroupCode').hide();
+                    $('#dvEditSubGroupName').hide();
+                    $('#dvSearchAccountHead').show();
+                    $('#dvEditAccountHeadTeluguName').show();
+                    $('#dvEditSubGroupTEName').hide();
+                    $('#dvReceipt').show();
+
+                } else if (id == "rdEditSubGroup") {
+                    $('#dvEditSubLedger').hide();
+                    $('#dvEditAccountHeadCode').hide();
+                    $('#dvEditAccountHeadName').hide();
+                    $('#dvEditSubGroupCode').show();
+                    $('#dvEditSubGroupName').show();
+                    $('#dvSearchAccountHead').hide();
+                    $('#dvEditAccountHeadTeluguName').hide();
+                    $('#dvEditSubGroupTEName').show();
+                    $('#dvReceipt').hide();
+            
+
+                }
+            }
+
+            function IsEditSLA(id) {
+        
+                accountHeadLevel = document.getElementById("rdEditAccountHead").checked ? 5 : 4;
+              
+                if ((rdbaccounthead.toLowerCase() == "rdeditexpenditure" || rdbaccounthead.toLowerCase() == "rdeditincome") && accountHeadLevel==5)
+                {
+                    $('#dvEditOpenBalance').hide();
+                }
+                
+                else if(id == "rdEditIsSLAccountNo" ){
+                    $('#dvEditOpenBalance').show();
+                }
+                else{
+                
+                    $('#dvEditOpenBalance').hide();
+                }
+      
+
+            }
+
+            function SetEditAccountHeadCodeAndName() {
+                var ahidAndCode = $("#ddlSearchGroupAccountHead").val();
+                var ahidName = $("#ddlSearchGroupAccountHead option:selected").text();
+                var ahid = ahidAndCode.split(":")[0];
+                var ahCode = ahidAndCode.split(":")[1];
+                $('#txtEditAHCode').val(ahCode);
+                $('#txtEditAHName').val(ahidName);
+                $('#EditAHID').val(ahid);
+                $('#dvEditSubLedger').show();
+                var actionUrl = '@Url.Action("GetOpenBalance", "AccountTree")';
+                $.post(actionUrl, { Ahid: $('#EditAHID').val() }, function (response) {
+                    if (!response.IsSla) {
+                        $('#rdEditIsSLAccountNo').attr('checked', 'checked');
+                        $('#rdEditIsSLAccountYes').removeAttr('checked');
+                        $('#txtEditOpeningBalance').val(response.OpenBalance);
+                        $('#dvEditOpenBalance').show();
+                    } else {
+                        $('#rdEditIsSLAccountYes').attr('checked', 'checked');
+                        $('#rdEditIsSLAccountNo').removeAttr('checked');
+                        $('#txtEditOpeningBalance').val('');
+                        $('#dvEditOpenBalance').hide();
+                    }
+
+                    if (response.IsMemberTransAction) {
+                        $('#rdEditMemberTransactionYes').attr('checked', 'checked');
+                        $('#rdEditMemberTransactionNo').removeAttr('checked');
+                    }
+                    else {
+                        $('#rdEditMemberTransactionNo').attr('checked', 'checked');
+                        $('#rdEditMemberTransactionYes').removeAttr('checked');
+                    }
+                });
+
+            }
+
+            function SubEditGroupChange(parentAhid) {
+                accountHeadLevel = document.getElementById("rdEditAccountHead").checked ? 5 : 4;
+                if (accountHeadLevel === 4) {
+                    var ahidAndCode = $("#ddlEditSubGroup").val();
+                    var ahidName = $("#ddlEditSubGroup option:selected").text();
+                    var ahid = ahidAndCode.split(":")[0];
+                    var ahCode = ahidAndCode.split(":")[1];
+                    $('#txtEditSubGroupAHCode').val(ahCode);
+                    $('#txtEditSubGroupAHName').val(ahidName);
+                    $('#EditAHID').val(ahid);
+                }
+                else if (accountHeadLevel === 5) {
+
+                    if ($("#ddlEditSubGroup").val() == "") {
+                        var accountHeadDefaultOptions = localStorage.getItem("SearchAccountHeadOptions");
+                        $("#ddlSearchGroupAccountHead").html(accountHeadDefaultOptions);
+                        $("#ddlSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+
+                    }
+                    else {
+
+                        var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+                        $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: "SearchAccountHead", isFederation: $('#IsFederation').val() }, function (response) {
+                            $("#ddlSearchGroupAccountHead").html(response.DropDownOptions);
+                            $("#ddlSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+                        }, 'json');
+                    }
+
+
+                }
+        }
+
+        function EditClearValues() {
+            $('#ddlEditSubGroup').html("<option value='' selected='selected'>Please select</option>");
+            $('#ddlEditMajorGroup').html("<option value='' selected='selected'>Please select</option>");
+            $("#ddlSearchGroupAccountHead").html("<option value='' selected='selected'>Please select</option>");
+            $("#ddlEditSubCategory").val('');
+            $('#txtEditSubGroupAHName').val('');
+            $('#txtEditSubGroupAHCode').val('');
+            $('#txtEditAHCode').val('');
+            $('#txtEditAHName').val('');
+            $('#ParentAHID').val('');
+            $('#EditAHID').val('');
+            $('#txtEditOpeningBalance').removeClass('required');
+            $('#ddlEditSubGroup').removeClass('required');
+            $('#txtEditAHCode').removeClass('required');
+            $('#txtEditAHName').removeClass('required');
+            $('#txtEditSubGroupAHCode').removeClass('required');
+            $('#ddlEditMajorGroup').removeClass('required');
+            $('#ddlEditSubCategory').removeClass('required');
+            $('#txtEditSubGroupAHName').removeClass('required');
+            $("#ddlSearchGroupAccountHead").removeClass('required');
+
+        }
+
+</script>

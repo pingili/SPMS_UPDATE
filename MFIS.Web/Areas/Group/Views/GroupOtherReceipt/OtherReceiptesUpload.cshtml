@@ -1,0 +1,120 @@
+﻿@using BusinessEntities;
+@using CoreComponents;
+@{
+    ViewBag.Title = "OtherReceiptesUpload";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+   
+}
+@using (Html.BeginForm("OtherReceiptesUpload", "GroupOtherReceipt", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    
+    
+    string errorMessage = ViewBag.ErrorMessage != null && !string.IsNullOrWhiteSpace(ViewBag.ErrorMessage) ? ViewBag.ErrorMessage : string.Empty;
+
+    List<UploadErrorEntries> errAl = new List<UploadErrorEntries>();
+    if (ViewBag.DataErrorsList != null)
+    {
+        errAl = ViewBag.DataErrorsList;
+    }
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group Other Receipt Uploads</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Upload File</label>
+                                <input type="file" id="uploadreceipt" name="uploadreceipt" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <br />
+                                <button type="submit" class="btn btn-outline btn-primary" onclick="return validateOtherReceipt();">Upload</button>
+                                <button type="button" class="btn btn-outline btn-primary" onclick="clearFile();">Clear</button>
+                            </div>
+                        </div>
+                        @if (ViewBag.isSucess != null && ViewBag.isSucess)
+                        {
+                            <div class="row">
+                                <lable style="color: green;">Uploaded Successfully</lable>
+                            </div>
+                        }
+                        @if (ViewBag.ErrorMessage != null && !string.IsNullOrWhiteSpace(ViewBag.ErrorMessage))
+                        {
+                            <div class="row">
+                                <label style="color: red;">@ViewBag.ErrorMessage</label>
+                            </div>
+                        }
+                        @if (errAl.Count > 0)
+                        {
+                            <div class="row">
+                                <label style="color: red;">Upload Failed.. Please refer the below error and upload again.</label>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralReceipts">
+                                        <thead>
+                                            <tr>
+                                                <th>RowNumber</th>
+                                                <th>Error Message</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in errAl)
+                                            {
+                                                <tr class="gradeA odd">
+                                                    <td class="text-center">@item.RecordNumber</td>
+                                                    <td class="text-center">@item.ErrorMessage</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel-footer">
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function Addrecard() {
+        showProgress();
+        window.location.href = '@Url.Content("CreateOtherReceipt")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGeneralReceipts";
+        LoadMenu();
+        $('#dataTablesGeneralReceipts').dataTable({
+            "bSort": false
+        });
+    });
+
+    function validateOtherReceipt() {
+        var fileName = $('#uploadreceipt').val();
+        if (fileName == '') {
+            alert("Please select a file.");
+            return false;
+        }
+        return true;
+    }
+
+
+    function clearFile() {
+        $('#uploadreceipt').val('');
+    }
+
+</script>
+

@@ -1,0 +1,392 @@
+﻿@Html.Hidden("ParentAHID")
+@Html.Hidden("DeleteAHID")
+@{
+    var lstMajorCategory = new List<BusinessEntities.AccountHeadDto>();
+    if (ViewBag.AccountHeads != null)
+    {
+        lstMajorCategory = ViewBag.AccountHeads;
+    }
+}
+<div id="collapseFour" class="panel-collapse collapse" style="height: 0px;">
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdDeleteSubGroup" type="radio" value="4" onclick="DeleteSubGroupAccountHead(this.id)">Delete Sub Group
+            </label>
+            <label class="radio-inline">
+                <input name="AHLevel" id="rdDeleteAccountHead" type="radio" checked="checked" value="5" onclick="DeleteSubGroupAccountHead(this.id)">Delete Account Head
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Major Category</label>
+            <br>
+            @{
+                int i = 0;
+                foreach (var majorCategory in lstMajorCategory.FindAll(f => f.ParentAHID == 0))
+                {
+                    if (i == 0)
+                    {
+                        i++;
+                <label class="radio-inline">
+                    <input name="AHType" id="rdDelete@(majorCategory.AHName)" type="radio" checked="checked" value="@majorCategory.AHID" onclick="BindDeleteDropDownOptions('ddlDeleteSubCategory', this.value)">@majorCategory.AHName
+                </label>
+                    }
+
+                    else
+                    {
+                <label class="radio-inline">
+                    <input name="AHType" id="rdDelete@(majorCategory.AHName)" type="radio" value="@majorCategory.AHID" onclick="BindDeleteDropDownOptions('ddlDeleteSubCategory', this.value)">@majorCategory.AHName
+                </label>
+                    }
+                }
+
+            }
+
+        </div>
+
+        <div class="form-group">
+            <label>Sub Category </label>
+            <select id="ddlDeleteSubCategory" class="form-control" onfocus="RemoveValidation(this.id);" onchange="BindDeleteDropDownOptions('ddlDeleteMajorGroup', this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Major Group </label>
+            <select id="ddlDeleteMajorGroup" class="form-control" onfocus="RemoveValidation(this.id);" onchange="BindDeleteDropDownOptions('ddlDeleteSubGroup', this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+
+
+        <!--This is for Add Account Head : Begin-->
+        <div id="dvDeleteSubGroup" class="form-group">
+            <label>Sub Group </label>
+            <select id="ddlDeleteSubGroup" class="form-control" onfocus="RemoveValidation(this.id);" onchange="SubGroupChange(this.value)">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <!--This is for Add Sub Group : Begin-->
+        <div id="dvDeleteSubGroupCode" style="display: none;" class="form-group">
+            <label>Sub Group Code</label>
+            <input class="form-control" id="txtDeleteSubGroupAHCode" onfocus="RemoveValidation(this.id);" name="AHCode" placeholder="CODE">
+        </div>
+        <div id="dvDeleteSubGroupName" style="display: none;" class="form-group">
+            <label>Sub Group Name</label>
+            <input class="form-control" placeholder="Asset" id="txtDeleteSubGroupAHName" onfocus="RemoveValidation(this.id);" name="AHName">
+        </div>
+        <!--This is for Add Sub Group : End-->
+        <div id="dvDeleteSearchAccountHead" class="form-group">
+            <label>Search Head/Account</label>
+            <select id="ddlDeleteSearchGroupAccountHead" class="form-control" onfocus="RemoveValidation(this.id);" onchange="SetDeleteAccountHeadCodeAndName();">
+                <option value="">Please Select</option>
+            </select>
+        </div>
+        <div id="dvDeleteAccountHeadCode" class="form-group">
+            <label>Account Head Code</label>
+            <input class="form-control" placeholder="D-01" id="txtDeleteAHCode" name="AHCode" onfocus="RemoveValidation(this.id);" />
+            @*@Html.TextBoxFor(model => model.AHCode, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div id="dvDeleteAccountHeadName" class="form-group">
+            <label>Account Head Name</label>
+            <input class="form-control" placeholder="Asset" name="AHName" id="txtDeleteAHName" onfocus="RemoveValidation(this.id);" />
+            @*@Html.TextBoxFor(model => model.AHName, "Asset", new { @class = "form-control" })*@
+        </div>
+        <div class="form-group">
+            <label>Member Transaction</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdDeleteMemberTransactionYes" type="radio" checked="checked" value="true">Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsMemberTransaction" id="rdDeleteMemberTransactionNo" type="radio" value="false">No
+            </label>
+        </div>
+        <div id="dvDeleteSubLedger" class="form-group" style="display: none;">
+            <label>Sub Ledger Account</label>
+            <br>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdDeleteIsSLAccountYes" type="radio" checked="checked" value="true" onclick="Y(this.id);" />Yes
+            </label>
+            <label class="radio-inline">
+                <input name="IsSLAccount" id="rdDeleteIsSLAccountNo" type="radio" value="false" onclick="Y(this.id);" />No
+            </label>
+        </div>
+        <div id="dvDeleteOpenBalance" class="form-group" style="display: none;">
+            <label>Opening Balance</label>
+            <br>
+            <input class="form-control adjc-left-80" placeholder="Enter Opening Balance" name="OpeningBalance" id="txtDeleteOpeningBalance" onfocus="RemoveValidation(this.id);">
+            <select class="form-control adjc-right-20" name="OpeningBalanceType" disabled="disabled">
+                <option value="Dr">Dr</option>
+                <option value="Cr">Cr</option>
+            </select>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="form-group" style="margin-left: 16px;">
+            <button type="button" class="btn btn-outline btn-primary loader" onclick="DeleteAccountHeadDetails();">Submit</button>
+            <button type="button" class="btn btn-outline btn-primary" onclick="DeleteClearValues();">Reset</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var accountHeadLevel = document.getElementById("rdDeleteAccountHead").checked ? 5 : 4;
+
+    function DeleteAccountHeadDetails() {
+        var isValid = true;
+        if ($('#ddlDeleteSubCategory').val() == "") {
+            $('#ddlDeleteSubCategory').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlDeleteSubCategory').removeClass('required');
+
+
+        if ($('#ddlDeleteMajorGroup').val() == "") {
+            $('#ddlDeleteMajorGroup').addClass('required');
+            isValid = false;
+        }
+        else
+            $('#ddlDeleteMajorGroup').removeClass('required');
+
+        var isSubGroup = document.getElementById('rdDeleteSubGroup').checked ? true : false;
+
+        if (isSubGroup) {
+            if ($('#txtDeleteSubGroupAHName').val() == "") {
+                $('#txtDeleteSubGroupAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtDeleteSubGroupAHName').removeClass('required');
+
+            if ($('#txtDeleteSubGroupAHCode').val() == "") {
+                $('#txtDeleteSubGroupAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtDeleteSubGroupAHCode').removeClass('required');
+        }
+        else {
+            if ($('#txtDeleteAHCode').val() == "") {
+                $('#txtDeleteAHCode').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtDeleteAHCode').removeClass('required');
+
+            if ($('#txtDeleteAHName').val() == "") {
+                $('#txtDeleteAHName').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#txtDeleteAHName').removeClass('required');
+
+            if ($('#ddlDeleteSubGroup').val() == "") {
+                $('#ddlDeleteSubGroup').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#ddlDeleteSubGroup').removeClass('required');
+
+            if ($('#ddlDeleteSearchGroupAccountHead').val() == "") {
+                $('#ddlDeleteSearchGroupAccountHead').addClass('required');
+                isValid = false;
+            }
+            else
+                $('#ddlDeleteSearchGroupAccountHead').removeClass('required');
+
+
+        }
+
+        //var isSla = document.getElementById('rdDeleteIsSLAccountNo').checked ? true : false;
+
+        //if (isSla) {
+        //    if ($('#txtDeleteOpeningBalance').val() == "") {
+        //        $('#txtDeleteOpeningBalance').addClass('required');
+        //        isValid = false;
+        //    }
+        //    else
+        //        $('#txtDeleteOpeningBalance').removeClass('required');
+        //}
+
+        if (isValid) {
+            var actionUrl = '@Url.Action("DeleteSubGroupAccountHead", "AccountTree")';
+            document.forms[3].action = actionUrl;
+            document.forms[3].submit();
+        }
+    }
+
+
+
+    function BindDeleteDropDownOptions(id, parentAhid) {
+        accountHeadLevel = document.getElementById("rdDeleteAccountHead").checked ? 5 : 4;
+        if (id == "ddlDeleteSubCategory")
+            DeleteClearValues();
+        if (id == "ddlDeleteSubGroup") {
+            LoadMajorDeleteGroupLevelDropDowns("SubGroup", parentAhid, accountHeadLevel);
+            return;
+        }
+        else {
+            var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+            $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id, isFederation: $('#IsFederation').val() }, function (response) {
+                $("#" + id).html(response.DropDownOptions);
+                $("#" + id).prepend("<option value='' selected='selected'>Please select</option>");
+            }, 'json');
+        }
+    }
+
+    function LoadMajorDeleteGroupLevelDropDowns(id, parentAhid, accountHeadLevel) {
+        var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+        $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: id, isFederation: $('#IsFederation').val() }, function (response) {
+            if (response.SubGroupOptions != null && response.SubGroupOptions != "") {
+                $("#ddlDeleteSubGroup").html(response.SubGroupOptions);
+                $("#ddlDeleteSubGroup").prepend("<option value='' selected='selected'>Please select</option>");
+            }
+
+            if (response.AccountHeadOptions != null && response.AccountHeadOptions != "") {
+                $("#ddlDeleteSearchGroupAccountHead").html(response.AccountHeadOptions);
+                $("#ddlDeleteSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+                localStorage.setItem("SearchDeleteAccountHeadOptions", response.AccountHeadOptions);
+            }
+
+        }, 'json');
+    }
+
+
+    $(document).ready(function () {
+        var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+        localStorage.removeItem("SearchDeleteAccountHeadOptions");
+        $.post(actionUrl, { parentAhid: 1, accountHeadLevel: 0, Id: "ddlDeleteSubCategory", isFederation: $('#IsFederation').val() }, function (response) {
+            $("#ddlDeleteSubCategory").html(response.DropDownOptions);
+            $("#ddlDeleteSubCategory").prepend("<option value='' selected='selected'>Please select</option>");
+        }, 'json');
+    });
+
+
+        function DeleteSubGroupAccountHead(id) {
+            DeleteClearValues();
+            if (id == "rdDeleteAccountHead") {
+                $('#dvDeleteAccountHeadCode').show();
+                $('#dvDeleteAccountHeadName').show();
+                $('#dvDeleteSubLedger').show();
+                $('#dvDeleteSubGroupCode').hide();
+                $('#dvDeleteSubGroupName').hide();
+                $('#dvDeleteSearchAccountHead').show();
+
+
+            } else if (id == "rdDeleteSubGroup") {
+                $('#dvDeleteSubLedger').hide();
+                $('#dvDeleteAccountHeadCode').hide();
+                $('#dvDeleteAccountHeadName').hide();
+                $('#dvDeleteSubGroupCode').show();
+                $('#dvDeleteSubGroupName').show();
+                $('#dvDeleteSearchAccountHead').hide();
+                $('#dvDeleteSearchAccountHead').hide();
+
+
+            }
+        }
+
+        function Y(id) {
+            if (id == "rdDeleteIsSLAccountYes")
+                $('#dvDeleteOpenBalance').hide();
+            else {
+                var actionUrl = '@Url.Action("GetOpenBalance", "AccountTree")';
+            $.post(actionUrl, { Ahid: $('#DeleteAHID').val() }, function (response) {
+                $('#txtDeleteOpeningBalance').val(response.OpenBalance);
+            });
+            $('#dvDeleteOpenBalance').show();
+        }
+
+    }
+
+    function SetDeleteAccountHeadCodeAndName() {
+        var ahidAndCode = $("#ddlDeleteSearchGroupAccountHead").val();
+        var ahidName = $("#ddlDeleteSearchGroupAccountHead option:selected").text();
+        var ahid = ahidAndCode.split(":")[0];
+        var ahCode = ahidAndCode.split(":")[1];
+        $('#txtDeleteAHCode').val(ahCode);
+        $('#txtDeleteAHName').val(ahidName);
+        $('#DeleteAHID').val(ahid);
+        $('#dvDeleteSubLedger').show();
+
+        $.post(actionUrl, { Ahid: $('#DeleteAHID').val() }, function (response) {
+            if (!response.IsSla) {
+                $('#rdDeleteIsSLAccountNo').attr('checked', 'checked');
+                $('#rdDeleteIsSLAccountYes').removeAttr('checked');
+                $('#txtDeleteOpeningBalance').val(response.OpenBalance);
+                $('#dvDeleteOpenBalance').show();
+            }
+            else {
+                $('#rdDeleteIsSLAccountYes').attr('checked', 'checked');
+                $('#rdDeleteIsSLAccountNo').removeAttr('checked');
+                $('#txtDeleteOpeningBalance').val('');
+                $('#dvDeleteOpenBalance').hide();
+            }
+            if (response.IsMemberTransAction) {
+                $('#rdDeleteMemberTransactionYes').attr('checked', 'checked');
+                $('#rdDeleteMemberTransactionNo').removeAttr('checked');
+            }
+            else {
+                $('#rdDeleteMemberTransactionNo').attr('checked', 'checked');
+                $('#rdDeleteMemberTransactionYes').removeAttr('checked');
+            }
+        });
+
+
+    }
+
+    function SubGroupChange(parentAhid) {
+        accountHeadLevel = document.getElementById("rdDeleteAccountHead").checked ? 5 : 4;
+
+        if (accountHeadLevel === 4) {
+            var ahidAndCode = $("#ddlDeleteSubGroup").val();
+            var ahidName = $("#ddlDeleteSubGroup option:selected").text();
+            var ahid = ahidAndCode.split(":")[0];
+            var ahCode = ahidAndCode.split(":")[1];
+            $('#txtDeleteSubGroupAHCode').val(ahCode);
+            $('#txtDeleteSubGroupAHName').val(ahidName);
+            $('#DeleteAHID').val(ahid);
+        }
+        else if (accountHeadLevel === 5) {
+
+            if ($("#ddlDeleteSubGroup").val() == "") {
+                var accountHeadDefaultOptions = localStorage.getItem("SearchDeleteAccountHeadOptions");
+                $("#ddlDeleteSearchGroupAccountHead").html(accountHeadDefaultOptions);
+                $("#ddlDeleteSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+
+            }
+            else {
+
+                var actionUrl = '@Url.Action("BindDropDowns", "AccountTree")';
+                $.post(actionUrl, { parentAhid: parentAhid, accountHeadLevel: accountHeadLevel, Id: "SearchAccountHead", isFederation: $('#IsFederation').val() }, function (response) {
+                    $("#ddlDeleteSearchGroupAccountHead").html(response.DropDownOptions);
+                    $("#ddlDeleteSearchGroupAccountHead").prepend("<option value='' selected='selected'>Please select</option>");
+                }, 'json');
+            }
+
+
+        }
+}
+function DeleteClearValues() {
+    $('#ddlDeleteSubGroup').html("<option value='' selected='selected'>Please select</option>");
+    $('#ddlDeleteMajorGroup').html("<option value='' selected='selected'>Please select</option>");
+    $("#ddlDeleteSearchGroupAccountHead").html("<option value='' selected='selected'>Please select</option>");
+    $("#ddlDeleteSubCategory").val('');
+    $('#txtDeleteSubGroupAHName').val('');
+    $('#txtDeleteSubGroupAHCode').val('');
+    $('#txtDeleteAHCode').val('');
+    $('#txtDeleteAHName').val('');
+    $('#ParentAHID').val('');
+    $('#DeleteAHID').val('');
+
+    $('#txtDeleteOpeningBalance').removeClass('required');
+    $('#ddlDeleteSubGroup').removeClass('required');
+    $('#txtDeleteAHCode').removeClass('required');
+    $('#txtDeleteAHName').removeClass('required');
+    $('#txtDeleteSubGroupAHCode').removeClass('required');
+    $('#ddlDeleteMajorGroup').removeClass('required');
+    $('#ddlDeleteSubCategory').removeClass('required');
+    $('#txtDeleteSubGroupAHName').removeClass('required');
+    $("#ddlDeleteSearchGroupAccountHead").removeClass('required');
+}
+</script>

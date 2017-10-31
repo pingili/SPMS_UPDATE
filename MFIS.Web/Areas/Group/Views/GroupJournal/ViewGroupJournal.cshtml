@@ -1,0 +1,185 @@
+﻿@using CoreComponents;
+@using BusinessEntities;
+@model BusinessEntities.GroupJournalDto
+@{
+    ViewBag.Title = "CreateOtherJournal";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+<style type="text/css">
+    .span-tran-delete {
+        color: #428bca;
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    decimal totalAmount = 0;
+    int counter = 0;
+    bool isMemberJournal = ViewBag.IsMemberJournal;
+    <input type="hidden" id="hdnMaxcount" name="hdnMaxcount" value="@counter" />
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">
+                        @(isMemberJournal ? "Member Journal View" : "Other Journal View") &nbsp;<label>Vocher Number</label>:@Model.VoucherNumber
+                        @Html.HiddenFor(m => m.AccountMasterID)
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                @Html.TextBox("TransactionDate", Model.TransactionDate.ToDisplayDateFormat(), new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBox("EmployeeName", Model.EmployeeName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>On Behalf Of</label>
+                                @Html.TextBox("OnBehalfOfEmpName", Model.OnBehalfOfEmpName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Vocher RefNumber</label>
+                                @Html.TextBox("VocherRefNumber", Model.VocherRefNumber, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        @if (isMemberJournal)
+                        {
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Member</label>
+                                    @Html.TextBox("MemberName", Model.MemberName, new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Adjust From GLAccount</label>
+                                @Html.TextBox("FGLAccountName", Model.FGLAccountName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Adjust From SLAccount</label>
+                                @Html.TextBox("FSLAccountName", Model.FSLAccountName, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                @Html.TextBox("FAmount", Model.FAmount.ToDisplayCurrency(), new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                @Html.TextBox("FAmount", Model.CrDr, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTableOtherJournal">
+                            <thead>
+                                <tr>
+                                    <th>GL Account Head</th>
+                                    <th>SL Account Head</th>
+                                    <th class="text-right">Amount &nbsp;&nbsp;(<span id="spnAdjToType">@(Model.CrDr.ToLower() == "cr" ? "Dr." : "Cr.")</span>)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.TransactionsList != null && Model.TransactionsList.Count > 0)
+                                {
+                                    foreach (var objTran in Model.TransactionsList)
+                                    {
+                                        totalAmount += objTran.Amount;
+                                        <tr id="tr_@(++counter)">
+                                            <td>
+                                                <span id="glAccount_@counter">@objTran.GLAccount </span>
+                                            </td>
+                                            <td><span id="slAccount_@counter">@objTran.SLAccount</span></td>
+                                            <td class="text-right">
+                                                <span id="amount_@counter">@objTran.Amount.ToDisplayCurrency() </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" align="right" style="padding-right: 10px;"><b>Total:</b></td>
+                                    <td class="text-right">
+                                        <span id="spnTotal" name="spnTotal" style="font-weight: bold;">@totalAmount</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(m => m.Narration, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="form-group" style="margin-left: 16px;">
+                    <button type="submit" class="btn btn-outline btn-primary lock-dependent" style="display:none;">Submit</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <style>
+        .form-control {
+            padding: 2px 2px;
+            height: 25px;
+            border-radius: 1px;
+        }
+
+        .panel-heading {
+            padding: 2px 15px;
+            border-bottom: 1px solid transparent;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            line-height: 29px;
+        }
+
+        .Amount {
+            width: 80px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var isMemberJournal = '@(isMemberJournal ? true : false)';
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("GroupJournalLookUp?type=")' + (isMemberJournal.toLowerCase() == 'true' ? 'M' : 'O');
+        }
+
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = '@(isMemberJournal ? "lnkSideMemberJournal" : "lnkSideOtherJournal")';
+            LoadMenu();
+        });
+    </script>
+}

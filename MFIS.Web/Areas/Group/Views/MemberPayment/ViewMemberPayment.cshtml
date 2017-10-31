@@ -1,0 +1,197 @@
+﻿@using CoreComponents;
+@model BusinessEntities.GroupMemberPaymentDto
+
+@{
+    ViewBag.Title = "View Member Payment";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+<style type="text/css">
+    /*.form-control {
+        padding: 2px 2px;
+        height: 30px;
+        border-radius: 2px;
+    }
+
+    .span-tran-delete {
+        color: #428bca;
+        cursor: pointer;
+        font-weight: bold;
+    }*/
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    int counter = 0;
+    decimal totalAmount = 0;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">
+                        View General Payment &nbsp;<label>Vocher Number</label>
+                        : @Model.VoucherNumber
+                    </span>
+                    @Html.ActionLink("Back to List", "MemberPaymentsLookup", null, new { @class = "btn btn-default pull-right" })
+                    @*<button type="button" class="btn btn-default pull-right" onclick="BackToList()">Back To List</button>*@
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Member Name</label>
+                                @Html.TextBoxFor(m => m.MemberName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label><br />
+                                <input type="text" readonly class="form-control" value="@(Model.TransactionMode == "C" ? "Cash" : Model.TransactionMode == "BD" ? "Bank Deposit / Online Transfer" : "Cheque/DD Deposit at Bank")" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Date</label><br />
+                                <input type="text" value="@Model.TransactionDate.ToDisplayDateFormat()" class="form-control" id="txtTransactionDate" name="txtTransactionDate" placeholder="Select TransactionDate" readonly="true" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Vocher RefNumber</label>
+                                @Html.TextBoxFor(m => m.VoucherRefNumber, new { @class = "form-control alphanumeric-only", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Collection Agent</label>
+                                @Html.TextBoxFor(m => m.CollectionAgentName, new { @class = "form-control alphanumeric-only", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 dv-cheque">
+                            <div class="form-group">
+                                <label>Cheque Number</label>
+                                @Html.TextBoxFor(m => m.ChequeNumber, null, new { @class = "form-control number-only", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 dv-cheque">
+                            <div class="form-group">
+                                <label>Cheque Date</label>
+                                <input type="text" value="@Model.ChequeDate.ToDisplayDateFormat()" class="form-control" id="ChequeDate" name="ChequeDate" placeholder="Select ChequeDate" readonly="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTableGeneralPayments">
+                            <thead>
+                                <tr>
+                                    <th>GL Account Head</th>
+                                    <th>SL Account Head</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.TransactionsList != null && Model.TransactionsList.Count > 0)
+                                {
+                                    foreach (var objTran in Model.TransactionsList)
+                                    {
+                                        totalAmount += objTran.Amount;
+                                        <tr id="tr_@(++counter)">
+                                            <td>
+                                                <span id="glAccount_@counter">@objTran.GLAccount </span>
+                                            </td>
+                                            <td><span id="slAccount_@counter">@objTran.SLAccount</span></td>
+                                            <td>
+                                                <span id="amount_@counter">@objTran.Amount.ToDisplayCurrency() </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" align="right" style="padding-right: 10px;"><b>Total:</b></td>
+                                    <td>
+                                        <span id="spnTotal" name="spnTotal" style="font-weight: bold;">@totalAmount.ToDisplayCurrency()</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Head</label>
+                                <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                            </div>
+                        </div>
+                        @if (Model.TransactionMode.Contains("B"))
+                        {
+                            <div class="col-lg-3" id="dvToBank">
+                                <div class="form-group">
+                                    <label>Group Bank Account</label>
+                                    @Html.TextBoxFor(m => m.ToAhNameForView, null, new { @class = "form-control number-only", @readonly = "true" })
+                                </div>
+                            </div>
+                        }
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@Scripts.Render("~/bundles/jqueryui")
+@Styles.Render("~/Content/cssjqryUi")
+
+<script type="text/javascript">
+    $(function () {
+
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideMemberPayment";
+        LoadMenu();
+
+        var tMode = '@Model.TransactionMode';
+        TransactionModeChange();
+
+        $('#TransactionMode').on('change', function () {
+            TransactionModeChange();
+        });
+    });
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("MemberPaymentsLookup")';
+    }
+
+    function TransactionModeChange() {
+        var tMode = $('#TransactionMode').val();
+        $('.dv-cheque').hide();
+        if (tMode == "C") {
+            $('#dvToBank').hide();
+            $('#txtToHead').val('Cash In Hand');
+        } else {
+            $('#txtToHead').val('Cash at Bank');
+            $('#dvToBank').show();
+
+            if (tMode == "BC") {
+                $('.dv-cheque').show();
+            }
+        }
+    }
+
+</script>
