@@ -100,29 +100,6 @@ namespace MFIS.Web.Controllers
             return View(lstGroupMasterViewDto);
         }
 
-        //public ActionResult BindDropDowns(string flag, int Id)
-        //{
-
-        //    StringBuilder sbOptions = new StringBuilder();
-        //    if (flag == "Cluster")
-        //    {
-        //        List<SelectListDto> lstvillageDto = _villageService.GetVillageByClusterID(Id);
-        //        foreach (var item in lstvillageDto)
-        //        {
-        //            sbOptions.Append("<option value=" + item.ID + ">" + item.Text + "</option>");
-        //        }
-        //    }
-        //    else if (flag == "Village")
-        //    {
-        //        List<SelectListDto> lstGroups = _groupService.GetGroupByVillageID(Id);
-        //        foreach (var item in lstGroups)
-        //        {
-        //            sbOptions.Append("<option value=" + item.ID + ">" + item.Text + "</option>");
-        //        }
-        //    }
-        //    return Content(sbOptions.ToString());
-
-        //}
         [HttpPost]
         public ActionResult SelectGroup(int groupId)
         {
