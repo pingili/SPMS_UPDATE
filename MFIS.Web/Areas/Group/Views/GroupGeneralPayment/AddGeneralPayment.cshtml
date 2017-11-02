@@ -236,11 +236,11 @@
                 return false;
             }
 
-            //sl account duplicate validation
-            if ($('input[type="hidden"][id*="hdnSLId_"][value="' + _slAccountId + '"]').length) {
-                alert('selected Sl Account already added');
-                return false;
-            }
+            ////sl account duplicate validation
+            //if ($('input[type="hidden"][id*="hdnSLId_"][value="' + _slAccountId + '"]').length) {
+            //    alert('selected Sl Account already added');
+            //    return false;
+            //}
 
             var indx = Number(maxTranCount) + 1;
             var glAccount = $.trim($('#GLAccountId option:selected').text());

@@ -46,7 +46,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
 
         public void LoadOtherReceiptDropDowns()
         {
-            TypeQueryResult lst = _masterService.GetTypeQueryResult("GROUP_GOP_GL_HEADS");
+            TypeQueryResult lst = _masterService.GetTypeQueryResult("GROUP_GL_ACCOUNT_HEADS", "G,B,M");
             ViewBag.lstGLAcHeads = new SelectList(lst.OrderBy(a => a.Name), "Id", "Name");
 
             TypeQueryResult lstBankAh = _masterService.GetTypeQueryResult("GROUP_OR_BANK_AH", GroupInfo.GroupID.ToString());
