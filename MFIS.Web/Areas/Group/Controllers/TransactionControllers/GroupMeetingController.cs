@@ -220,7 +220,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     );
 
             ViewBag.PageType = type;
-
+            ViewBag.groupMeetingId = groupMeetingId;
             return View(lstGroupMeetings);
 
             /*GroupMeetingDto groupmeetingdto = new GroupMeetingDto();
@@ -285,9 +285,10 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
 
             return RedirectToAction("GroupMeetingLookup");
         }
-        public ActionResult GroupMeetingLock()
+        public ActionResult GroupMeetingLock(string type,string meetingId)
         {
-            dal.GroupMeeitngLock(GroupInfo.GroupID, UserInfo.UserID);
+            int Id = Convert.ToInt32(meetingId);
+            dal.GroupMeeitngLock(GroupInfo.GroupID, UserInfo.UserID,type, Id);
             UpdateGroupInfoSessionbyGroupId(GroupInfo.GroupID);
             ResultDto resultDto = new ResultDto();
             resultDto.ObjectId = 1;

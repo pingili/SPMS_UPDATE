@@ -312,10 +312,10 @@ namespace DataLogic.Implementation
             return lstGroupMeetings;
         }
 
-        public void GroupMeeitngLock(int groupId, int userId)
+        public void GroupMeeitngLock(int groupId, int userId,string type,int meetingId)
         {
             AdoHelper obj = new AdoHelper();
-            SqlParameter[] parms = new SqlParameter[2];
+            SqlParameter[] parms = new SqlParameter[4];
 
             parms[0] = new SqlParameter("@GroupId", groupId);
             parms[0].SqlDbType = System.Data.SqlDbType.Int;
@@ -323,7 +323,13 @@ namespace DataLogic.Implementation
             parms[1] = new SqlParameter("@UserId", userId);
             parms[1].SqlDbType = System.Data.SqlDbType.Int;
 
-          obj.ExecNonQueryProc("uspGroupMeetingLock", parms);
+            parms[2] = new SqlParameter("@type", type);
+            parms[2].SqlDbType = System.Data.SqlDbType.VarChar;
+
+            parms[3] = new SqlParameter("@meetingId", meetingId);
+            parms[3].SqlDbType = System.Data.SqlDbType.Int;
+
+            obj.ExecNonQueryProc("uspGroupMeetingLock", parms);
 
         }
     }
