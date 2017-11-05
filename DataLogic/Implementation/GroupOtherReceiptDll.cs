@@ -32,7 +32,7 @@ namespace DataLogic.Implementation
             return lstgroupMeetingDto;
         }
 
-        public ResultDto InsertUpdateOtherReciept(GroupOtherRecieptDto objDto, int groupId)
+        public ResultDto InsertUpdateOtherReciept(GroupOtherRecieptDto objDto, int groupId, bool isContra)
         {
             ResultDto res = new ResultDto();
             try
@@ -57,10 +57,13 @@ namespace DataLogic.Implementation
                 cmd.Parameters.AddWithValue("@Amount", objDto.Amount);
                 if (objDto.TransactionMode != "C")
                     cmd.Parameters.AddWithValue("@BankEntryId", objDto.BankEntryId);
-
+                if (objDto.TransactionMode == "C" && isContra == true)
+                    cmd.Parameters.AddWithValue("@BankEntryId", objDto.BankEntryId);
                 cmd.Parameters.AddWithValue("@Narration", objDto.Narration);
                 cmd.Parameters.AddWithValue("@UserId", objDto.UserId);
                 cmd.Parameters.AddWithValue("@GroupId", groupId);
+                cmd.Parameters.AddWithValue("@IsContra", isContra);
+
                 SqlParameter prmAccountMasterId = new SqlParameter("@AccountMasterId", SqlDbType.Int);
                 prmAccountMasterId.Value = objDto.AccountMasterID;
                 prmAccountMasterId.Direction = ParameterDirection.InputOutput;
@@ -135,7 +138,7 @@ namespace DataLogic.Implementation
 
         }
 
-        public List<GroupOtherReceiptLookUpDto> GroupOtherReceiptLookUp(int UserId,int GroupId)
+        public List<GroupOtherReceiptLookUpDto> GroupOtherReceiptLookUp(int UserId, int GroupId)
         {
             List<GroupOtherReceiptLookUpDto> lstGroupOtherReceiptDto = new List<GroupOtherReceiptLookUpDto>();
             SqlConnection con = new SqlConnection(DBConstants.MFIS_CS);
@@ -292,7 +295,7 @@ namespace DataLogic.Implementation
                         if (dr.NextResult())
                         {
                             obj.SlAccountHeads = new List<UGORAccountHeadDto>();
-                            
+
                             while (dr.Read())
                             {
                                 obj.SlAccountHeads.Add(new UGORAccountHeadDto() { AHCode = Convert.ToString(dr["AHCode"]), AHId = Convert.ToInt32(dr["AHID"]) });
