@@ -25,11 +25,11 @@ namespace BusinessLogic.Implementation
             return lstdto;
         }
 
-        public ResultDto Insert(GroupOtherRecieptDto objDto,int GroupId)
+        public ResultDto Insert(GroupOtherRecieptDto objDto, int GroupId, bool isContra)
         {
             ResultDto resultDto = new ResultDto();
 
-            return _groupOtherReceiptDal.InsertUpdateOtherReciept(objDto, GroupId);
+            return _groupOtherReceiptDal.InsertUpdateOtherReciept(objDto, GroupId, isContra);
         }
         public List<GroupMeetingDto> GetGroupOpenMeetingDates(int GroupId)
         {
@@ -46,9 +46,9 @@ namespace BusinessLogic.Implementation
 
         }
 
-        public List<GroupOtherReceiptLookUpDto> GroupOtherReceiptLookUp(int UserId,int GroupId)
+        public List<GroupOtherReceiptLookUpDto> GroupOtherReceiptLookUp(int UserId, int GroupId)
         {
-            List<GroupOtherReceiptLookUpDto> groupOtherReceiptDto = _groupOtherReceiptDal.GroupOtherReceiptLookUp(UserId,GroupId);
+            List<GroupOtherReceiptLookUpDto> groupOtherReceiptDto = _groupOtherReceiptDal.GroupOtherReceiptLookUp(UserId, GroupId);
 
             return groupOtherReceiptDto;
         }
@@ -58,9 +58,9 @@ namespace BusinessLogic.Implementation
             return dto;
         }
 
-        public ResultDto DeleteGroupOtherReceipt(int AccountMasterId,int UserId)
+        public ResultDto DeleteGroupOtherReceipt(int AccountMasterId, int UserId)
         {
-            ResultDto resultDto =_groupOtherReceiptDal.DeleteGroupOtherReceipt(AccountMasterId, UserId);
+            ResultDto resultDto = _groupOtherReceiptDal.DeleteGroupOtherReceipt(AccountMasterId, UserId);
             return resultDto;
         }
 

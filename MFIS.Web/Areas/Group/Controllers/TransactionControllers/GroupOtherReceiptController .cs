@@ -86,16 +86,21 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     _groupOtherReceiptDto.ChequeNumber = Convert.ToString(Request.Form["ChequeNumber"]);
                     _groupOtherReceiptDto.ChequeDate = Request.Form["ChequeDate"].ConvertToDateTime();
                 }
+                bool isContra = Convert.ToBoolean((Request.Form["IsContra"]).Split(',')[0]);
                 _groupOtherReceiptDto.Amount = Convert.ToDecimal(Request.Form["Amount"]);
                 if (_groupOtherReceiptDto.TransactionMode != "C")
                     _groupOtherReceiptDto.BankEntryId = Convert.ToInt32(Request.Form["BankEntryId"]);
+                if (_groupOtherReceiptDto.TransactionMode == "C" && isContra == true) {
+                    _groupOtherReceiptDto.BankEntryId = Convert.ToInt32(Request.Form["BankEntryId"]);
+                }
 
                 _groupOtherReceiptDto.Narration = Convert.ToString(Request.Form["Narration"]);
                 _groupOtherReceiptDto.UserId = UserInfo.UserID;
                 //Save
                 ResultDto resultDto = new ResultDto();
                 int GroupId = GroupInfo.GroupID;
-                resultDto = _groupOtherReceiptService.Insert(_groupOtherReceiptDto, GroupId);
+                
+                resultDto = _groupOtherReceiptService.Insert(_groupOtherReceiptDto, GroupId,isContra);
                 _groupOtherReceiptDto.VoucherNumber = resultDto.ObjectCode;
                 _groupOtherReceiptDto.AccountMasterID = resultDto.ObjectId;
                 ViewBag.LockStatus = GroupInfo.LockStatus;
@@ -206,7 +211,8 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                         ResultDto resultDto = new ResultDto();
 
                         int GroupId = GroupInfo.GroupID;
-                        resultDto = _groupOtherReceiptService.Insert(obj, GroupId);
+                        bool isContra = false;
+                        resultDto = _groupOtherReceiptService.Insert(obj, GroupId, isContra);
 
                         obj.VoucherNumber = resultDto.ObjectCode;
                         obj.AccountMasterID = resultDto.ObjectId;

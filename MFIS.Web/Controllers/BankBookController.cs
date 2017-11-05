@@ -58,7 +58,7 @@ namespace MFIS.Web.Controllers
         public List<GeneralLedgerDto> GetAllBankBook(int groupId, DateTime FromDate, DateTime ToDate, out string OrgAddress) 
         {
             List<GeneralLedgerDto> lstLedger = new List<GeneralLedgerDto>();
-            SqlCommand cmd = new SqlCommand("uspGroupBankBook", con);
+            SqlCommand cmd = new SqlCommand("uspGroupBankBook_v1", con);
 
          
             cmd.Parameters.AddWithValue("@GroupId", groupId);

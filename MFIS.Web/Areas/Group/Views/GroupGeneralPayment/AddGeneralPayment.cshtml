@@ -341,10 +341,8 @@
             var optionsList = '';
             var url = '@Url.Action("GetGroupSubLedgerAccountHeadsByGLAHId")';;
             $.post(url, { glAHId: Number(glAhId) }, function (data) {
-                debugger;
                 if (data.slAccountHeads) {
                     $(data.slAccountHeads).each(function (item, value) {
-                        debugger;
                         optionsList += '<option value="' + value.ID + '"> ' + value.Text + '</option>';
                     });
                     $('#SLAccountId').append(optionsList);

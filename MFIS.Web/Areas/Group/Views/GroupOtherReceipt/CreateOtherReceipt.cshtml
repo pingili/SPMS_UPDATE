@@ -107,32 +107,58 @@
                                     <input type="text" value="@Model.ChequeDate.ToDisplayDateFormat()" class="form-control" id="ChequeDate" name="ChequeDate" placeholder="Select ChequeDate" readonly="true" />
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label>Amount</label>
                                     @Html.TextBox("Amount", Model.Amount.ToLong(), new { @class = "form-control required number-only", @style = "width:95%;", @id = "Amount", @name = "Amount" })
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-2">
                                 <div class="form-group">
-                                    <label>Narration</label>
-                                    @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only" })
+                                    @Html.CheckBox("IsContra", new { @name = "IsContra",@id= "IsContra", @class = "checkbox-inline",@style="margin-top:20px !important" })
+                                    <label style="margin-top:25px!important">IsContra</label>
                                 </div>
                             </div>
+                            @*<div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Narration</label>
+                                        @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only" })
+                                    </div>
+                                </div>*@
                         </div>
-                        <div class="col-lg-3">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Account Head</label>
-                                    <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                        @*<div class="col-lg-3">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Account Head</label>
+                                        <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                                    </div>
                                 </div>
-                            </div>
 
+                            </div>
+                            <div class="col-lg-3" id="dvToBank">
+                                <div class="form-group">
+                                    <label>Group Bank Account</label>
+                                    @Html.DropDownListFor(m => m.BankEntryId, (SelectList)ViewBag.slBankAh, "Select Bank Account Head", new { @class = "form-control required" })
+                                </div>
+                            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Head</label>
+                                <input id="txtToHead" type="text" value="" class="form-control" readonly />
+                            </div>
                         </div>
                         <div class="col-lg-3" id="dvToBank">
                             <div class="form-group">
                                 <label>Group Bank Account</label>
                                 @Html.DropDownListFor(m => m.BankEntryId, (SelectList)ViewBag.slBankAh, "Select Bank Account Head", new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(m => m.Narration, new { @class = "form-control alphabet-only" })
                             </div>
                         </div>
                     </div>
@@ -185,7 +211,7 @@
                 $('#txtTransactionDate').show();
                 $('#txtToHead').val('Cash at Bank');
                 $('#dvToBank').show();
-
+                $('input[id^="IsContra"]').prop('checked', false);
                 if (tMode == "BC") {
                     $('.dv-cheque').show();
                 }
@@ -268,7 +294,6 @@
             $('#SLAccountId').css('border-color', '');
         }
 
-        debugger;
         var amount = Number($('#Amount').val());
 
         if (!amount) {
@@ -303,5 +328,16 @@
                       $('#SLAcName').val(data.SLAccounts);
                   }, 'json');
     }
+    $(document).ready(function () {
+        $('#IsContra').change(function () {
+            var isContra = $('#IsContra').prop('checked').toString() == 'true';
+            if (isContra) {
+                $('#dvToBank').show();
+            }
+            else {
+                $('#dvToBank').hide();
+            }
+        });
+    });
 </script>
 
