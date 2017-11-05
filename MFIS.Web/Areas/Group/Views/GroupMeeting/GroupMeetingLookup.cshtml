@@ -13,7 +13,7 @@
 {
     System.Globalization.DateTimeFormatInfo mfi = new System.Globalization.DateTimeFormatInfo();
     var Result = TempData["Result"] as BusinessEntities.ResultDto;
-  
+
     <div class="row">
         <div class="col-lg-12">
             <!-- Form Elements -->
@@ -24,7 +24,6 @@
                     {
                         var item = ViewBag.OpenMeetings as GroupMeetingLookupDto;
                         string encryptGroupMeetingID = item.GroupMeetingID.EncryptString();
-                        
                         <button type="button" class="btn btn-default pull-right" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');">Lock Open Meetings</button>
                     }
                     else
@@ -79,65 +78,67 @@
                                         {
                                             trclass = "green";
                                         }
-                                    <tr class=@trclass>
-                                        <td class="text-center" style="width: 5%">
-                                            <img style="cursor:pointer;" src="~/Content/images/icon-plus.png" onclick="toggleTable(@i,this);" id="toggleicon" title="Expand" />
-                                        <td>@(monthCounter++)</td>
-                                        <td>@(mfi.GetMonthName(currentMonth) + " - " + currentYear)</td>
-                                        <td>@item.MeetingLockStatus</td>
-                                        @if (item.MeetingLockStatus.ToUpper() == "OPEN")
-                                        {
-                                            <td class="text-center">
-                                                <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditGroupMeeting('@encryptGroupMeetingID');" />
-                                                <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID');" />
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td class="text-center">
-                                                <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'V');" />
-                                            </td>
-                                        }
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td colspan="4">
-                                            <table class="table table-striped table-bordered table-hover" id="tblGroupMeetingDetails_@i" style="display:none">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Meeting Date</th>
-                                                        <th>Conducted</th>
-                                                        <th>Type</th>
-                                                        <th>Members</th>
-                                                    </tr>
-                                                </thead>
-                                                @foreach (var objMeeting in lst1)
-                                                {
-
-
-                                                    <tbody>
+                                        <tr class=@trclass>
+                                            <td class="text-center" style="width: 5%">
+                                                <img style="cursor:pointer;" src="~/Content/images/icon-plus.png" onclick="toggleTable(@i,this);" id="toggleicon" title="Expand" />
+                                            <td>@(monthCounter++)</td>
+                                            <td>@(mfi.GetMonthName(currentMonth) + " - " + currentYear)</td>
+                                            <td>@item.MeetingLockStatus</td>
+                                            @if (item.MeetingLockStatus.ToUpper() == "OPEN")
+                                            {
+                                                <td class="text-center">
+                                                    <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditGroupMeeting('@encryptGroupMeetingID');" />
+                                                    <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID');" />
+                                                    <img src="~/Content/images/1468095521_unlock.png" style="cursor: pointer" title="Unlock" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');" />
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">
+                                                    <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'V');" />
+                                                    <img src="~/Content/images/1468082722_lock.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID','U');" />
+                                                </td>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4">
+                                                <table class="table table-striped table-bordered table-hover" id="tblGroupMeetingDetails_@i" style="display:none">
+                                                    <thead>
                                                         <tr>
-                                                            <td>
-                                                                @objMeeting.MeetingDate.ToDisplayDateFormat()
-                                                            </td>
-                                                            <td>
-                                                                @(objMeeting.IsConducted ? "Yes" : "No")
-                                                            </td>
-                                                            <td>
-                                                                @(objMeeting.IsConducted ? (objMeeting.IsSpecialMeeting ? "Special" : "Regular") : "")
-                                                            </td>
-                                                            <td>
-                                                                @(objMeeting.IsConducted ? objMeeting.MembersCount.ToString() : "")
-                                                            </td>
-
+                                                            <th>Meeting Date</th>
+                                                            <th>Conducted</th>
+                                                            <th>Type</th>
+                                                            <th>Members</th>
                                                         </tr>
-                                                    </tbody>
-                                                }
+                                                    </thead>
+                                                    @foreach (var objMeeting in lst1)
+                                                    {
 
-                                            </table>
-                                        </td>
-                                    </tr>
-                                                i++;
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    @objMeeting.MeetingDate.ToDisplayDateFormat()
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? "Yes" : "No")
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? (objMeeting.IsSpecialMeeting ? "Special" : "Regular") : "")
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? objMeeting.MembersCount.ToString() : "")
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    }
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        i++;
                                     }
                                 }
                                 else
@@ -176,6 +177,14 @@
         }
         function ViewGroupMeeting(id, type) {
             showProgress();
+            if (type == 'U') {
+                var OpenMeetings = '@ViewBag.OpenMeetings';
+                if (OpenMeetings != null && OpenMeetings!="") {
+                    alert('If you want to OPEN this Meeting \n  LOCK Other Meetings')
+                    hideProgress();
+                    return false;
+                } else {  window.location.href = '@Url.Content("GroupMeetingView?id=")' + id + '&type=' + type;}
+            }
             window.location.href = '@Url.Content("GroupMeetingView?id=")' + id + '&type=' + type;
         }
         function DeleteGroupMeeting(encryptGroupMeetingID) {

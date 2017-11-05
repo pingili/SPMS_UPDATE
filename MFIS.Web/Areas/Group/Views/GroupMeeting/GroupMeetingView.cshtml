@@ -9,13 +9,17 @@
 {
     <div class="row">
         <div class="col-lg-12">
-            <!-- Form Elements -->
+            <!-- Form Elements || ViewBag.pageType.ToString()=="U"-->
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <span class="header">@ViewBag.MeetingHeader</span>
                     @if (ViewBag.PageType != null && ViewBag.PageType.ToString() == "L")
                     {
-                        <input type="button" class="btn btn-default pull-right" value="Lock Open Meetings" onclick="LockOpenMeetings();" />
+                        <input type="button" class="btn btn-default pull-right" value="Lock Open Meeting" onclick="LockOpenMeetings('@ViewBag.PageType.ToString()',' @ViewBag.groupMeetingId');" />
+                    }
+                    @if (ViewBag.PageType != null && ViewBag.pageType.ToString() == "U")
+                    {
+                        <input type="button" class="btn btn-default pull-right" value="Un Lock Meeting" onclick="LockOpenMeetings('@ViewBag.PageType.ToString()',' @ViewBag.groupMeetingId');" />
                     }
                     <button type="button" class="btn btn-default pull-right" style="margin-right: 5px;" onclick="BackToList();">Back To List</button>
                 </div>
@@ -29,24 +33,28 @@
                                         <table width="100%" border="2" cellspacing="1" cellpadding="1">
                                             <tr>
                                                 <td style="width: 10%;">
-                                                    <label>Meeting Date</label></td>
+                                                    <label>Meeting Date</label>
+                                                </td>
                                                 <td>@(string.Format("{0} - {1}", meeting.MeetingDate.ToDisplayDateFormat(), meeting.IsSplMeeting ? "Special" : "Regular"))</td>
                                             </tr>
                                             @if (meeting.IsConducted)
                                             {
                                                 <tr>
                                                     <td>
-                                                        <label>Objective</label></td>
+                                                        <label>Objective</label>
+                                                    </td>
                                                     <td>@meeting.MeetingObjective</td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label>Comments</label></td>
+                                                        <label>Comments</label>
+                                                    </td>
                                                     <td>@meeting.MeetingComments</td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label>Attended Members</label></td>
+                                                        <label>Attended Members</label>
+                                                    </td>
                                                     <td>@meeting.Members</td>
                                                 </tr>
                                             }
@@ -54,17 +62,20 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        <label>Conducted?</label></td>
+                                                        <label>Conducted?</label>
+                                                    </td>
                                                     <td>Not Conducted</td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label>Reason</label></td>
+                                                        <label>Reason</label>
+                                                    </td>
                                                     <td>@meeting.ReasonName</td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <label>Comments</label></td>
+                                                        <label>Comments</label>
+                                                    </td>
                                                     <td>@meeting.OtherReason</td>
                                                 </tr>
                                             }
@@ -91,10 +102,24 @@
         window.location.href = '@Url.Content("GroupMeetingLookup")';
     }
 
-    function LockOpenMeetings() {
-        if (confirm('if you continue, all open meetings in the group will be locked and cannot rollback. \n Do you wish to continue?')) {
-            showProgress();
-            window.location.href = '@Url.Content("GroupMeetingLock")';
+    function LockOpenMeetings(type, meetingId)
+    {
+        if (type == 'L')
+        {
+            if (confirm('if you continue, open meeting will be lock . \n Do you wish to continue?'))
+            {
+                showProgress();
+                window.location.href = '@Url.Content("GroupMeetingLock?type=")' + type + '&meetingId=' + meetingId;
+            }
         }
+        if (type == 'U')
+        {
+            if (confirm('if you continue, Locked meeting will be Open . \n Do you wish to continue?'))
+            {
+                showProgress();
+                window.location.href = '@Url.Content("GroupMeetingLock?type=")' + type + '&meetingId=' + meetingId;
+            }
+        }
+
     }
 </script>
