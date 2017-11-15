@@ -39,7 +39,7 @@ namespace MFIS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GroupBankBook(FormCollection form) 
+        public ActionResult GroupBankBook(FormCollection form)
         {
             DateTime dtFromDate = Convert.ToDateTime(form["FromDate"]);
             DateTime dtToDate = Convert.ToDateTime(form["ToDate"]);
@@ -55,12 +55,12 @@ namespace MFIS.Web.Controllers
             return View(lstBankBook);
         }
 
-        public List<GeneralLedgerDto> GetAllBankBook(int groupId, DateTime FromDate, DateTime ToDate, out string OrgAddress) 
+        public List<GeneralLedgerDto> GetAllBankBook(int groupId, DateTime FromDate, DateTime ToDate, out string OrgAddress)
         {
             List<GeneralLedgerDto> lstLedger = new List<GeneralLedgerDto>();
             SqlCommand cmd = new SqlCommand("uspGroupBankBook_v1", con);
 
-         
+
             cmd.Parameters.AddWithValue("@GroupId", groupId);
             cmd.Parameters.AddWithValue("@StartDate", FromDate);
             cmd.Parameters.AddWithValue("@EndDate", ToDate);
@@ -80,6 +80,10 @@ namespace MFIS.Web.Controllers
                 obj.Date = Convert.ToDateTime(dr["TDate"]);
                 obj.AHCode = Convert.ToString(dr["AHCode"]);
                 obj.AHName = Convert.ToString(dr["AHName"]);
+                obj.BankName = Convert.ToString(dr["BankName"]);
+                obj.Branch = Convert.ToString(dr["BranchName"]);
+                obj.AccountNumner = Convert.ToString(dr["AccountNumber"]);
+                obj.VrNumber = Convert.ToString(dr["VoucherNumber"]);
                 if (dr["DrAmount"] != DBNull.Value)
                     obj.DrAmount = Convert.ToDecimal(dr["DrAmount"]);
                 if (dr["CrAmount"] != DBNull.Value)
@@ -88,7 +92,10 @@ namespace MFIS.Web.Controllers
                     obj.Balance = Convert.ToDecimal(dr["Balance"]);
                 lstLedger.Add(obj);
             }
-
+            ViewBag.BankBalance = lstLedger[lstLedger.Count - 1].Balance.ToDisplayCurrencyRPT();
+            ViewBag.BankName = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x=>x.BankName).First().ToString() : "";
+            ViewBag.AccountNumber = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.AccountNumner).First().ToString() : "";
+            ViewBag.Branch = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.Branch).First().ToString() : "";
             OrgAddress = Convert.ToString(cmd.Parameters["@OrgAddress"].Value);
             con.Close();
 
