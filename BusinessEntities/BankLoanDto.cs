@@ -81,16 +81,20 @@ namespace BusinessEntities
 
     public class BankLoanLookupDto
     {
-        public int LoanMasterId { get; set; }
-        public string LoanCode { get; set; }
+        public int BankLoanId { get; set; }
+        public string LinkageNumber { get; set; }
         public string BankName { get; set; }
-        public string Branch { get; set; }
-        public decimal LoanAmountApplied { get; set; }
-        public DateTime LoanApprovedDate { get; set; }
-        public decimal LoanApprovedAmount { get; set; }
-        public string LoanType { get; set; }
+        public string SLAHName { get; set; }
+        public decimal RequestedAmount { get; set; }
+        public DateTime RequestedDate { get; set; }
+        public decimal ApprovedAmount { get; set; }
+        public DateTime ApprovedDate { get; set; }
         public decimal DisbursedAmount { get; set; }
-        public DateTime DisbursementDate { get; set; }
+        public DateTime DisbursedDate { get; set; }
+        public int NoOfInstallments { get; set; }
+        public decimal EMI { get; set; }
+        public string StatusCode { get; set; }
+        public string Status { get; set; }
     }
 
 
