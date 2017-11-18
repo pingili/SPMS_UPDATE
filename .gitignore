@@ -3,3 +3,26 @@
 ################################################################################
 
 /MFIEntityFrameWork/bin/Debug
+/BusinessEntities/bin/Debug
+/BusinessLogic/obj
+/BusinessLogic/bin/Debug
+/CoreComponents/bin/Debug
+/DataLogic/bin/Debug
+/Logging/bin/Debug
+/MFIEntityFrameWork/obj/Debug
+/MFIS.Web/bin
+/Utilities/bin/Debug
+/MFIS.Web/obj
+/Utilities/obj/Debug
+/packages
+/.vs
+/BusinessEntities/obj/Release
+/BusinessEntities/obj/Debug
+/Utilities/obj/Release/Utilities.csproj.CoreCompileInputs.cache
+/MFIEntityFrameWork/obj/Release/MFIEntityFrameWork.csproj.CoreCompileInputs.cache
+/Logging/obj/Release
+/Logging/obj/Debug
+/DataLogic/obj/Release
+/DataLogic/obj/Debug
+/CoreComponents/obj/Release
+/CoreComponents/obj/Debug

@@ -752,6 +752,7 @@
     <Content Include="Areas\Group\Views\MemberLoanDisbursement\CreateMemberLoanDisbursementNew.cshtml" />
     <Content Include="Areas\Group\Views\BankLoan\CreateBankLoan.cshtml" />
     <Content Include="Areas\Group\Views\BankLoan\BankLoanApplicationLookup.cshtml" />
+    <Content Include="Areas\Group\Views\BankLoan\BankLoanApplicationView.cshtml" />
     <None Include="Properties\PublishProfiles\MFIS_PUB.pubxml" />
     <None Include="Properties\PublishProfiles\raghudesktop.pubxml" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
