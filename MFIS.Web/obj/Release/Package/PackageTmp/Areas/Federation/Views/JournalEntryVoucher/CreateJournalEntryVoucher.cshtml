@@ -1,0 +1,571 @@
+﻿@using BusinessEntities;
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateJournalEntryVoucher";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@model BusinessEntities.ReceiptMasterDto
+<!--  page-wrapper -->
+@using (Html.BeginForm())
+{
+    int index = 0;
+    List<ReceiptTranscationDto> lstJournalDto = Model != null ? Model.lstGroupReceiptTranscationDto : null;
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Journal Entry Voucher</span>
+                    @Html.ActionLink("Add New Journal Entry Vouche", "CreateJournalEntryVoucher", null, new { @class = "btn btn-default pull-right" })
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+
+                    <div class="row">
+                        <input type="hidden" value="@Model.AccountMasterID" id="AccountMasterID" name="AccountMasterID" />
+
+                        <div class="col-lg-3">
+                            @if (@Model.AccountMasterID > 0)
+                            {
+                            
+                                <div class="form-group">
+                                    <label>Code </label>
+                                    @Html.TextBoxFor(model => model.VoucherNumber, new { @class = "form-control", @id = "VoucherNumber", @name = "VoucherNumber", @readonly = "readonly", maxlength = "32" })
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>JournalEntryRefNo</label>
+                                @Html.TextBoxFor(model => model.VoucherRefNumber, new { @class = "form-control", @id = "JournalEntryRefNo", @name = "JournalEntryRefNo", maxlength = "32" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee No</label>
+                                @Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Employee Name</label>
+                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control", @readonly = "true", @Name = "EmployeeName" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+
+                                @Html.TextBox("txtTransactionDate", Model.TransactionDate.ToDisplayDateFormat(), new { @class = "form-control required", @id = "txtTransactionDate", @name = "txtTransactionDate", @placeholder = "DD/MM/YYY", @readonly = "readonly" })
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Code</label>
+                                @Html.DropDownListFor(c => c.AHID, (SelectList)ViewBag.SLAAcHeads, "--Select Account Number--", new { @class = "form-control required", @id = "AHName", @name = "AHName", onchange = "getAccountName(this.value)" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Account Head Name</label>
+                                @Html.TextBoxFor(model => model.AHCode, new { @class = "form-control", @readonly = "readonly", @id = "AHCode", @name = "AHCode", maxlength = "32" })
+                                @*@Html.Hidden("hdnBankAHid")*@
+
+                                <input type="hidden" id="hdnJVAHid" name="hdnJVAHid" />
+                            </div>
+                        </div>
+                        <div id="Slaccounts" style="display: none;">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>SL Account </label>
+                                    @*@Html.DropDownListFor(c => c.AHID, (SelectList)ViewBag.SLAAcHeads, "--Select SL Account--", new { @class = "form-control required", @id = "SLAcNo", @name = "SLACNo" })*@
+                                    <select name="SLAccountName" id="SLAccountName" class="form-control" onchange="BindDropDownOptions(this.value)">
+                                        <option value="">please select</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>SLAAccountName</label>
+                                    @Html.TextBox("SLAccName", string.Empty, new { @class = "form-control", @readonly = "true" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Party Name</label>
+                            @Html.TextBoxFor(m => m.PartyName, new { @class = "form-control", @id = "PartyName", @name = "PartyName" })
+                        </div>
+                    </div>*@
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label>Amount </label>
+                                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control decimal-only required", maxlength = "32" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group" accesskey>
+                                <label>Type</label><br>
+                                <input type="radio" id="rdDebit" value="D" checked="checked" name="TransactionMode" />&nbsp;Dr &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                                           
+                                <input type="radio" id="rdCredit" value="C" name="TransactionMode" />&nbsp;Cr
+                                   
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline btn-primary" style="margin-top: 18px; width: 121px" onclick="return AddUpdateAccountHead();">Add</button>
+                                @*<button type="reset" class="btn btn-default" style="margin-top: 18px;" onclick="BackToList();">Remove</button>*@
+                                @*<button type="reset" class="btn btn-default" style="margin-top: 18px;" onclick="BackToList();">Cancel</button>*@
+                                @Html.Hidden("hdnJEIndex")
+                                @Html.Hidden("hdnACId")
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tblJournalEntryVoucher">
+                            @{
+                            ReceiptTranscationDto obj = new ReceiptTranscationDto();
+                            var items = obj;
+                            if (lstJournalDto != null && lstJournalDto.Count != 0)
+                            {
+
+                                items = lstJournalDto[lstJournalDto.Count - 1] as ReceiptTranscationDto;
+                            }
+                                <thead>
+                                    <tr>
+                                        <th class="col-lg-1">Type</th>
+                                        <th class="col-lg-1">Account Code</th>
+                                        <th class="col-lg-2">Account Name</th>
+                                        <th class="col-lg-2">SL Account</th>
+                                        <th class="col-lg-2">SL Account Name</th>
+                                        <th class="col-lg-1">Debit</th>
+                                        <th class="col-lg-1">Credit</th>
+                                        <th class="col-lg-1">Balance</th>
+                                        <td class="col-lg-1">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    @if (lstJournalDto != null && lstJournalDto.Count != 0)
+                                    {
+                                        for (int i = 0; i < lstJournalDto.Count; i++)
+                                        {
+                                            index++;
+                                        <tr>
+                                            <td class="text-center" style="display: none;">@index </td>
+                                            <td>
+                                                <input type="hidden" id ="hdntypeBy_@index" name ="hdntypeBy_@index" value="To"/>
+                                                <span>@lstJournalDto[i].Type</span></td>
+                                            <td>
+                                                <input type="hidden" id="hdnAHID_@index" name="hdnAHID_@lstJournalDto[i].AccountTranID"  value="@lstJournalDto[i].AccountTranID"/>
+                                                <input type="hidden" id ="hdnAHName_@index" name ="hdnAHName_@index" value="@lstJournalDto[i].AHCode"/>
+                                                <span>@lstJournalDto[i].AHCode</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnAccountName_@index" name ="hdnAccountName_@index" value="@lstJournalDto[i].AHName"/>
+                                                <span id="spAhname">@lstJournalDto[i].AHName</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnSLAccountID_@index" name ="hdnSLAccountID_@index" value="@lstJournalDto[i].AHID"/>
+                                                <input type="hidden" id ="hdnSLAccountCode_@index" name ="hdnSLAccountCode_@index" value="@lstJournalDto[i].SLAcNo"/>
+                                                <span id="spnsla">@lstJournalDto[i].SLAcNo</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnSLAccountName_@index" name ="hdnSLAccountName_@index" value="@lstJournalDto[i].SLAccName"/>
+                                                <span>@lstJournalDto[i].SLAccName</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnDrAmount_@index" name ="hdnDrAmount_@index" value="@lstJournalDto[i].DrAmount"/>
+                                                <span>@lstJournalDto[i].DrAmount.ToDisplayCurrencyInRupees()</span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnCrAmount_@index" name ="hdnCrAmount_@index" value="@lstJournalDto[i].CrAmount"/>
+                                                <span>@lstJournalDto[i].CrAmount.ToDisplayCurrencyInRupees() </span></td>
+                                            <td>
+                                                <input type="hidden" id ="hdnBalance_@index" name ="hdnBalance_@index" value="@lstJournalDto[i].Balance"/>
+                                                <span>@lstJournalDto[i].Balance.ToDisplayCurrencyInRupees() </span></td>
+                                            <td>
+                                                <img src="../../Content/images/delete_btn1.png"  onclick="deleteRate(this, @index);" title="Delete " style="cursor: pointer" /></td>
+                                        </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td>Total: 
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td class="col-lg-1 text-right">
+                                            @Html.Hidden("hdnTotal")
+
+                                            @Html.Label("DAmount",items.DrAmount.ToDisplayCurrencyInRupeesWithComma(), new { @ID = "DTotal", @Name = "DTotal", @class = "from-control", @readonly = "readonly" ,@value=items.DrAmount})
+                                        </td>
+                                        <td class="col-lg-1 text-right">
+
+                                            @Html.Label("CrAmount", items.DrAmount.ToDisplayCurrencyInRupeesWithComma(), new { @ID = "CrTotal", @Name = "CrTotal", @class = "from-control", @readonly = "readonly", @style = "width:100px" ,@value=items.DrAmount})
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                        <td>
+                                            <span></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                        @Html.Hidden("hdnMaxJournalIndex", index)
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextAreaFor(model => model.Narration, new { @class = "form-control", maxlength = "32", @id = "Narration", @name = "Narration" })
+
+                                @*<textarea class="form-control"></textarea>*@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return SavejournalEntryVoucher();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end page-wrapper -->
+}`
+<script>
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideJournalEntryVoucher";
+        LoadMenu();
+    });
+    var arrindex = new Array;
+    function AddUpdateAccountHead() {
+        var AccountTranID = $.trim($("#hdnACId").val());
+        var AHID = $.trim($("#AHName").val());
+        var isDupAHID = false;
+        $('input[id^=hdnAHID_]').each(function () {
+            if ($(this).val() == AHID) {
+                isDupAHID = true;
+                return false;
+            }
+        });
+        if (isDupAHID) {
+            alert('selected Account Head already added.');
+            return false;
+        }
+        var AHCode = $("#AHName option:Selected").text();
+        //var AccountHead = $.trim($("#AccountHead").val());
+        var AccountName = $("#AHCode").val();
+        var SLAccount = $.trim($("#SLAccountName").val());
+        if ($("#SLAccountName option:Selected").text() != "please select" && $("#SLAccountName option:Selected").text() != "Select SlAccount ")
+            var SLAcNo = $("#SLAccountName option:Selected").text();
+        else
+            var SLAcNo = "";
+        var SlName = $.trim($("#SLAccName").val());
+        var Balance = 0;
+        var editIndx = $.trim($("#hdnJEIndex").val());
+        var crAmt = 0;
+        var drAmt = 0;
+
+        if ($('#rdDebit').is(':checked')) {
+            drAmt = $.trim($("#Amount").val());
+            $('input[id=rdDebit]').attr("disabled", true);
+            $('input[id=rdCredit]').attr("disabled", false);
+            $('input[id=rdCredit]').attr('checked', 'checked');
+            var Type = "By";
+        }
+        else if ($('#rdCredit').is(':checked')) {
+
+            crAmt = $.trim($("#Amount").val());
+            //$('input[id=rdCredit]').attr("disabled", true);
+            var Type = "To";
+        }
+        //checkSlaNametable();
+
+
+        //if (arrindex.indexOf(SLAcNo) != -1) {
+        //        alert("Already sla Name Exist");
+        //    return false;
+        //}
+        if (Number(editIndx)) {
+            //update new Interest Rate
+            $("#hdnAHID_" + editIndx).val(AHID);
+            $("#hdnAHID_" + editIndx).parent().find('span').text(AHID);
+
+            $("#hdnAHName_" + editIndx).val(AHCode);
+            $("#hdnAHName_" + editIndx).parent().find('span').text(AHCode);
+
+            $("#hdntypeBy_" + editIndx).val(Type);
+            $("#hdntypeBy_" + editIndx).parent().find('span').text(Type);
+
+            $("#hdnSLAccountID_" + editIndx).val(SLAccount);
+            $("#hdnSLAccountID_" + editIndx).parent().find('span').text(SLAccount);
+
+            $("#hdnSLAccountName_" + editIndx).val(SLAcNo);
+            $("#hdnSLAccountName_" + editIndx).parent().find('span').text(SLAcNo);
+
+            $("#hdnSLAccountName_" + editIndx).val(SlName);
+            $("#hdnSLAccountName_" + editIndx).parent().find('span').text(SlName);
+
+            $("#hdnDebit_" + editIndx).val(drAmt);
+            $("#hdnDebit_" + editIndx).parent().find('span').text(drAmt);
+            $("#hdnCredit_" + editIndx).val(crAmt);
+            $("#hdnCredit_" + editIndx).parent().find('span').text(crAmt);
+        } else {
+            //Add new Interest Rate
+
+            var newIndex = Number($('#hdnMaxJournalIndex').val()) + 1;
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, Type, AHID, AHCode, AccountName, SLAccount, SLAcNo, SlName, drAmt, crAmt, Balance);
+            var lastRow = $("#tblJournalEntryVoucher tbody tr:last");
+            $("#tbody").append(newRow);
+            //$("#tblJournalEntryVoucher tbody").append(lastRow);
+            $('#hdnMaxJournalIndex').val(newIndex);
+            var totalcramount = 0;
+            $($('input[id^="hdnCrAmount_"]')).each(function () {
+                totalcramount += parseInt(this.value)
+            });
+            var totaldramount = 0;
+            $($('input[id^="hdnDrAmount_"]')).each(function () {
+                totaldramount += parseInt(this.value)
+            });
+            var total = parseInt(totalcramount) + parseInt(totaldramount);
+            $('#DrTotal').html(totaldramount);
+            $('#DTotal').html(totaldramount);
+            $('#CrTotal').html(totalcramount);
+            $('#hdnTotal').val(totalcramount);
+            AddAhidBalance(newIndex);
+            clearControls();
+
+        }
+        function clearControls() {
+            $("#SLAccountName").val('');
+            $("#SLAccName").val('');
+            $("#AHCode").val('');
+            $("#Amount").val('');
+        }
+        function AddAhidBalance(newIndex) {
+            var actionUrl = '@Url.Action("ViewBalanceSummary", "JournalEntryVoucher")';
+            var Ahid = 0;
+            $($('input[id^="hdnAHID_"]')).each(function () {
+                Ahid = parseInt(this.value)
+            });
+            var ahid = Ahid;
+            $.post(actionUrl, { ahId: ahid, isFederation: true }, function (response) {
+                if (response.BalanceType === "Dr") {
+                    $('input[id^="hdnBalance_' + newIndex + '"]').html(response.ClosingBalance);
+                }
+                else {
+                    var CrTotal = $('#hdnCrAmount_' + newIndex).val();
+                    var FinalBalance = parseInt(response.ClosingBalance) + parseInt(CrTotal);
+                    $('input[id^="hdnBalance_' + newIndex + '"]').html(FinalBalance);
+                    $('input[id^="hdnBalance_' + newIndex + '"]').next('span').text(FinalBalance);
+                }
+
+            }, 'json');
+        }
+
+
+        }
+
+
+    SavejournalEntryVoucher = function () {
+            var valid = validation();
+            if (valid == true) {
+                document.forms[0].action = '@Url.Action("CreateJournalEntryVoucher","JournalEntryVoucher")';
+                document.forms[0].submit();
+            }
+        }
+    function validation() {
+        var validate = true;
+            var mny = $('#DTotal').val();
+            if (parseInt($('#DTotal').text()) != parseInt($('#CrTotal').text())) {
+                alert("Please enter Valid Amount and is Equal To:    " + mny);
+                validate = false;
+            }
+            return validate;
+        }
+
+        function validateAmount() {
+            var debittotal = 0;
+            var cedittotal = 0;
+            var validate = true;
+            var debit = $($('input[id^="hdnDebit_"]')).each(function () {
+                debittotal += parseInt(this.value)
+            });
+            var cedit = $($('input[id^="hdnCredit_"]')).each(function () {
+                cedittotal += parseInt(this.value)
+            });
+            if (debittotal != cedittotal) {
+                alert("Amount Equal to DebitAmount");
+                validate = false;
+            }
+            if ($.trim($('#EmployeeID').val()) == '' && $.trim($('#txtTransactionDate').val()) == '' && $.trim($('#AHName').val()) == '' && $.trim($('#Amount').val()) == '0') {
+                $('#EmployeeID,#txtTransactionDate,#AHName,#Amount').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#EmployeeID,#txtTransactionDate,#AHName,#Amount').css('border-color', '');
+
+            }
+            if ($.trim($('#EmployeeID').val()) == '') {
+                $('#EmployeeID').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#EmployeeID').css('border-color', '');
+
+            }
+            if ($.trim($('#txtTransactionDate').val()) == '') {
+                $('#txtTransactionDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtTransactionDate').css('border-color', '');
+
+            }
+            if ($.trim($('#AHName').val()) == '') {
+                $('#AHName').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#AHName').css('border-color', '');
+
+            }
+            if ($.trim($('#Amount').val()) == '0') {
+                $('#Amount').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#Amount').css('border-color', '');
+
+            }
+            return validate;
+        }
+        function loadNewRow(Index, Type, AHID, AHCode, AccountName, SLAccount, SLAcNo, SlName, drAmt, crAmt, Balance) {
+            var row = '<tr class="gradeA even">';
+            row += '<td class="text-center" style="display:none;">' + Index + '<input type="hidden" id ="hdnAccountTranID_' + Index + '" name ="hdnAccountTranID_' + Index + '" value="0"/></td>';
+            row += '<td><input type="hidden" id ="hdntypeBy_' + Index + '" name ="hdntypeBy_' + Index + '"value="' + Type + '"/> <span>' + Type + '</span></td>';
+            row += '<td class="text-center" style="display:none;"><input type="hidden" id ="hdnAHID_' + Index + '" name ="hdnAHID_' + Index + '" value="' + AHID + '"/> <span>' + AHID + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnAHCode_' + Index + '" name ="hdnAHCode_' + Index + '" value="' + AHCode + '"/> <span>' + AHCode + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnAccountName_' + Index + '" name ="hdnAccountName_' + Index + '" value="' + AccountName + '"/> <span>' + AccountName + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnSLAccountID_' + Index + '" name ="hdnSLAccountID_' + Index + '" value="' + SLAccount + '"/> <span>' + SLAcNo + '</span></td>';
+            row += '<td><input type="hidden" id ="hdnSLAccountName_' + Index + '" name ="hdnSLAccountName_' + Index + '" value="' + SlName + '"/> <span>' + SlName + '</span></td>';
+            row += '<td style="text-align: right;"><input type="hidden" id ="hdnDrAmount_' + Index + '" name ="hdnDrAmount_' + Index + '" value="' + drAmt + '"/> <span>' + drAmt + '</span></td>';
+            row += '<td style="text-align: right;"><input type="hidden" id ="hdnCrAmount_' + Index + '" name ="hdnCrAmount_' + Index + '" value="' + crAmt + '"/> <span>' + crAmt + '</span></td>';
+            row += '<td style="text-align: right;"><input type="hidden" id ="hdnBalance_' + Index + '" name ="hdnBalance_' + Index + '" value="' + Balance + '"/> <span>' + Balance + '</span></td>';
+            row += '<td><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + Index + ');"</td>';
+            row += '</tr>';
+            return row;
+        }
+
+        function deleteRate(src, index) {
+            if (confirm('Do you wish to remove select Row details?')) {
+                $(src).parent().parent().remove();
+                var totalcramount = 0;
+                $($('input[id^="hdnCrAmount_"]')).each(function () {
+                    totalcramount += parseInt(this.value)
+                });
+                var totaldramount = 0;
+                $($('input[id^="hdnDrAmount_"]')).each(function () {
+                    totaldramount += parseInt(this.value)
+                });
+                var total = parseInt(totalcramount) + parseInt(totaldramount);
+                $('#DrTotal').html(totaldramount);
+                $('#DTotal').html(totaldramount);
+                $('#CrTotal').html(totalcramount);
+                $('#hdnTotal').val(totalcramount);
+            }
+        }
+        function getAccountName(id) {
+            $.post('@Url.Action("GetAccountName")' + '/' + id, {},
+                   function (data) {
+                       $('#AHCode').val(data.AccountName);
+                       if (data.SLAccounts != "") {
+                           $("#Slaccounts").show();
+                           $("#SLAccountName").html(data.SLAccounts).prepend("<option value='' selected='Selected'>Select SlAccount </option>");
+                       }
+                       else {
+                           $("#Slaccounts").hide();
+                           $("#SLAccountName").val('');
+                           $("#SLAccName").val('');
+
+                       }
+                   }, 'json');
+        }
+        function BindDropDownOptions(id) {
+            $.post('@Url.Action("GetAccountName")' + '/' + id, {},
+                      function (data) {
+                          
+                          $('#SLAccName').val(data.AccountName);
+                      }, 'json');
+    }
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("JournalEntryVoucherLookup")';
+    }
+    function validate() {
+
+    }
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+           @* if ('@Model.AHName' != null && '@Model.AHName' != '' && '@Model.AHName' != '0')
+                $('#AHName').val('@Model.AHName');*@
+            $('input[id=rdCredit]').attr("disabled", true);
+
+            $('#txtTransactionDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-10:+20"
+            });
+
+
+        });
+    </script>
+
+}

@@ -1,0 +1,197 @@
+﻿@model BusinessEntities.AdditionalSecurityDetailsDTO
+@using CoreComponents;
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>AdditionalSecurity Details</strong>
+            </div>
+            <div class="panel-body">
+                @Html.Hidden("hdnGLIIndex")
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Loan Security Code</label>
+                        @Html.DropDownListFor(A => A.LoanSecurityId, (SelectList)ViewBag.LoanSecurityDetails, "Select Security Code", new { @class = "form-control required", @id = "LoanSecurityCode", onchange = "GetLoanSecurityName(this.value);", @name = "LoanSecurityDetails" })
+
+
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-outline btn-primary" id="LoanSecurityButton" onclick="CreateloanSecurity()">ADD</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Name</label>
+
+                        @Html.TextBoxFor(Model => Model.LoanSecurityName, new { @class = "form-control", @id = "LoanSecurityName", @name = "LoanSecurityName", @disabled = "disabled" })
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-outline btn-primary" onclick="clearSecurityDetails();">CLEAR</button>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Description</label>
+                        @Html.TextAreaFor(Model => Model.Description, new { @class = "form-control", @rows = "3", @id = "Description", @name = "Description" })
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="Table4">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Adminision Code</th>
+                                <th>Name</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="securitydetailsbody">
+                            <tr class="gradeA odd">
+                                @{ 
+    List<BusinessEntities.AdditionalSecurityDetailsDTO> objlst = new List<BusinessEntities.AdditionalSecurityDetailsDTO>();
+    if (ViewBag.AdditionalSecurityDetails != null)
+    {
+
+        objlst = ViewBag.AdditionalSecurityDetails;
+
+    }
+              
+                                }
+
+                            @if (objlst != null)
+                            {
+                                foreach (var item in objlst)
+                                {
+                                    indx++;
+                                <tr>
+                                    <td class="text-center" style="display: none;">@indx </td>
+                                    <td class="text-center" style="display: none;">@indx<input type="hidden" id ="hdnloanentryId_@indx" name ="hdnloanentryId_@indx" /></td>
+                                    <td>
+                                        <input type="hidden" id ="hdnLoanSecurityCode_@indx" name ="hdnLoanSecurityCode_@indx" value="@item.LoanSecurityId"/>
+                                        <span>@item.LoanSecurityCode</span>
+
+                                    </td>
+                                    <td>
+                                        <input type="hidden" id ="hdnLoanSecurityName_@indx" name ="hdnLoanSecurityName_@indx"" value="@item.LoanSecurityName"/>
+                                        <span>@item.LoanSecurityName </span></td>
+
+                                    <td>
+                                        <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" />
+
+                                    </td>
+                                </tr>
+                               
+                                }
+                            }
+                        </tbody>
+                        @Html.Hidden("hdnMaxLoanIndex", indx)
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    var tblindex = 1;
+    var arrofint = new Array();
+
+    function CreateloanSecurity() {
+        var LaonSecurityId = $("#LoanSecurityCode").val();
+        var LoanSecurityName = $("#LoanSecurityName").val();
+        var description = $('#Description').val();
+        var html = "";
+        var editIndx = $("#hdnGLIIndex").val();
+        var errmsg = '';
+        if ($.trim(LaonSecurityId) == '')
+            errmsg += 'Select SecurityCode.\r\n';
+
+        if (errmsg != '') {
+            alert(errmsg)
+            return false;
+        }
+
+        if (Number(editIndx)) {
+            //update new Interest Rate
+            $("#hdnLoanSecurityCode_" + editIndx).val(LaonSecurityId);
+            $("#hdnLoanSecurityCode_" + editIndx).parent().find('span').text(LoanSecurityCode);
+
+            $("#hdnLoanSecurityName_" + editIndx).val(LoanSecurityName);
+            $("#hdnLoanSecurityName_" + editIndx).parent().find('span').text(LoanSecurityName);
+        }
+        else {
+            //Add new Interest Rate
+            if ($('#hdnMaxLoanIndex').val() != null || $('#hdnMaxLoanIndex').val() != '') {
+                $('#hdnMaxSecurityIndex').val($('#hdnMaxLoanIndex').val());
+            }
+            var newIndex = (Number($('#hdnMaxSecurityIndex').val()) + 1);
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, LaonSecurityId, LoanSecurityCode, LoanSecurityName, description);
+            $("#securitydetailsbody").append(newRow);
+            $('#hdnMaxLoanIndex').val(newIndex);
+            $('#hdnMaxSecurityIndex').val(newIndex);
+        }
+
+    }
+
+
+
+    function loadNewRow(index, LaonSecurityId, LoanSecurityCode, LoanSecurityName, Description) {
+        var row = '<tr class="gradeA even">';
+        row += '<td class="text-center" style="display:none;">' + index + '<input type="hidden" id ="hdnloanentryId_' + index + '" name ="hdnloanentryId_' + index + '" /></td>';
+        row += '<td><input type="hidden" id ="hdnLoanDescription_' + index + '" name ="hdnLoanDescription_' + index + '" value="' + Description + '"/>';
+        row += '<td><input type="hidden" id ="hdnLoanSecurityCode_' + index + '" name ="hdnLoanSecurityCode_' + index + '" value="' + LaonSecurityId + '"/> <span>' + LoanSecurityName + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnLoanSecurityName_' + index + '" name ="hdnLoanSecurityName_' + index + '" value="' + LoanSecurityName + '"/> <span>' + LoanSecurityName + '</span></td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + index + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + index + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+    function editRate(src, indx) {
+
+        $("#LoanSecurityCode").val($("#hdnLoanSecurityCode_" + indx).val());
+        $("#LoanSecurityName").val($("#hdnLoanSecurityName_" + indx).val());
+
+        $('#LoanSecurityButton').text('Update LoanInterest');
+    }
+    $(document).ready(function () {
+        $('#hdntabtype').val('securitydetails');
+        $('#LoanSecurityButton').text('ADD');
+    });
+
+    function deleteRate(src, indx) {
+        if (confirm('Do you wish to remove select rate details?')) {
+            clearSecurityDetails();
+            $(src).parent().parent().remove();
+        }
+    }
+
+    function clearSecurityDetails() {
+
+        $('#LoanSecurityCode').val('');
+        $('#LoanSecurityName').val('');
+        $('#Description').val('');
+        $('#LoanSecurityButton').text('ADD');
+
+
+    }
+    function GetLoanSecurityName(id) {
+        var SecurityId = $('#LoanSecurityCode').val();
+        var action = '@Url.Action("GetSecurityname", "GroupLoanDisbursement")';
+        $.post(action, { SecurityCode: SecurityId }, function (data) {
+
+            $('#LoanSecurityName').val(data.SecurityName);
+        }, 'json');
+    }
+</script>

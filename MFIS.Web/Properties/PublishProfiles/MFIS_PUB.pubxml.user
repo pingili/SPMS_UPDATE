@@ -1,0 +1,1551 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Debug</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>F:\Publish110617</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="Areas/Federation/Views/AccountTree/AccountHeadTableView.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/AccountTree.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/AddGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/DeleteGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/EditGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/MoveGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/ViewBalanceSummary.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/AccountTree/_Table.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Bank/AddBank.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Bank/BankLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Bank/ViewBank.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Branch/BranchLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Branch/CreateBranch.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Branch/CreateEmployee.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Branch/ViewBranch.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Cluster/ClusterLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Cluster/CreateCluster.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Cluster/ViewCluster.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/ContraEntry/ContraEntryCashWithdrawlLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/ContraEntry/ContraEntryDepositedLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/ContraEntry/CreateContraEntryCashWithdrawl.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/ContraEntry/CreateContraEntryDeposited.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/DataEntryStatusReport/DataEntryStatusReport.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Deposit/CreateDeposit.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/DepositOB/DepositLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/DepositOB/GetDepositOB.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Depreciation/CreateDepreciation.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/District/CreateDistrict.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/District/DistrictLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Employee/AssignClusterToEmployee.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Employee/CreateEmployee.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Employee/EmployeeClusterDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Employee/EmployeeLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Employee/ViewEmployee.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/FederationLoanApplication/CreateFedLoanAppln.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/FederationMeeting/CreateFederationMeeting.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/FederationMeeting/FederationMeetingLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/FundSource/CreateFundSource.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/FundSource/FundSourceLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralPayments/CreateGeneralPayments.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralPayments/GeneralPaymentsLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralPayments/ViewGeneralPayments.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralReceipt/CreateGeneralReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralReceipt/GeneralReceiptLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GeneralReceipt/ViewGeneralReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/CreateDepositInterestDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/CreateGroup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/CreateGroupBankDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/CreateLoanInterestDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/GroupLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/LeaderShip.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/Member.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/ViewdepositinterestDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/ViewGroup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/ViewGroupBankDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/ViewLoanInterestDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Group/ViewMember.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/AccountTree.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/AddGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/DeleteGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/EditGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/MoveGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupAccountTree/ViewBalanceSummary.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanApplication/CreateGroupLoanApplication.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanApplication/GroupLoanApplicationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanApplication/LoanApplicationView.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/AdditionalSecuritiesDetails.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/CreateGroupLoanDisbursement.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/Disbursement.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/GenerateVoucher.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/GroupLoanDisbursementLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/GroupLoanDisbursement/Schedule.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/CreateDepositInterest.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/CreateLoanInterest.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/DepositInterestLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/LoanInterestLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/ViewDepositInterest.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Interest/ViewLoanInterest.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/JournalEntryVoucher/CreateJournalEntryVoucher.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/JournalEntryVoucher/JournalEntryVoucherLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanOB/GetLoanOB.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanOB/LoanOBLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanOB/LoanObSchedule.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanPurpose/CreateLoanPurpose.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanPurpose/LoanPurposeLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanSecurityMaster/CreateLoanSecurityMaster.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/LoanSecurityMaster/LoanSecurityMasterLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Mandal/CreateMandal.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Mandal/MandalLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/NPA/CreateNPA.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Occupation/CreateOccupation.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Occupation/OccupationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:31</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Organization/CreateOrganization.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Panchayat/CreatePanchayat.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Panchayat/PanchayatLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Panchayat/ViewPanchayat.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Project/CreateProject.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Project/ProjectLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/RAP/FederationRAP.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/RAP/GroupRAP.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Receipt/CreateGroupReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Receipt/GroupReceiptLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Receipt/_ReceiptTemplate.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/RefundsFromFederation/CreateRefundsFromFederation.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/RefundsFromFederation/RefundsFromFederationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Village/CreateVillage.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Village/ViewVillage.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Village/VillageLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Federation/Views/Web.config">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/AccountHeadMapping/AccountHeadMapping.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/AdditionalSecuritiesDetails.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/CreateMemberLoanDisbursement.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/Disbursement.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/GenerateVoucher.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/MemberLoanDisbursementLookup.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BACKUP_MemberLoanDisbursement/Schedule.cshtml">
+      <publishTime>05/29/2017 23:59:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BankLoan/BankLoanApplicationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/BankLoan/CreateBankLoan.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/ContraEntry/ContraEntryCashWithDrawlLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/ContraEntry/ContraEntryDepositedLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/ContraEntry/CreateContraEntryCashWithdrawl.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/ContraEntry/CreateContraEntryDeposited.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GeneralReceipt/CreateGeneralReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GeneralReceipt/GeneralReceiptLookup.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/AccountHeadTableView.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/AccountHeadTableView_bak.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/AddGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/DeleteGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:32</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/EditGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/GroupAccountTree.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/MoveGroupAccountHead.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/UpdateOpeningBalance.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/ViewBalanceSummary.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupAccountTree/_Table.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupDepositOB/CreateDepositOB.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupDepositOB/DepositLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupGeneralPayment/AddGeneralPayment.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupGeneralPayment/GeneralPaymentsLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupGeneralPayment/ViewGeneralPayment.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournal/CreateGroupJournal.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournal/GroupJournalLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournal/ViewGroupJournal.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournalEntry/CreateJournalEntryVoucher.cshtml">
+      <publishTime>01/03/2017 12:26:23</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournalEntry/JournalEntryVoucherLookup.cshtml">
+      <publishTime>01/03/2017 12:26:23</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournalEntryOLD/CreateJournalEntryVoucher.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupJournalEntryOLD/JournalEntryVoucherLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupLoanOB/GetLoanOB.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupLoanOB/LoanOBLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupLoanOB/LoanObSchedule.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMeeting/CreateGroupMeeting.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMeeting/GroupMeetingLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMeeting/GroupMeetingView.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMemberReceipt/CreateGroupMemberReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMemberReceipt/GroupMemberReceiptLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupMemberReceipt/MemberReceiptView.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupOtherJournal/CreateOtherJournal.cshtml">
+      <publishTime>02/12/2017 16:13:46</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupOtherReceipt/CreateOtherReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupOtherReceipt/GroupOtherReceiptLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupOtherReceipt/GroupOtherReceiptView.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/GroupOtherReceipt/OtherReceiptesUpload.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Leadership/CreateLeadership.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Leadership/LeadershipLookup.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/LoanOB/GetLoanOB.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Member/CreateMember.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Member/MemberLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Member/ViewMember.cshtml">
+      <publishTime>11/06/2017 00:31:33</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanApplication/CreateMemberLoanApplication.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanApplication/MemberLoanApplicationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanApplication/MemberLoanApplicationView.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/AdditionalSecuritiesDetails.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/CreateMemberLoanDisbursement.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/CreateMemberLoanDisbursementNew.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/Disbursement.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/GenerateVoucher.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/MemberLoanDisbursementLookup.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberLoanDisbursement/Schedule.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberPayment/AddMemberPayment.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberPayment/MemberPaymentsLookup.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberPayment/ViewMemberPayment.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberReceipt/CreateMemberReceipt.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberReceipt/MemberReceiptLookup.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/MemberReceipt/_ReceiptTemplate.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/RefundsFromFederation/CreateRefundsFromFederation.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/RefundsFromFederation/RefundsFromFederationLookup.cshtml">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Areas/Group/Views/Web.config">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/AutoMapper.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/BusinessEntities.dll">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/BusinessEntities.pdb">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/BusinessLogic.dll">
+      <publishTime>11/06/2017 00:41:13</publishTime>
+    </File>
+    <File Include="bin/BusinessLogic.dll.config">
+      <publishTime>11/06/2017 00:31:28</publishTime>
+    </File>
+    <File Include="bin/BusinessLogic.pdb">
+      <publishTime>11/06/2017 00:41:13</publishTime>
+    </File>
+    <File Include="bin/CoreComponents.dll">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/CoreComponents.pdb">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/CrystalDecisions.CrystalReports.Engine.dll">
+      <publishTime>05/29/2017 23:59:50</publishTime>
+    </File>
+    <File Include="bin/CrystalDecisions.ReportSource.dll">
+      <publishTime>05/29/2017 23:59:50</publishTime>
+    </File>
+    <File Include="bin/CrystalDecisions.Shared.dll">
+      <publishTime>05/29/2017 23:59:50</publishTime>
+    </File>
+    <File Include="bin/CrystalDecisions.Web.dll">
+      <publishTime>05/29/2017 23:59:50</publishTime>
+    </File>
+    <File Include="bin/CrystalDecisions.Windows.Forms.dll">
+      <publishTime>05/29/2017 23:59:50</publishTime>
+    </File>
+    <File Include="bin/DataLogic.dll">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/DataLogic.pdb">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.AspNet.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.Core.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.Consumer.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OAuth.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/DotNetOpenAuth.OpenId.RelyingParty.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/Logging.dll">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/Logging.pdb">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/MFIEntityFrameWork.dll">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/MFIEntityFrameWork.dll.config">
+      <publishTime>11/06/2017 00:31:29</publishTime>
+    </File>
+    <File Include="bin/MFIEntityFrameWork.pdb">
+      <publishTime>11/06/2017 00:41:12</publishTime>
+    </File>
+    <File Include="bin/MFIS.Web.dll">
+      <publishTime>11/06/2017 00:41:15</publishTime>
+    </File>
+    <File Include="bin/MFIS.Web.pdb">
+      <publishTime>11/06/2017 00:41:15</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>05/29/2017 23:59:54</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.WebPages.OAuth.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/Utilities.dll">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/Utilities.dll.config">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="bin/Utilities.pdb">
+      <publishTime>11/06/2017 00:41:11</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.Data.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="bin/WebMatrix.WebData.dll">
+      <publishTime>05/29/2017 23:59:53</publishTime>
+    </File>
+    <File Include="Content/css/main-style.css">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/css/site.css">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/css/style.css">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/font-awesome/css/font-awesome.css">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/font-awesome/css/font-awesome.min.css">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/font-awesome/fonts/fontawesome-webfont.eot">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/font-awesome/fonts/fontawesome-webfont.svg">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/font-awesome/fonts/fontawesome-webfont.ttf">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/font-awesome/fonts/fontawesome-webfont.woff">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/font-awesome/fonts/FontAwesome.otf">
+      <publishTime>11/06/2017 00:31:34</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.eot">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.svg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/fonts/glyphicons-halflings-regular.woff">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/1468082722_lock.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/1468095521_unlock.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/ajax-loader-big.gif">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Apply_Active.gif">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Apply_Over.gif">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/approve-icon.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/banner1.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/banner2.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/BIgButton1.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Circle_Green.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Circle_Red.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/close_button.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/delete_btn1.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Edit.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/FileNotFound.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/icon-minus.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/icon-plus.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Loading_please_wait.gif">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/log.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Logo.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/LogoSpms.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/LogoSpms.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/logout.jpg">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/Plus-sign.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/select_button.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/spinner.gif">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/images/UnderConstruction.png">
+      <publishTime>11/06/2017 00:31:35</publishTime>
+    </File>
+    <File Include="Content/images/user.jpg">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/images/view-icon.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/accordion.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/all.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/autocomplete.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/base.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/button.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/core.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/datepicker.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/dialog.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/draggable.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_75_dadada_1x400.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_222222_256x240.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_454545_256x240.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_888888_256x240.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery-ui.css">
+      <publishTime>11/06/2017 00:31:36</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.accordion.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.all.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.autocomplete.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.base.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.button.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.core.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.datepicker.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.dialog.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.progressbar.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.resizable.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.selectable.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.slider.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.tabs.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery.ui.theme.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/menu.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_flat_0_aaaaaa_40x100.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_flat_75_ffffff_40x100.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_glass_55_fbf9ee_1x400.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_glass_75_dadada_1x400.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_glass_75_e6e6e6_1x400.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-bg_highlight-soft_75_cccccc_1x100.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-icons_222222_256x240.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-icons_454545_256x240.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-icons_888888_256x240.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery-ui.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.accordion.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.autocomplete.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.button.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.core.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.datepicker.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.dialog.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.progressbar.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.resizable.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.selectable.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.slider.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.tabs.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/minified/jquery.ui.theme.min.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/progressbar.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/resizable.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/selectable.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/selectmenu.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/slider.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/sortable.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/spinner.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/tabs.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/theme.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Content/themes/base/tooltip.css">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/accent.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/Apply_Active.gif">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/Apply_Over.gif">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/bullet.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/heroAccent.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/orderedList0.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/orderedList1.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/orderedList2.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/orderedList3.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/orderedList4.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/orderedList5.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/orderedList6.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/orderedList7.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/orderedList8.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/orderedList9.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="Images/SelectedList.png">
+      <publishTime>11/06/2017 00:31:37</publishTime>
+    </File>
+    <File Include="Images/select_button.png">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>01/03/2017 12:45:56</publishTime>
+    </File>
+    <File Include="Properties/Settings.settings">
+      <publishTime>05/29/2017 23:59:42</publishTime>
+    </File>
+    <File Include="ReferenceDLL/Antlr3.Runtime.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/AutoMapper.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.AspNet.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.Core.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.OAuth.Consumer.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.OAuth.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.OpenId.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/DotNetOpenAuth.OpenId.RelyingParty.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/EntityFramework.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/EntityFramework.SqlServer.dll">
+      <publishTime>11/06/2017 00:31:38</publishTime>
+    </File>
+    <File Include="ReferenceDLL/log4net.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/Microsoft.CSharp.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/Newtonsoft.Json.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/System.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/System.Web.Mvc.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/System.Web.Optimization.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="ReferenceDLL/WebGrease.dll">
+      <publishTime>11/06/2017 00:31:39</publishTime>
+    </File>
+    <File Include="Scripts/BPopup/jquery.bpopup-x.x.x.min.js.txt">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/AjnaTransliteration.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/AjnaValidations.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/Common.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/dashboard-demo.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/flot-demo.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/morris-demo.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/Common/siminta.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.6.4.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.6.4.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.11.4.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.11.4.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.bpopup.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/changelog.txt">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/async.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/bg.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/demo.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/images.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/index.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/large.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/prerendered.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/screen.css">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/simple.html">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/source.php">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/demo/source.phps">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/file.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/folder-closed.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/folder.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/minus.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/plus.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-black-line.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-black.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-default-line.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-default.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-famfamfam-line.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-famfamfam.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-gray-line.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-gray.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-red-line.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/images/treeview-red.gif">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/jquery.treeview.async.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/jquery.treeview.css">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/jquery.treeview.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/jquery.treeview.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/jquery.treeview.pack.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/lib/jquery.cookie.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/todo">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/treelistfilter.jquery.json">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.treeview/TreeListFilter.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery-1.7.1.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery-1.7.1.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery-ui-1.8.20.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery-ui-1.8.20.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery.unobtrusive-ajax.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery/jquery.unobtrusive-ajax.min.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery/knockout-2.1.0.debug.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery/knockout-2.1.0.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery/modernizr-2.5.3.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/jquery/_references.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/plugins/bootstrap/bootstrap-timepicker.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/bootstrap/bootstrap.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/bootstrap/bootstrap.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/bootstrap/bootstrap.min.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/dataTables/dataTables.bootstrap.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/dataTables/dataTables.bootstrap.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/dataTables/jquery.dataTables.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/flot/excanvas.min.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/flot/jquery.flot.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/flot/jquery.flot.pie.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/flot/jquery.flot.resize.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/flot/jquery.flot.tooltip.min.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/jquery-1.10.2.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/metisMenu/jquery.metisMenu.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/momentDate/moment-with-locales.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/momentDate/moment.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/morris/morris-0.4.3.min.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/morris/morris.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/morris/raphael-2.1.0.min.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/pace/pace-theme-big-counter.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/pace/pace.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/social-buttons/social-buttons.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/timeline/timeline.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/transliteration/jsapi">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/transliteration/transliteration.css">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/plugins/transliteration/transliteration.js">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Scripts/TimePicker/jquery.timepicker.css">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/TimePicker/jquery.timepicker.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Scripts/TimePicker/jquery.timepicker.min.js">
+      <publishTime>11/06/2017 00:31:40</publishTime>
+    </File>
+    <File Include="Views/BalanceSheet/BalanceSheet.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/BankBook/GroupBankBook.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/CashBook/CreateCashBook.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/GeneralLedger/CreateGeneralLedger.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/GroupCashBook/GroupCashBookLookup.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/IncomeAndExpenditure/IncomeAndExpenditure.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/Login/CreateLogin.cshtml">
+      <publishTime>11/06/2017 00:31:41</publishTime>
+    </File>
+    <File Include="Views/Login/SelectGroup.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/MemberConfirmationReport/MemberConfirmationReport.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/MemberConfirmationReport/MemberDemandSheet.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/MemberLoanLedger/MemberLoanLedgerLookup.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/ModuleAction/AddModuleAction.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/ModuleAction/ModuleActionLookup.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/OpeningBalance/GetOpeningBalance.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/RoleModules/CreateRoleModules.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/RoleModules/RoleModulesLookup.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Roles/Role.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Roles/RolesLookUp.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/Error.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_FedarationLayout.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_FederationSideMenu.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_FederationUnderConstruction.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_GroupLayout.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_GroupSideMenu.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_GroupUnderConstruction.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_LoginPartial.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/_Message.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/TrialBalance/CreateTrialBalance.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/TrialBalance/TrialBalance.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>11/06/2017 00:31:42</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>11/06/2017 00:41:17</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

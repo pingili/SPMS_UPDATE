@@ -1,0 +1,26 @@
+D:\Murali\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll.config
+D:\Murali\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll
+D:\Murali\SPMS\SPMS\Utilities\bin\Debug\Utilities.pdb
+D:\Murali\SPMS\SPMS\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache
+D:\Murali\SPMS\SPMS\Utilities\obj\Debug\Utilities.dll
+D:\Murali\SPMS\SPMS\Utilities\obj\Debug\Utilities.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll.config
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\bin\Debug\Utilities.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\obj\Debug\Utilities.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\Utilities\obj\Debug\Utilities.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll.config
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\bin\Debug\Utilities.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\bin\Debug\Utilities.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\obj\Debug\Utilities.csproj.CoreCompileInputs.cache
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\obj\Debug\Utilities.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\Utilities\obj\Debug\Utilities.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\bin\Debug\Utilities.dll.config
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\bin\Debug\Utilities.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\bin\Debug\Utilities.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\obj\Debug\Utilities.csproj.CoreCompileInputs.cache
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\obj\Debug\Utilities.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Utilities\obj\Debug\Utilities.pdb
+C:\Users\chandan\source\repos\SPMS_UPDATE\Utilities\bin\Debug\System.Web.Mvc.dll
+C:\Users\chandan\source\repos\SPMS_UPDATE\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache

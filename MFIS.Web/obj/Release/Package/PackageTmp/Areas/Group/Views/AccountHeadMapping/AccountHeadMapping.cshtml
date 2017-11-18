@@ -1,0 +1,92 @@
+﻿@using BusinessEntities;
+
+@model IEnumerable<AccountheadMappingDto>
+@{
+    ViewBag.Title = "AccountHeadMapping";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    List<AccountheadMappingDto> lstAccountheadMappingDto = ViewBag.MappingAccountHeads;
+
+    int Index = 0;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">AccountHeadMapping</span>
+
+                    <button type="button" class="btn btn-default pull-right" onclick="Accountingtree();">Back To Accounting Tree</button>
+
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralPayments">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>FedAccountHeads</th>
+                                    <th>GroupAccounts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (AccountHeadDto accountHead in ViewBag.FederationAccountHeads)
+                                {
+
+                                    AccountheadMappingDto obj = lstAccountheadMappingDto.Find(l => l.FedAhid == accountHead.AHID);
+
+
+                                    Index++;
+                                    <tr>
+                                        <td>@Index</td>
+                                        <td>
+                                            <input type="hidden" id="hdnFedAhId_@Index" name="hdnFedAhId_@Index" value="@accountHead.AHID"/>
+                                            @accountHead.AHName
+                                        </td>
+                                        <td>
+                                            @Html.DropDownList("GroupAHId", (SelectList)ViewBag.GroupAccountHeadsDDL, "Select account head", new { @Class = "form-control", @ID = "AHID_" + Index, @Name = "AHID_" + Index })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @Html.Hidden("hdnIndex", Index);
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary" onclick="return validate();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+                var index = $("#hdnIndex").val();
+                var ActionUrl = '@Url.Action("GetMappedHeads")';
+                $.post(ActionUrl, function (data) {
+                    var data = data.lstMappedAccountHeads;
+                    $.each(data, function (ID, Value) {
+                        for (i = 0 ; i <= index; i++) {
+                            if ($('#hdnFedAhId_' + i).val() == Value.FedAhid) {
+                                $("#AHID_" + i).val(Value.GroupAHId);
+                            }
+
+                        }
+                    })
+                }, 'json');
+            }
+            );
+            function Accountingtree() {
+
+                window.location.href = '@Url.Action("GroupAccountTree", "GroupAccountTree")';
+        }
+    </script>
+}

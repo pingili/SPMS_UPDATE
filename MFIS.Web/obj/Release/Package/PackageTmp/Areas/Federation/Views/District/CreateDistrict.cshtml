@@ -1,0 +1,111 @@
+﻿@model MFIS.Web.Areas.Federation.Models.DistrictModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateDistrict";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string ecndistrictId = Model.DistrictID>0?Model.DistrictID.EncryptString():string.Empty;
+}
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage District Details</span>
+                     <button type="button" class="btn btn-default pull-right" onclick="AddDistrict();">Add New District</button>
+                    <button type="button" onclick="BackToList()" class="btn btn-default pull-right">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.DistrictID" id="DistrictID" name="DistrictID" />
+
+                    <div class="col-lg-4">
+                        @if (@Model.DistrictID > 0)
+                        {
+                            <div class="form-group">
+                                @* <label>District Code</label>*@
+                                @Html.DisplayNameFor(mode => mode.DistrictCode)
+                                @Html.TextBoxFor(model => model.DistrictCode, new { @class = "form-control", @placeholder = "District Code", @readonly = "readonly", maxlength = "50" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            @*<label>District Name</label>*@
+                            @Html.DisplayNameFor(model => model.District)
+                            @Html.TextBoxFor(model => model.District, new { @class = "form-control alphabet-only", @placeholder = "District Name", @ID = "txtDistrict", maxlength = "64" })
+                            @* <input class="form-control" placeholder="Ongole" maxlength="20">*@
+                        </div>
+                        <div class="form-group">
+                            @*<label>District Telugu Name</label>*@
+                            @Html.DisplayNameFor(mode => mode.TEDistrictName)
+                            @Html.TextBoxFor(model => model.TEDistrictName, new { @class = "form-control alphabet-only", @placeholder = "జిల్లా పేరు", @ID = "TEDistrictName", maxlength = "512" })
+
+                        </div>
+                        <div class="form-group">
+                            @*  <label>State</label>*@
+                            @Html.DisplayNameFor(add => add.StateID)
+                            @Html.DropDownListFor(modelname => modelname.StateID, (SelectList)ViewBag.states, "---select--", new { @class = "form-control", @placeholder = "D-01", @ID = "ddlState" })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if(Model.DistrictID > 0)
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Save</button>
+                           
+                        }
+                        else
+                        {
+                        <button type="submit" class="btn btn-outline btn-primary loader">Submit</button>                            
+                        }
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return resetall('@ecndistrictId')">Reset</button>
+                        <button type="button" onclick="BackToList()" class="btn btn-default pull-right">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    CustomTransliteration(['TEDistrictName']);
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Action("DistrictLookUp", "District")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideDistrict";
+        LoadMenu();
+    });
+    function resetall(ecndistrictId) {
+        if (ecndistrictId != '') {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("CreateDistrict?id=")' + ecndistrictId
+        }
+        else {
+            $("#txtDistrict").val('');
+            $("#TEDistrictName").val('');
+            $("#ddlState").val('');
+        }
+    }
+    function AddDistrict() {
+        showProgress();
+        window.location.href = '@Url.Action("CreateDistrict","District")';
+    }
+</script>
+<script src="~/Scripts/Common/Common.js"></script>

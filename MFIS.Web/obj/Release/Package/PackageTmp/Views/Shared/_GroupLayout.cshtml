@@ -1,0 +1,97 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPMS - TIRUPATI</title>
+    <link href="~/Scripts/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/main-style.css" rel="stylesheet" />
+    <link href="~/Content/css/site.css" rel="stylesheet" />
+    <link href="~/Scripts/plugins/bootstrap/timepicker.less" rel="stylesheet/less" />
+    <link href="~/Scripts/plugins/transliteration/transliteration.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/datepicker.css" rel="stylesheet" />
+
+    <script src="~/Scripts/plugins/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Scripts/plugins/bootstrap/bootstrap-timepicker.js"></script>
+    <script src="~/Scripts/Common/Common.js"></script>
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script src="~/Scripts/plugins/transliteration/transliteration.js"></script>
+    <script src="~/Scripts/Common/AjnaTransliteration.js"></script>
+    <script src="~/Scripts/Common/AjnaValidations.js"></script>
+    <script src="~/Scripts/Common/siminta.js"></script>
+    <script type="text/javascript">
+        var yyOpen = '@(Convert.ToDateTime(ViewBag.OpeningMeetingDate).Year)';
+        var mmOpen = '@(Convert.ToDateTime(ViewBag.OpeningMeetingDate).Month - 1)';
+        __currentOpenMonth = new Date(Number(yyOpen), mmOpen, 1);
+
+        //Financial Year Begin & End
+        var __FYB = new Date(Number('@(Convert.ToDateTime(ViewBag.FinancialYearBegin).Year)'), 3, 1);
+        var __FYE = new Date(Number('@(Convert.ToDateTime(ViewBag.FinancialYearEnd).Year)'), 2, 31);
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="sidebar-collapse">
+                @Html.Partial("_GroupSideMenu")
+                @using BusinessEntities;
+                @{
+                    GroupInfo objgroupInfo = (GroupInfo)HttpContext.Current.Session[Utilities.Constants.SessionKeys.SK_GROUPINFO];
+                }
+            </div>
+        </nav>
+        <div id="page-banner" style="margin-left: 250px; background-image: url(@Url.Content("~/Content/images/banner2.jpg"));  height: 55px; color: #ffffff;">
+            <table width="100%">
+                <tr>
+                    <td style="vertical-align: top; text-align: left;">
+                        <span class="marquee-banner" style="font-size: 20px;">
+                            @*<marquee>*@Sri Padmavathi Mahila Abhyudaya Sangam @string.Format(" ( {0} - {1} )", Convert.ToDateTime(ViewBag.FinancialYearBegin).Year, Convert.ToDateTime(ViewBag.FinancialYearEnd).Year)@*</marquee>*@
+                        </span>
+
+                        <span class="marquee-banner" style="font-size: 20px;">
+                            @objgroupInfo.GroupMeetingDetailsDisplay
+                        </span>
+                        <br />
+                        <span style="font-size: 18px; color: #4C4444;">
+                            @(objgroupInfo == null ? "  " : objgroupInfo.GroupDisplayName)
+                        </span>
+                    </td>
+                    @*<td align="center" style="width: 8%; vertical-align: middle;">
+                        <a title="logout" style="color:blue;cursor:pointer;" href="@Url.RouteUrl("Default", new { controller = "Base", action = "Logout" })">
+                            <img src="~/Content/images/logout.jpg" style="width: 100%;" /></a> </td>*@
+                </tr>
+            </table>
+            @*<div style="height: 30px; background-color: rgb(66,139,202); color: #eee; font-weight: bold;">Copyright © 2016 Ajna Systems</div>*@
+        </div>
+        <div id="page-wrapper">
+            @RenderBody()
+        </div>
+        <div class="panel-footer" id="footer">
+            <div class="form-group" style="margin-left: 16px; color: #eee; font-weight: bold;">
+                Copyright © 2016 Ajna Systems
+            </div>
+        </div>
+        <div class="modal">
+            <div id="progressDiv" class="modal-content" style="display: none;">
+                <p>Please wait...<img src="~/Content/images/spinner.gif" /></p>
+            </div>
+        </div>
+        <script type="text/ecmascript">
+            window.__lockStatusCode = '@objgroupInfo.LockStatusCode';
+        </script>
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+
+</html>

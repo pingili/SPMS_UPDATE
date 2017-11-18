@@ -1,0 +1,52 @@
+﻿@using BusinessEntities
+<div class="table-responsive">
+
+    @{
+        int indx = 0;
+
+        List<BankMasterDto> lstBankMasters = new List<BankMasterDto>();
+        lstBankMasters = ViewBag.BankDetails;
+    }
+    <table class="table table-striped table-bordered table-hover" id="tblbankdetails">
+        <thead>
+            <tr style="background-color: #428bca; color: white">
+                <th class="text-center" style="display: none">#</th>
+                <th>Bank Name</th>
+                <th>Bank Branch Code</th>
+                <th>IFSC Code</th>
+                <th>Account Number</th>
+                <th>Account Type</th>
+            </tr>
+        </thead>
+        <tbody id="bankbody">
+
+            @if (lstBankMasters != null)
+            {
+                foreach (var item in lstBankMasters)
+                {
+                    indx++;
+                <tr>
+                    <td class="text-center" style="display: none;">@indx </td>
+                    <td>
+                        <input type="hidden" id ="hdnentryId_@indx" name ="hdnentryId_@indx" value="@item.BankEntryID" />
+                        <input type="hidden" id ="hdnbankname_@indx" name ="hdnbankname_@indx" value="@item.BankName"/>
+                        <span>@item.BName</span></td>
+                    <td>
+                        <input type="hidden" id ="hdnbankbranch_@indx" name ="hdnbankbranch_@indx" value="@item.BranchName" />
+                        <span>@item.BranchName</span></td>
+                    <td>
+                        <input type="hidden" id ="hdnifsc_@indx" name ="hdnifsc_@indx" value="@item.IFSC" />
+                        <span>@item.IFSC</span></td>
+                    <td>
+                        <input type="hidden" id ="hdnaccountnumber_@indx" name ="hdnaccountnumber_@indx" value="@item.AccountNumber"/>
+                        <span>@item.AccountNumber </span></td>
+                    <td>
+                        <input type="hidden" id ="hdnaccounttypeid_@indx" name ="hdnaccounttypeid_@indx" value="@item.AccountType"/>
+                        <span>@item.AccountTypeText</span></td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @Html.Hidden("hdnMaxbankIndex", indx)
+</div>

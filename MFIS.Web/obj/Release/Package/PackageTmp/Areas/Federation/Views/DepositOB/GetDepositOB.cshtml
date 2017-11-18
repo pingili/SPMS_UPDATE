@@ -1,0 +1,373 @@
+﻿@model BusinessEntities.DepositOBDto
+
+@{
+    ViewBag.Title = "GetDepositOB";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+<style>
+    th {
+        background-color: #064278 !important;
+        color: white !important;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <div class="panel panel-primary">
+                <input type="hidden" id="LoginType" name="LoginType" value="G" />
+                <div class="panel-heading">
+                    <span class="header">Savings Opening Balance - Federation</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="alert alert-success" style="display: none" id="displaysuccess">
+                    <span id="message"></span>
+                </div>
+
+                <div class="panel-body">
+                    <div class="form-group col-md-3">
+                        <label>Select Cluster</label>
+                        @Html.DropDownList("ClusterID", (SelectList)ViewBag.clusters, "Select Cluster", new { @class = "form-control", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)", @tabindex = "1" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Select Village</label>
+                        @if (Model.VillageID == 0)
+                        {
+                            <select name="ddlvillages" id="ddlvillages" class="form-control" onchange="BindDropDownOptions(this.id)" tabindex="2">
+                                <option value="">select Village</option>
+                            </select>
+                        }
+                        else
+                        {
+                            @Html.DropDownList("VillageID", (SelectList)ViewBag.village, "Select Cluster", new { @class = "form-control", @id = "VillageID", @name = "VillageID", onchange = "BindDropDownOptions(this.id)", @tabindex = "1" })
+                        }
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Select Group</label>
+                        @if (Model.GroupId == 0)
+                        {
+                            <select name="GroupID" id="GroupID" class="form-control" tabindex="3" onchange="getMeetingDay(this.value);">
+                                <option value="">select Group</option>
+                            </select>
+                        }
+                        else
+                        {
+                            @Html.DropDownList("GroupId", (SelectList)ViewBag.group, "Select Group", new { @class = "form-control", @id = "GroupID", @name = "GroupID", onchange = "BindDropDownOptions(this.id)", @tabindex = "1" })
+                        }
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Due Day</label>
+                        <input type="text" class="form-control" id="DueDay" name="DueDay" readonly="true" />
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTablesVillage">
+                            <thead>
+                                <tr>
+                                    <th>Interest Master Code</th>
+                                    <td>
+                                        @Html.DropDownList("Interest1", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control", onchange = "GetInterestDetails(this.id,1);", @tabindex = "4" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest2", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control", onchange = "GetInterestDetails(this.id,2);", @tabindex = "6" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest3", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control", onchange = "GetInterestDetails(this.id,3);", @tabindex = "8" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest4", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control", onchange = "GetInterestDetails(this.id,4);", @tabindex = "10" })
+                                     
+                                    
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th>Account Code</th>
+                                    <td>
+                                        <input type="text" id="txtDepositAHCode1" class="form-control" name="DepositAHCode1" placeholder="Deposit A.H.Code" readonly="true" value="@Model.AHCode1" />
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositAHCode2" class="form-control" name="DepositAHCode2" placeholder="Deposit A.H.Code" readonly="true" value="@Model.AHCode2"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositAHCode3" class="form-control" name="DepositAHCode3" placeholder="Deposit A.H.Code" readonly="true" value="@Model.AHCode3"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositAHCode4" class="form-control" name="DepositAHCode4" placeholder="Deposit A.H.Code" readonly="true" value="@Model.AHCode4"/>
+                                    </td>
+
+                                </tr>
+                                <tr role="row">
+                                    <th>Account Head</th>
+                                    <td>
+                                        <input id="txtDepositAHName1" class="form-control" name="DepositAHName1" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName1"/>
+                                        <input type="hidden" id="hdnDepositAccountHeadID1" name="hdnDepositAccountHeadID1" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID1" name="hdnInterestAccountHeadID1" />
+                                          <input type="hidden" id="hdnROI1" name="hdnROI1" value="@Model.ROI1" />
+                                    </td>
+                                    <td>
+                                        <input id="txtDepositAHName2" class="form-control" name="DepositAHName2" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName1"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID2" name="hdnPrincipleAccountHeadID2" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID2" name="hdnInterestAccountHeadID2" />
+                                          <input type="hidden" id="hdnROI1" name="hdnROI1" value="@Model.ROI1" />
+                                    </td>
+                                    <td>
+                                        <input id="txtDepositAHName3" class="form-control" name="DepositAHName3" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName1"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID3" name="hdnPrincipleAccountHeadID3" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID3" name="hdnInterestAccountHeadID3" />
+                                          <input type="hidden" id="hdnROI1" name="hdnROI1" value="@Model.ROI1" />
+                                    </td>
+                                    <td>
+                                        <input id="txtDepositAHName4" class="form-control" name="DepositAHName4" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName1"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID4" name="hdnPrincipleAccountHeadID4" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID4" name="hdnInterestAccountHeadID4" />
+                                          <input type="hidden" id="hdnROI1" name="hdnROI1" value="@Model.ROI1" />
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>SL A/C Number</th>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber1" class="form-control" name="SLAccountNumber1" tabindex="5" value="@Model.SLAccountNumber1" />
+                                        <input type="hidden" id="SLAccountNumberAHID1" name="SLAccountNumberAHID1" value="@Model.SLAccountNumber1" />
+                                        <input type="hidden" id="Id1" name="Id1" value="@Model.Id1" />
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber2" class="form-control" name="SLAccountNumber2" value="@Model.SLAccountNumber2"/>
+                                        <input type="hidden" id="SLAccountNumberAHID2" name="SLAccountNumberAHID2" value="@Model.SLAccountNumber2" />
+                                        <input type="hidden" id="Id2" name="Id2" value="@Model.Id2" />
+
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber3" class="form-control" name="SLAccountNumber3" value="@Model.SLAccountNumber3"/>
+                                        <input type="hidden" id="SLAccountNumberAHID3" name="SLAccountNumberAHID3" value="@Model.SLAccountNumber3"/>
+                                        <input type="hidden" id="Id3" name="Id3" value="@Model.Id3" />
+
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber4" class="form-control" name="SLAccountNumber4" value="@Model.SLAccountNumber4"/>
+                                        <input type="hidden" id="SLAccountNumberAHID4" name="SLAccountNumberAHID4" value="@Model.SLAccountNumber4"/>
+                                        <input type="hidden" id="Id4" name="Id4" value="@Model.Id4" />
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Deposit Balance</th>
+                                    <td>
+                                        <input type="text" id="txtDepositBalance1" class="form-control" name="DepositBalance1" tabindex="5"  value="@Model.DepositBalance1"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositBalance2" class="form-control" name="DepositBalance2" tabindex="7" value="@Model.DepositBalance2"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositBalance3" class="form-control" name="DepositBalance3" tabindex="9" value="@Model.DepositBalance3"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtDepositBalance4" class="form-control" name="DepositBalance4" tabindex="11" value="@Model.DepositBalance4"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="button" onclick="save();" class="btn btn-outline btn-primary">Save</button>
+                        <button type="button" class="btn btn-outline btn-primary" onclick="resetFields();">Reset</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            menuLink = "menuTransaction";
+            subMenuLink = "lnkDepositOB";
+            LoadMenu();
+        });
+        function getMeetingDay(ID) {
+            var actionUrl = '@Url.Action("BindMeetingDay", "LoanOB")';
+            $.post(actionUrl, { ID: ID }, function (data) {
+                $("#DueDay").val(data.DueDay);
+            }, 'json'
+            );
+
+        }
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Action("DepositLookup", "DepositOB")';
+        }
+        function BindDropDownOptions(id) {
+            var actionUrl = '@Url.Action("BindDropDowns", "LoanOB")';
+            if (id == "ddlclusters") {
+                var ClusterID = $("#ddlclusters").val();
+                $.post(actionUrl, { flag: "Cluster", Id: ClusterID }, function (response) {
+                    $("#ddlvillages").html(response).prepend("<option value='' selected=\"selected\">Select Village </option>");
+                    $("#GroupID").html('').prepend("<option value=''>Select Group </option>");
+                });
+            }
+            else if (id == "ddlvillages") {
+                var VillageID = $("#ddlvillages").val();
+                if (VillageID != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "LoanOB")';
+                    $.post(actionUrl, { flag: "Village", Id: VillageID }, function (response) {
+                        $("#GroupID").html(response).prepend("<option selected=\"selected\" value=''>Select Group </option>");
+                    });
+                }
+                else {
+                    //$("#ddlvillages").html('').prepend("<option value=''>Select Village </option>");
+                    $("#GroupID").html('').prepend("<option value=''>Select Group </option>");
+                }
+            }
+        if ($("#ddlclusters").find("option:selected").text() == "Select Cluster") {
+            $("#ddlvillages").empty();
+            $("#ddlvillages").append("<option value=''>Select Village </option>");
+            $("#GroupID").empty();
+            $("#GroupID").append("<option value=''>Select Group</option>");
+        }
+    }
+        function GetInterestDetails(id, targetId) {
+            $('#txtPrincipalAHCode' + targetId).val('');
+            $('#txtPrincipalAHName' + targetId).val('');
+
+            var value = $('#' + id).val();
+            var action = '@Url.Action("GetInterestDetails", "DepositOB")' + '/' + value;
+        $.post(action
+           , function (data) {
+               if (data.result.InterestRate != null && data.result.InterestRate > 0) {
+                   $('#txtDepositAHCode' + targetId).val(data.result.PrincipalAHCode);
+                   $('#txtDepositAHName' + targetId).val(data.result.PrincipalAHName);
+                   $('#hdnInterestAccountHeadID' + targetId).val(data.result.PrincipalAHID);
+                   $('#hdnROI' + targetId).val(data.result.InterestRate);
+
+               }
+               else {
+                   alert("There is no interest rate with today's date: " + new Date().getDate() + '-' + new Date().getMonth() + '-' + new Date().getFullYear());
+                   return false;
+               }
+           }
+        , 'json');
+    }
+   @* function GetInterestDetails(id, targetId) {
+        $('#txtDepositAHCode' + targetId).val('');
+        $('#txtDepositAHName' + targetId).val('');
+
+        var value = $('#' + id).val();
+        var action = '@Url.Action("GetInterestDetails", "LoanOB")' + '/' + value;
+        $.post(action
+            , {}
+            , function (data) {
+
+                $('#txtDepositAHCode' + targetId).val(data.result.PrincipalAHCode);
+                $('#txtDepositAHName' + targetId).val(data.result.PrincipalAHName);
+
+            }
+            , 'json');
+    }*@
+    function save() {
+        var actionUrl = '@Url.Action("SaveDepositOB", "DepositOB")';
+        $.post(
+            actionUrl,
+            $("form").serialize(),
+            function (data) {
+                $('#displaysuccess').show();
+                $('#message').html(data.result);
+            },
+            'json'
+
+            );
+    }
+    $("#txtDepositDate1").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtMeturityDate1").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtLastPaidDate1").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtDepositDate2").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtMeturityDate2").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtLastPaidDate2").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtDepositDate3").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtMeturityDate3").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtLastPaidDate3").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtDepositDate4").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtMeturityDate4").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    $("#txtLastPaidDate4").datepicker({
+        //dateFormat: "HH/MM",
+        dateFormat: "dd/M/yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-60:+20"
+    });
+    </script>
+}

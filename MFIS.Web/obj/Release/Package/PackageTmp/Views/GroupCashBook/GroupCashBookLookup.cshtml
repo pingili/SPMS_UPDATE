@@ -1,0 +1,125 @@
+﻿@model List<BusinessEntities.GroupCashBookDto>
+@using System.Data;
+@{
+    ViewBag.Title = "GroupCashBookLookup";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    DataSet ds = ViewBag.Ds;
+    int Index = 0;
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="header">Organisation Name ( As per Master)</span>
+        </div>
+        <div class="panel-body">
+            <div class="col-lg-12">
+                <div style="text-align: center">
+                    <h4>CASH BOOK</h4>
+                </div>
+                <br />
+                <br />
+                <div class="form-group col-lg-3">
+                </div>
+                <div class="form-group col-lg-6">
+                    <label>AH CODE : sal-001 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;       ACCOUNT HEAD NAME : salaries</label>
+                </div>
+
+                <div class="form-group col-lg-3">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <div style="text-align: center">
+                        <h5>Cash Receipt</h5>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralLedger">
+                        <thead>
+                            <tr>
+                                <th class="text-center">S.No</th>
+                                <th>MemberName</th>
+                                <th>LoanNumber</th>
+                                <th>Voucher Number</th>
+                                <th>LoanPrincipal</th>
+                                <th>AHCode</th>
+                                <th>LoanInterest</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+                            @foreach (DataRow dr in ds.Tables[1].Rows)
+                            {
+                                Index++;
+                                <tr class="gradeA odd">
+                                    <td class="text-center">@Index</td>
+                                    <td>@dr[1]</td>
+                                    <td>@dr[3]</td>
+                                    <td>@dr[4]</td>
+                                    <td>@dr[5]</td>
+                                    <td>@dr[6]</td>
+                                    <td>@dr[7]</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div style="text-align: center">
+                        <h5>Cash Payments</h5>
+                    </div>
+                    <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralLedger">
+                        <thead>
+                            <tr>
+                                <th class="text-center">S.No</th>
+                                <th>MemberName</th>
+                                <th>LoanNumber</th>
+                                <th>Receipt Number</th>
+                                <th>LoanPrincipal</th>
+                                <th>AHCode</th>
+                                <th>LoanInterest</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center">
+                            @foreach (DataRow dr in ds.Tables[2].Rows)
+                            {
+                                Index++;
+                                <tr class="gradeA odd">
+                                    <td class="text-center">@Index</td>
+                                    <td>@dr[1]</td>
+                                    <td>@dr[3]</td>
+                                    <td>@dr[4]</td>
+                                    <td>@dr[5]</td>
+                                    <td>@dr[6]</td>
+                                    <td>@dr[7]</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="panel-footer">
+            <div class="form-group" style="margin-left: 16px;">
+                <button type="button" id="btnSave" class="btn btn-outline btn-primary" onclick="GetPdf();">DownLoad Report</button>
+                <button type="submit" id="btnExcel" class="btn btn-outline btn-primary">Export To Excel</button>
+            </div>
+        </div>
+    </div>
+}
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    function GetPdf() {
+        window.location.href = '@Url.Content("~/GroupCashBook/ExportsReports/")';
+
+    }
+
+    $(document).ready(function () {
+        menuLink = "menuBooksandRecords";
+        subMenuLink = "lnkSideGeneralLedger";
+        LoadMenu();
+        //$('#dataTablesGeneralLedger').dataTable({
+        //    "bSort": false
+        //});
+    });
+</script>

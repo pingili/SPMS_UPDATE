@@ -1,0 +1,975 @@
+﻿@model BusinessEntities.LoanOBDto
+@using CoreComponents;
+@{
+    ViewBag.Title = "GetLoanOB";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+
+<style>
+    th {
+        background-color: #064278 !important;
+        color: white !important;
+    }
+</style>
+<style type="text/css">
+    .pop_up {
+        background-color: #fff;
+        border-radius: 15px;
+        color: #000;
+        display: none;
+        padding: 5px 5px 20px 20px;
+        min-height: 250px;
+        max-height: 600px;
+        min-width: 400px;
+        max-width: 1200px;
+        /*left: 274.5px;
+        position: absolute;
+        top: 120px;
+        display: block;
+        opacity: 1;
+        width: 62%;
+        z-index: 9999;*/
+    }
+
+    .disabledbutton {
+        pointer-events: none;
+        opacity: 0.9;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <div class="panel panel-primary">
+                <input type="hidden" id="LoanType" name="LoanType" value="G" />
+                <div class="panel-heading">
+                    <span class="header">Loan Opening Balances - Group</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BacktoLoanOB();">BackToList</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="addnewLoanOB();">Add New LoanOB</button>
+                </div>
+                <div class="panel-heading">
+
+                    <span class="header" id="message"></span>
+                </div>
+                <div class="panel-body">
+                    @{var clas = "form-control";
+                      if (Model.LoanMasrterID1 > 0 || Model.LoanMasrterID2 > 0 || Model.LoanMasrterID3 > 0 || Model.LoanMasrterID4 > 0)
+                      {
+                          clas = "form-control disabledbutton";
+                      }
+                     
+                          
+                    }
+                    <div class="form-group col-md-2">
+                        <label>Cluster</label>
+                        <input type="text" class ="@clas" id="txtClusters" name="ClusterID" value="@ViewBag.clusters"  />
+
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Village</label>
+                        <input type="text" class ="@clas"  id="txtvillages" name="ddlvillages" value="@ViewBag.village" />
+
+
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Group</label>
+                        <input type="text" class ="@clas"  id="txtGroup" name="GroupID" value="@ViewBag.GroupName"  />
+
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label>Due Day</label>
+                        <input type="text" class="form-control" id="DueDay"  value="@ViewBag.MeetingDay" name="DueDay" readonly="true" />
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Select Member</label>
+                        @Html.DropDownList("MemberID", (SelectList)ViewBag.Members, "Select Member", new { @class = "form-control", @tabindex = "4" })
+
+                    </div>
+
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTablesVillage">
+                            <thead>
+                                <tr>
+                                    <th>Interest Master Code</th>
+                                    <td>
+                                        @Html.DropDownList("Interest1", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control disabledbutton", onchange = "GetInterestDetails(this.id,1);", @tabindex = "4", onclick = "stopClickingInters(event);" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest2", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control disabledbutton", onchange = "GetInterestDetails(this.id,2);", onfocus = "preventdefault(event);" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest3", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control disabledbutton", onchange = "GetInterestDetails(this.id,3);", onfocus = "preventdefault(event);" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Interest4", (SelectList)ViewBag.interests, "Select Interest", new { @class = "form-control", onchange = "GetInterestDetails(this.id,4);" })
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th>Account Code</th>
+                                    <td>
+                                        <input type="text" id="txtPrincipalAHCode1" class="form-control" name="PrincipalAHCode1" placeholder="Principle A.H.Code" readonly="true" value="@Model.AHCode1" />
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalAHCode2" class="form-control" name="PrincipalAHCode2" placeholder="Principle A.H.Code" readonly="true" value="@Model.AHCode2"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalAHCode3" class="form-control" name="PrincipalAHCode3" placeholder="Principle A.H.Code" readonly="true" value="@Model.AHCode3" />
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalAHCode4" class="form-control" name="PrincipalAHCode4" placeholder="Principle A.H.Code" readonly="true" value="@Model.AHCode4"/>
+                                    </td>
+
+                                </tr>
+                                <tr role="row">
+                                    <th>Account Head</th>
+                                    <td>
+                                        <input id="txtPrincipalAHName1" class="form-control" name="PrincipalAHName1" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName1" />
+                                        <input type="hidden" id="hdnPrincipalAccountHeadID1" name="hdnPrincipalAccountHeadID1" value="@Model.PrincipalAHID1" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID1" name="hdnInterestAccountHeadID1" />
+                                        <input type="hidden" id="hdnROI1" name="hdnROI1" value="@Model.ROI1" />
+                                    </td>
+                                    <td>
+                                        <input id="txtPrincipalAHName2" class="form-control" name="PrincipalAHName2" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName2"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID2" name="hdnPrincipleAccountHeadID2" value="@Model.PrincipalAHID2" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID2" name="hdnInterestAccountHeadID2" />
+                                        <input type="hidden" id="hdnROI2" name="hdnROI2" value="@Model.ROI2"  />
+                                    </td>
+                                    <td>
+                                        <input id="txtPrincipalAHName3" class="form-control" name="PrincipalAHName3" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName3"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID3" name="hdnPrincipleAccountHeadID3" value="@Model.PrincipalAHID3" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID3" name="hdnInterestAccountHeadID3" />
+                                        <input type="hidden" id="hdnROI3" name="hdnROI3" value="@Model.ROI3"  />
+                                    </td>
+                                    <td>
+                                        <input id="txtPrincipalAHName4" class="form-control" name="PrincipalAHName4" readonly="true" placeholder="Principle A.H.Name" value="@Model.AHName4"/>
+                                        <input type="hidden" id="hdnPrincipleAccountHeadID4" name="hdnPrincipleAccountHeadID4" value="@Model.PrincipalAHID4" />
+                                        <input type="hidden" id="hdnInterestAccountHeadID4" name="hdnInterestAccountHeadID4" />
+                                        <input type="hidden" id="hdnROI4" name="hdnROI4" value="@Model.ROI4"  />
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                <tr>
+                                    <th>SL A/C Number</th>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber1" class="form-control" name="SLAccountNumber1" tabindex="5"  value="@Model.SLAccountNumber1"/>
+                                        <input type="hidden" id="SLAccountNumberAHID1" name="SLAccountNumberAHID1" value="@Model.SLAccountNumberAHID1"/>
+                                        <input type="hidden" id="LoanMasrterID1" name="LoanMasrterID1" value="@Model.LoanMasrterID1" />
+
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber2" class="form-control" name="SLAccountNumber2" value="@Model.SLAccountNumber2" />
+                                        <input type="hidden" id="SLAccountNumberAHID2" name="SLAccountNumberAHID2" value="@Model.SLAccountNumberAHID2"/>
+                                        <input type="hidden" id="LoanMasrterID2" name="LoanMasrterID2"  value="@Model.LoanMasrterID2"/>
+
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber3" class="form-control" name="SLAccountNumber3" value="@Model.SLAccountNumber3"/>
+                                        <input type="hidden" id="SLAccountNumberAHID3" name="SLAccountNumberAHID3" value="@Model.SLAccountNumberAHID3"/>
+                                        <input type="hidden" id="LoanMasrterID3" name="LoanMasrterID3" value="@Model.LoanMasrterID3"/>
+
+                                    </td>
+                                    <td>
+                                        <input type="text" id="txtSLAccountNumber4" class="form-control" name="SLAccountNumber4" value="@Model.SLAccountNumber4" />
+                                        <input type="hidden" id="SLAccountNumberAHID4" name="SLAccountNumberAHID4" value="@Model.SLAccountNumberAHID4"/>
+                                        <input type="hidden" id="LoanMasrterID4" name="LoanMasrterID4" value="@Model.LoanMasrterID4"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Loan Given Amount </th>
+                                    <td>
+                                        <input type="text" id="txtLoanAmountGiven1" class="form-control" name="LoanAmountGiven1" tabindex="6" value="@Model.LoanAmountGiven1.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(1);CalculatePrincipleAmmountOnDemand(1);" /></td>
+                                    <td>
+                                        <input type="text" id="txtLoanAmountGiven2" class="form-control" name="LoanAmountGiven2" value="@Model.LoanAmountGiven2.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
+                                    <td>
+                                        <input type="text" id="txtLoanAmountGiven3" class="form-control" name="LoanAmountGiven3" value="@Model.LoanAmountGiven3.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
+                                    <td>
+                                        <input type="text" id="txtLoanAmountGiven4" class="form-control" name="LoanAmountGiven4" value="@Model.LoanAmountGiven4.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Loan Disbursed Date</th>
+                                    <td>
+                                        <input type="text" id="txtLoanDisbursedDate1" class="form-control" name="LoanDisbursedDate1" tabindex="7" value="@Convert.ToDateTime(Model.LoanDisbursedDate1).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" id="txtLoanDisbursedDate2" class="form-control" name="LoanDisbursedDate2" value="@Convert.ToDateTime(Model.LoanDisbursedDate2).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" id="txtLoanDisbursedDate3" class="form-control" name="LoanDisbursedDate3" value="@Convert.ToDateTime(Model.LoanDisbursedDate3).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" id="txtLoanDisbursedDate4" class="form-control" name="LoanDisbursedDate4" value="@Convert.ToDateTime(Model.LoanDisbursedDate4).ToDisplayDateFormat()"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Project Purpose</th>
+                                    <td>
+                                        @Html.DropDownList("Project1", (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control", onchange = "BindLoanPurposeByProjectId(this.id,1)", tabindex = "10" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Project2", (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control", onchange = "BindLoanPurposeByProjectId(this.id,2)" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Project3", (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control", onchange = "BindLoanPurposeByProjectId(this.id,3)" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Project4", (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control", onchange = "BindLoanPurposeByProjectId(this.id,4)" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Loan Purpose</th>
+                                    <td>
+                                        @Html.DropDownList("Purpose1", (SelectList)ViewBag.lonapurpose, "Select Purpose", new { @class = "form-control", @tabindex = "8" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Purpose2", (SelectList)ViewBag.lonapurpose, "Select Purpose", new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Purpose3", (SelectList)ViewBag.lonapurpose, "Select Purpose", new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Purpose4", (SelectList)ViewBag.lonapurpose, "Select Purpose", new { @class = "form-control" })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Fund Source</th>
+                                    <td>
+                                        @Html.DropDownList("Fundsource1", (SelectList)ViewBag.fundsource, "Select Fund Source", new { @class = "form-control", tabindex = "9" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Fundsource2", (SelectList)ViewBag.fundsource, "Select Fund Source", new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Fundsource3", (SelectList)ViewBag.fundsource, "Select Fund Source", new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        @Html.DropDownList("Fundsource4", (SelectList)ViewBag.fundsource, "Select Fund Source", new { @class = "form-control" })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Period</th>
+                                    <td>
+                                        <input type="text" id="txtPeriod1" class="form-control" name="Period1" tabindex="11" value="@Model.Period1" onchange="CalculateMonthlyDemond(1);CalculatePrincipleAmmountOnDemand(1);" /></td>
+                                    <td>
+                                        <input type="text" id="txtPeriod2" class="form-control" name="Period2" value="@Model.Period2" onchange="CalculateMonthlyDemond(2);CalculatePrincipleAmmountOnDemand(2);" /></td>
+                                    <td>
+                                        <input type="text" id="txtPeriod3" class="form-control" name="Period3" value="@Model.Period3" onchange="CalculateMonthlyDemond(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
+                                    <td>
+                                        <input type="text" id="txtPeriod4" class="form-control" name="Period4" value="@Model.Period4" onchange="CalculateMonthlyDemond(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
+                                </tr>
+
+                                <tr>
+                                    <th>First Installment Date</th>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtFinalInstallmentDate1" class="form-control" name="FinalInstallmentDate1" tabindex="12" value="@Convert.ToDateTime(Model.FinalInstallmentDate1).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtFinalInstallmentDate2" class="form-control" name="FinalInstallmentDate2" value="@Convert.ToDateTime(Model.FinalInstallmentDate2).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtFinalInstallmentDate3" class="form-control" name="FinalInstallmentDate3" value="@Convert.ToDateTime(Model.FinalInstallmentDate3).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtFinalInstallmentDate4" class="form-control" name="FinalInstallmentDate4" value="@Convert.ToDateTime(Model.FinalInstallmentDate4).ToDisplayDateFormat()" /></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Last Paid Date</th>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtLastPaidDate1" class="form-control" name="LastPaidDate1" tabindex="13" value="@Convert.ToDateTime(Model.LastPaidDate1).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtLastPaidDate2" class="form-control" name="LastPaidDate2" value="@Convert.ToDateTime(Model.LastPaidDate2).ToDisplayDateFormat()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtLastPaidDate3" class="form-control" name="LastPaidDate3"  value="@Convert.ToDateTime(Model.LastPaidDate3).ToDisplayDateFormat()"/></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtLastPaidDate4" class="form-control" name="LastPaidDate4" value="@Convert.ToDateTime(Model.LastPaidDate4).ToDisplayDateFormat()"/></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Principal Amount Outstanding</th>
+                                    <td>
+                                        <input type="text" id="txtPrincipalOutstanding1" class="form-control" name="PrincipalOutstanding1" tabindex="14"  value="@Model.PrincipalOutstanding1.ToDisplayCurrency()" onchange="CalculateTotal(1);CalculatePrincipleAmmountOnDemand(1);"/></td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalOutstanding2" class="form-control" name="PrincipalOutstanding2" value="@Model.PrincipalOutstanding2.ToDisplayCurrency()" onchange="CalculateTotal(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalOutstanding3" class="form-control" name="PrincipalOutstanding3" value="@Model.PrincipalOutstanding3.ToDisplayCurrency()" onchange="CalculateTotal(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
+                                    <td>
+                                        <input type="text" id="txtPrincipalOutstanding4" class="form-control" name="PrincipalOutstanding4" value="@Model.PrincipalOutstanding4.ToDisplayCurrency()" onchange="CalculateTotal(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Interest Due</th>
+                                    <td>
+                                        <input type="text" id="txtInterestDue1" class="form-control" name="InterestDue1" tabindex="15" value="@Model.InterestDue1.ToDisplayCurrency()" onchange="CalculateTotal(1);"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestDue2" class="form-control" name="InterestDue2" value="@Model.InterestDue2.ToDisplayCurrency()" onchange="CalculateTotal(2);"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestDue3" class="form-control" name="InterestDue3" value="@Model.InterestDue3.ToDisplayCurrency()" onchange="CalculateTotal(3);"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestDue4" class="form-control" name="InterestDue4" value="@Model.InterestDue4.ToDisplayCurrency()" onchange="CalculateTotal(4);"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <td>
+                                        <input type="text" id="txtTotal1" class="form-control" name="txtTotal1" tabindex="16" value="@Model.Total1.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtTotal2" class="form-control" name="txtTotal2" value="@Model.Total2.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtTotal3" class="form-control" name="txtTotal3" value="@Model.Total3.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtTotal4" class="form-control" name="txtTotal4" value="@Model.Total4"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Principal O.D</th>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD1" class="form-control" name="PrincipalOD1" tabindex="17" value="@Model.PrincipalOD1.ToDisplayCurrency()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD2" class="form-control" name="PrincipalOD2" value="@Model.PrincipalOD2.ToDisplayCurrency()" /></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD3" class="form-control" name="PrincipalOD3" value="@Model.PrincipalOD3.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD4" class="form-control" name="PrincipalOD4" value="@Model.PrincipalOD4.ToDisplayCurrency()"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Interest O.D</th>
+                                    <td>
+                                        <input type="text" id="txtInterestOD1" class="form-control" name="txtInterestOD1" tabindex="18" value="@Model.Interest1"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestOD2" class="form-control" name="txtInterestOD2" value="@Model.Interest2"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestOD3" class="form-control" name="txtInterestOD3" value="@Model.Interest3"/></td>
+                                    <td>
+                                        <input type="text" id="txtInterestOD4" class="form-control" name="txtInterestOD4" value="@Model.Interest4"/></td>
+                                </tr>
+                                <tr>
+                                </tr>
+
+                                <tr>
+                                    <th>Monthly Demand</th>
+                                    <td>
+                                        <input type="text" id="txtMonthlyDemand1" class="form-control" name="MonthlyDemand1" tabindex="19" value="@Model.MonthlyDemand1.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtMonthlyDemand2" class="form-control" name="MonthlyDemand2"  value="@Model.MonthlyDemand2.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtMonthlyDemand3" class="form-control" name="MonthlyDemand3"  value="@Model.MonthlyDemand3.ToDisplayCurrency()"/></td>
+                                    <td>
+                                        <input type="text" id="txtMonthlyDemand4" class="form-control" name="MonthlyDemand4"  value="@Model.MonthlyDemand4.ToDisplayCurrency()"/></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        @{
+                      string display = "none";
+                      if (Model.LoanMasrterID1 > 0)
+                      {
+                          display = "block";
+                      }
+                                            <button type="button" id="btnSchedule1" onclick="schedule(1);" class="btn btn-outline btn-primary" style="display:@display">Generate Schedule</button>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                      string display2 = "none";
+                      if (Model.LoanMasrterID2 > 0)
+                      {
+                          display2 = "block";
+                      }
+                                            <button type="button" id="btnSchedule2" onclick="schedule(2);" class="btn btn-outline btn-primary" style="display: @display2">Generate Schedule</button>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                      string display3 = "none";
+                      if (Model.LoanMasrterID3 > 0)
+                      {
+                          display3 = "block";
+                      }
+                                            <button type="button" id="btnSchedule3" onclick="schedule(3);" class="btn btn-outline btn-primary" style="display: @display3">Generate Schedule</button>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                      string display4 = "none";
+                      if (Model.LoanMasrterID4 > 0)
+                      {
+                          display4 = "block";
+                      }
+                                            <button type="button" id="btnSchedule4" onclick="schedule(4);" class="btn btn-outline btn-primary" style="display: @display4">Generate Schedule</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="button" onclick="save();" class="btn btn-outline btn-primary">Save</button>
+                        <button type="button" class="btn btn-outline btn-primary" onclick="resetFields();">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+<div id="divschedule" class="pop_up" title="Schedule" style="z-index: 9999; left: 274.5px; width: 62%;">
+    <div style="float: right; margin-bottom: 10px;">
+        <a style="cursor: pointer;" onclick="javascript:Close();">
+            <img alt="" src="../../Content/images/close_button.png" />
+        </a>
+    </div>
+    @*<div style="font-size: larger; text-align: center; color: #063A60;">
+        <b>Existing Bank Details</b>
+    </div>*@
+    <div id="scroll_popup_container" style="margin-left: 20px; overflow: hidden; max-height: 500px">
+        <div id="schedulecontent">
+        </div>
+
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.6.4.min.js"></script>
+<script type="text/javascript">var $b = jQuery.noConflict();</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script src="~/Scripts/jquery.bpopup.min.js"></script>
+    <script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+    <script src="~/Scripts/plugins/momentDate/moment.js"></script>
+    <script type="text/javascript">
+        var meetingDay = '@ViewBag.meetingDay';
+
+
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideLoanOB";
+            LoadMenu();
+        });
+        function stopClickingInters(e) {
+            e.preventDefault();
+        }
+
+        function Close() {
+
+            $b('#divschedule').bPopup().close();
+        }
+        function BacktoLoanOB() {
+            showProgress();
+            window.location.href = '@Url.Action("LoanOBLookup", "GroupLoanOB")';
+        }
+        function addnewLoanOB() {
+            showProgress();
+            window.location.href = '@Url.Action("GetLoanOB", "GroupLoanOB")';
+        }
+        var id = 0;
+        function schedule(Id) {
+            id = Id;
+            var Total = $('#txtLoanAmountGiven' + id).val().replace(",", "");
+            var TotalAmount = Math.round(parseInt(Total));
+            var EMI = $('#txtMonthlyDemand' + id).val().replace(",", "");
+            var MonthlyDemand = parseInt(EMI);
+            var firstInstallmentate = $('#txtFinalInstallmentDate' + id).val();
+            var OverDueAmount = $('#txtPrincipalOD' + id).val().replace(",", "")
+            var OverDue = Math.round(parseInt(OverDueAmount));
+            var interest = $('#hdnROI' + id).val();
+            var LastPaidDate = $('#txtLastPaidDate' + id).val();
+            var LoanMasterId = $('#LoanMasrterID' + id).val();
+            var DisbursementDate = $('#txtLoanDisbursedDate' + id).val();
+            var NoOfInstallmentsToPay = $('#txtPeriod' + id).val();
+            // var NoOfInstallmentsToPay = Math.round(TotalAmount) / Math.round(MonthlyDemand);
+            NoOfInstallmentsToPay = Math.round(NoOfInstallmentsToPay);
+            var actionUrl = '@Url.Action("LoanObSchedule", "GroupLoanOB")';
+            $.post(actionUrl,
+                { LoanMasterId: LoanMasterId, LoanAmount: TotalAmount, InterestRate: interest, loanperiod: NoOfInstallmentsToPay, LastpaidDate: LastPaidDate, OverDue: OverDue, firstInstallmentate: firstInstallmentate, DisbursementDate: DisbursementDate },
+                function (data) {
+                    $('#schedulecontent').html(data);
+                    $b('#divschedule').bPopup();
+                    $('#divschedule').css("left", "274.5px");
+                });
+
+        }
+        function SaveSchedule() {
+            var Total = $('#txtLoanAmountGiven' + id).val().replace(",", "");
+            var TotalAmount = Math.round(parseInt(Total));
+            var EMI = $('#txtMonthlyDemand' + id).val().replace(",", "");
+            var MonthlyDemand = parseInt(EMI);
+            var firstInstallmentate = $('#txtFinalInstallmentDate' + id).val();
+            var OverDueAmount = $('#txtPrincipalOD' + id).val().replace(",", "")
+            var OverDue = Math.round(parseInt(OverDueAmount));
+            var interest = $('#hdnROI' + id).val();
+            var LastPaidDate = $('#txtLastPaidDate' + id).val();
+            var LoanMasterId = $('#LoanMasrterID' + id).val();
+            var DisbursementDate = $('#txtLoanDisbursedDate' + id).val();
+            var NoOfInstallmentsToPay = $('#txtPeriod' + id).val();
+            var actionUrl = '@Url.Action("LoanObCreateSchedule", "GroupLoanOB")';
+            var action = '@Url.Action("CheckForDisbursementStart", "MemberLoanDisbursement")';
+            $.post(action, { LoanMasterId: LoanMasterId }, function (data) {
+                if (!(data.isDisbursed)) {
+                    $.post(actionUrl,
+                     { LoanMasterId: LoanMasterId, LoanAmount: TotalAmount, InterestRate: interest, loanperiod: NoOfInstallmentsToPay, LastpaidDate: LastPaidDate, firstInstallmentate: firstInstallmentate, DisbursementDate: DisbursementDate },
+                     function (data) {
+                         if (data.Message == 'Schedule Inserted Successfullly') {
+                             Close();
+                         }
+                         else {
+                             $('#lblMessage').html("Schedule not generated please close and check details");
+
+                         }
+                     }, 'json')
+                }
+                else {
+                    alert('Repayment started you are not able to update disbursement details please close window');
+                }
+            });
+        }
+        function ValidateRepayment(LoanMasterId) {
+
+        }
+        function save() {
+
+            var isValid = ValidateLoanOBForm();
+
+            if (isValid) {
+
+                var actionUrl = '@Url.Action("SaveLoanOB", "GroupLoanOB")';
+
+                $.post(actionUrl, $("form").serialize(),
+           function (data) {
+               $('#SLAccountNumberAHID1').val(data.SLAccountNumberAHID1);
+               $('#SLAccountNumberAHID2').val(data.SLAccountNumberAHID2);
+               $('#SLAccountNumberAHID3').val(data.SLAccountNumberAHID3);
+               $('#SLAccountNumberAHID4').val(data.SLAccountNumberAHID4);
+
+               $('#LoanMasrterID1').val(data.LoanMasrterID1);
+               if (data.LoanMasrterID1 > 0) {
+                   $('#btnSchedule1').css("display", "block");
+               }
+               $('#LoanMasrterID2').val(data.LoanMasrterID2);
+               if (data.LoanMasrterID2 > 0) {
+                   $('#btnSchedule2').css("display", "block");
+
+               }
+               $('#LoanMasrterID3').val(data.LoanMasrterID3);
+               if (data.LoanMasrterID3 > 0) {
+                   $('#btnSchedule3').css("display", "block");
+
+               }
+               $('#LoanMasrterID4').val(data.LoanMasrterID4);
+               if (data.LoanMasrterID4 > 0) {
+                   $('#btnSchedule4').css("display", "block");
+
+               }
+               $('#message').html(data.result);
+           },
+           'json'
+
+           );
+            }
+        }
+
+        function getMeetingDay(ID) {
+            var actionUrl = '@Url.Action("BindMeetingDay", "GroupLoanOB")';
+            $.post(actionUrl, { ID: ID }, function (data) {
+                $("#DueDay").val(data.DueDay);
+            }, 'json'
+            );
+
+        }
+        function BindDropDownOptions(id) {
+            var actionUrl = '@Url.Action("BindDropDowns", "GroupLoanOB")';
+            if (id == "ddlclusters") {
+                var ClusterID = $("#ddlclusters").val();
+                $.post(actionUrl, { flag: "Cluster", Id: ClusterID }, function (response) {
+                    $("#ddlvillages").html(response).prepend("<option value='' selected='Selected'>Select Village </option>");
+                });
+            }
+            else if (id == "ddlvillages") {
+                var VillageID = $("#ddlvillages").val();
+                if (VillageID != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "GroupLoanOB")';
+                    $.post(actionUrl, { flag: "Village", Id: VillageID }, function (response) {
+                        $("#GroupID").html(response).prepend("<option value='' selected='Selected'>Select Group </option>");
+                    });
+                }
+                else {
+                    $("#ddlvillages").html('').prepend("<option value=''>Select Village </option>");
+                    $("#GroupID").html('').prepend("<option value='' selected='Selected'>Select Group </option>");
+                }
+            }
+        if ($("#ddlclusters").find("option:selected").text() == "Select Cluster") {
+            $("#ddlvillages").empty();
+            $("#ddlvillages").append("<option value=''>Select Village </option>");
+            $("#GroupID").empty();
+            $("#GroupID").append("<option value=''>Select Group</option>");
+        }
+    }
+
+    function GetInterestDetails(id, targetId) {
+        $('#txtPrincipalAHCode' + targetId).val('');
+        $('#txtPrincipalAHName' + targetId).val('');
+
+        var value = $('#' + id).val();
+        var action = '@Url.Action("GetInterestDetails", "GroupLoanOB")' + '/' + value;
+        $.post(action
+            , {}
+            , function (data) {
+                if (data.result.InterestRate != null && data.result.InterestRate > 0) {
+                    $('#txtPrincipalAHCode' + targetId).val(data.result.PrincipalAHCode);
+                    $('#txtPrincipalAHName' + targetId).val(data.result.PrincipalAHName);
+                    $('#hdnPrincipleAccountHeadID' + targetId).val(data.result.PrincipalAHID);
+                    $('#hdnROI' + targetId).val(data.result.InterestRate);
+
+                }
+                else {
+                    alert("There is no interest rate with today's date: " + new Date().getDate() + '-' + new Date().getMonth() + '-' + new Date().getFullYear());
+                    return false;
+                }
+            }
+            , 'json');
+    }
+
+    function getFormattedDateString(dt) {
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var date = dt;
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+
+        return day + '-' + monthNames[monthIndex] + '-' + year;
+    }
+
+
+    $(document).ready(function () {
+        $b('#txtLoanDisbursedDate1').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20",
+            onSelect: function (dateText) {
+                var date = new Date(dateText);
+                // date.setDate(date.getDate() + 1);
+                var firststinstallment = date;
+                firststinstallment.setMonth(firststinstallment.getMonth() + 1);
+                firststinstallment.setDate(meetingDay);
+                $("#txtFinalInstallmentDate1").val(getFormattedDateString(firststinstallment));
+
+                monthDiff(1);
+                //var dojdate = new Date(dateText);
+                //dojdate.setDate(dojdate.getDate() + 1)
+                //$("#txtFinalInstallmentDate1").datepicker("option", "minDate", dojdate);
+            }
+        });
+
+        $b("#txtLoanDisbursedDate2").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20",
+            onSelect: function (selectDate) {
+                //var date = new Date(selectDate);
+                //date.setDate(date.getDate() + 1)
+                //$("#txtFinalInstallmentDate2").datepicker("option", "minDate", date)
+                var date = new Date(selectDate);
+                // date.setDate(date.getDate() + 1);
+                var firststinstallment = date;
+                firststinstallment.setMonth(firststinstallment.getMonth() + 1);
+                firststinstallment.setDate(meetingDay);
+                $("#txtFinalInstallmentDate2").val(getFormattedDateString(firststinstallment));
+                monthDiff(2);
+            }
+        });
+        $b("#txtLoanDisbursedDate3").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20",
+            onSelect: function (selectDate) {
+                //var date = new Date(selectDate);
+                //date.setDate(date.getDate() + 1)
+                //$("#txtFinalInstallmentDate3").datepicker("option", "minDate", date)
+                var date = new Date(selectDate);
+                // date.setDate(date.getDate() + 1);
+                var firststinstallment = date;
+                firststinstallment.setMonth(firststinstallment.getMonth() + 1);
+                firststinstallment.setDate(meetingDay);
+                $("#txtFinalInstallmentDate3").val(getFormattedDateString(firststinstallment));
+                monthDiff(3);
+            }
+        });
+        $b("#txtLoanDisbursedDate4").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20",
+            onSelect: function (selectDate) {
+                var date = new Date(selectDate);
+                //  date.setDate(date.getDate() + 1);
+                var firststinstallment = date;
+                firststinstallment.setMonth(firststinstallment.getMonth() + 1);
+                firststinstallment.setDate(meetingDay);
+                $("#txtFinalInstallmentDate4").val(getFormattedDateString(firststinstallment));
+                monthDiff(4);
+            }
+        });
+        //$("#txtFinalInstallmentDate1").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20",
+        //    onSelect: function (selectDate) {
+        //        var date = new Date(selectDate);
+        //        date.setDate(date.getDate() + 1)
+        //        $("#txtLastPaidDate1").datepicker("option", "minDate", date)
+        //    }
+        //});
+        //$("#txtFinalInstallmentDate2").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20",
+        //    onSelect: function (selectDate) {
+        //        var date = new Date(selectDate);
+        //        date.setDate(date.getDate() + 1)
+        //        $("#txtLastPaidDate2").datepicker("option", "minDate", date)
+        //    }
+        //});
+        //$("#txtFinalInstallmentDate3").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20",
+        //    onSelect: function (selectDate) {
+        //        var date = new Date(selectDate);
+        //        date.setDate(date.getDate() + 1)
+        //        $("#txtLastPaidDate3").datepicker("option", "minDate", date)
+        //    }
+
+        //});
+        //$('#txtFinalInstallmentDate4').datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20",
+        //    onSelect: function (selectDate) {
+        //        var date = new Date(selectDate);
+        //        date.setDate(date.getDate() + 1)
+        //        $('#txtLastPaidDate4').datepicker("option", "minDate", date)
+        //    }
+        //});
+        //$("#txtLastPaidDate1").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20"
+        //});
+        //$("#txtLastPaidDate2").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20"
+        //});
+        //$("#txtLastPaidDate3").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20"
+        //});
+        //$("#txtLastPaidDate4").datepicker({
+        //    //dateFormat: "HH/MM",
+        //    dateFormat: "dd/M/yy",
+        //    changeMonth: true,
+        //    changeYear: true,
+        //    yearRange: "-60:+20"
+        //});
+
+    });
+
+    //function CalculateMonthlyDemond() {
+    //    var LoanAmountGiven1 = $('#txtLoanAmountGiven1').val();
+    //    var Period1= $('#txtPeriod1').val();
+    //    if (LoanAmountGiven1 > 0 && LoanAmountGiven1 != null && LoanAmountGiven1 != "" && LoanAmountGiven1 > Period1) {
+    //        if (Period1 > 0 && Period1 != null && Period1 != "" ) {
+    //            $('#txtMonthlyDemand1').val(LoanAmountGiven1 / Period1);
+    //        }
+    //    }
+    //}
+
+    function CalculateMonthlyDemond(id) {
+
+        var princ = $('#txtLoanAmountGiven' + id).val().replace(",", "");
+        var term = $('#txtPeriod' + id).val();
+        var intr = parseInt($('#hdnROI' + id).val()) / 1200;
+
+        if (princ != "" && princ != "" && parseInt(term) > 0) {
+            $('#txtMonthlyDemand' + id).val(parseInt(princ * intr / (1 - (Math.pow(1 / (1 + intr), term)))));
+        }
+        else {
+            $('#txtMonthlyDemand' + id).val('0');
+        }
+    }
+
+
+    function CalculateTotal(id) {
+
+        var PrincipalOutstanding = $('#txtPrincipalOutstanding' + id).val().replace(",", "");
+        var InterestDue = $('#txtInterestDue' + id).val();
+        var LoanAmountGiven = $('#txtLoanAmountGiven' + id).val().replace(",", "");
+        if (parseInt(PrincipalOutstanding) == 0 || PrincipalOutstanding == "") {
+            $('#txtTotal' + id).val('0');
+            $('#txtInterestDue' + id).val('0');
+            $('#txtPrincipalOutstanding' + id).val('0');
+            InterestDue = 0;
+        }
+        if (parseInt(InterestDue) == 0 || InterestDue == "") {
+            $('#txtTotal' + id).val($('#txtPrincipalOutstanding' + id).val());
+        }
+        if (parseInt(LoanAmountGiven) < parseInt(PrincipalOutstanding)) {
+            $('#txtPrincipalOutstanding' + id).val('0');
+            $('#txtInterestDue' + id).val('0');
+            $('#txtTotal' + id).val('0');
+            alert("Principal out standing ammount should be lessthen Loan amount given");
+            return false;
+        }
+        if (PrincipalOutstanding != "" && InterestDue != "") {
+            $('#txtTotal' + id).val(parseInt(InterestDue) + parseInt(PrincipalOutstanding));
+        }
+        if (parseInt($('#txtPrincipalOutstanding' + id).val() == 0) && $('#txtPrincipalOutstanding' + id).val() == "") {
+            $('#txtInterestDue' + id).val('0');
+            $('#txtTotal' + id).val('0');
+        }
+    }
+
+
+    function monthDiff(id) {
+        var lastpaiddate = new Date($('#txtFinalInstallmentDate' + id).val());
+        var firstiinstallmentdate = new Date($('#txtLastPaidDate' + id).val());
+        var d1 = lastpaiddate;
+        var d2 = firstiinstallmentdate;
+        var months;
+        months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        var m1 = d1.getMonth();
+        var m2 = d2.getMonth();
+        months = months + (m2 - m1) + 1;
+        return months;
+    }
+
+    function CalculatePrincipleAmmountOnDemand(id) {
+
+        var LoanAmountGiven = $('#txtLoanAmountGiven' + id).val().replace(",", "");
+        var PrincipalOutstanding = $('#txtPrincipalOutstanding' + id).val().replace(",", "");
+        var MonthlyDemand = $('#txtMonthlyDemand' + id).val().replace(",", "");
+        var MonthsDifference = monthDiff(id);
+        if ((LoanAmountGiven != "" && parseInt(LoanAmountGiven) > 0) && (PrincipalOutstanding != "" && parseInt(PrincipalOutstanding) > 0) && (PrincipalOutstanding != "" && parseInt(PrincipalOutstanding) > 0)) {
+            var totalDemand = parseInt(MonthsDifference) * parseInt(MonthlyDemand);
+            var totalCollection = parseInt(LoanAmountGiven) - parseInt(PrincipalOutstanding);
+            var balance = parseInt(totalDemand) - parseInt(totalCollection);
+            if (balance > 0) {
+                $('#txtPrincipalOD' + id).val(balance);
+                var totalMonthsDemond = parseInt(balance) / parseInt(MonthlyDemand);
+                // $('#txtInterestOD' + id).val(parseInt(totalMonthsDemond));
+            }
+            else {
+                $('#txtPrincipalOD' + id).val('0');
+                //  $('#txtInterestOD' + id).val('0');
+            }
+        }
+    }
+
+    function BindLoanPurposeByProjectId(id, targetId) {
+        var value = $('#' + id).val();
+        var action = '@Url.Action("GetLoanPurposeByProjectID", "GroupLoanOB")';
+        $.post(action, { ProjectID: value }, function (response) {
+            $("#Purpose" + targetId).html(response).prepend("<option value='' selected='Selected'>Select LoanPurpose</option>");
+        });
+
+
+    }
+
+    function ValidateLoanOBForm() {
+
+        var validate = false;
+        var canvalidateflag = false;
+        for (var i = 1; i <= 4; i++) {
+
+            if (canValidate(i)) {
+                canvalidateflag = true;
+                if (($.trim($('#MemberID').val()) <= 0 || $.trim($('#MemberID').val()) == '') && ($('#Interest' + i).val() == '' || parseInt($('#Interest' + i).val() <= 0)) && $.trim($('#txtSLAccountNumber' + i).val()) == '' && ($.trim($('#txtLoanAmountGiven' + i).val()) == '0' || parseInt($('#txtLoanAmountGiven' + i).val()) == 0) && ($.trim($('#txtPeriod' + i).val()) == '0' || parseInt($('#txtPeriod' + i).val()) == 0) && $.trim($('#txtLoanDisbursedDate' + i).val()) == '' && ($.trim($('#txtPrincipalOutstanding' + i).val()) == '0' || parseInt($('#txtPrincipalOutstanding' + i).val() == 0)) && ($.trim($('#txtMonthlyDemand' + i).val()) == '0' || parseInt($('#txtMonthlyDemand' + i).val()) == 0) && ($('#Project' + i).val() == '') && ($('#Purpose' + i).val() == '') && ($('#Fundsource' + i).val() == '')) {
+                    $('#MemberID,#txtSLAccountNumber' + i + ',#txtLoanAmountGiven' + i + ',#txtPeriod' + i + ',#txtLoanDisbursedDate' + i + ',#txtPrincipalOutstanding' + i + ',#txtMonthlyDemand' + i + ',#Project' + i + ',#Purpose' + i + ',#Fundsource' + i + '').css('border-color', 'red');
+                    validate = false;
+                }
+                else {
+                    $('#MemberID,#txtSLAccountNumber' + i + ',#txtLoanAmountGiven' + i + ',#txtPeriod' + i + ',#txtLoanDisbursedDate' + i + ',#txtPrincipalOutstanding' + i + ',#txtMonthlyDemand' + i + ',#Project' + i + ',#Purpose' + i + ',#Fundsource' + i + '').css('border-color', '');
+                    validate = true;
+                }
+
+                if ($.trim($('#Interest' + i).val()) <= 0 || $.trim($('#Interest' + i).val()) == '') { $('#Interest' + i).css('border-color', 'red'); validate = false; }
+                else { $('#Interest' + i).css('border-color', ''); }
+
+                if ($.trim($('#MemberID').val()) <= 0 || $.trim($('#MemberID').val()) == '') { $('#MemberID').css('border-color', 'red'); validate = false; }
+                else { $('#MemberID').css('border-color', ''); }
+
+                if ($.trim($('#txtSLAccountNumber' + i).val()) == '') { $('#txtSLAccountNumber' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtSLAccountNumber' + i).css('border-color', ''); }
+
+                if (($.trim($('#txtLoanAmountGiven' + i).val()) == '' || parseInt($('#txtLoanAmountGiven' + i).val()) == 0)) { $('#txtLoanAmountGiven' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtLoanAmountGiven' + i).css('border-color', ''); }
+
+                if (($.trim($('#txtPeriod' + i).val()) == '' || parseInt($('#txtPeriod' + i).val()) == 0)) { $('#txtPeriod' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtPeriod' + i).css('border-color', ''); }
+
+                if ($.trim($('#txtLoanDisbursedDate' + i).val()) == '') { $('#txtLoanDisbursedDate' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtLoanDisbursedDate' + i).css('border-color', ''); }
+
+                if (($.trim($('#txtPrincipalOutstanding' + i).val()) == '' || parseInt($('#txtPrincipalOutstanding' + i).val()) == 0)) { $('#txtPrincipalOutstanding' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtPrincipalOutstanding' + i).css('border-color', ''); }
+
+                if (($.trim($('#txtMonthlyDemand' + i).val()) == '' || parseInt($('#txtMonthlyDemand' + i).val()) == 0)) { $('#txtMonthlyDemand' + i).css('border-color', 'red'); validate = false; }
+                else { $('#txtMonthlyDemand' + i).css('border-color', ''); }
+
+                if ($.trim($('#Project' + i).val()) == '') { $('#Project' + i).css('border-color', 'red'); validate = false; }
+                else { $('#Project' + i).css('border-color', ''); }
+
+                if ($.trim($('#Purpose' + i).val()) == '') { $('#Purpose' + i).css('border-color', 'red'); validate = false; }
+                else { $('#Purpose' + i).css('border-color', ''); }
+
+                if ($.trim($('#Fundsource' + i).val()) == '') { $('#Fundsource' + i).css('border-color', 'red'); validate = false; }
+                else { $('#Fundsource' + i).css('border-color', ''); }
+
+            }
+        }
+
+        if (canvalidateflag == false) {
+            alert('Please Enter Atleast One Loan Values');
+            validate = false;
+            return validate;
+        }
+        return validate;
+    }
+
+    function canValidate(id) {
+
+        var canValidate = true;
+
+        if (($('#txtSLAccountNumber' + id).val() != '') || (parseInt($('#txtLoanAmountGiven' + id).val()) > 0) || (parseInt($('#txtPeriod' + id).val()) > 0) || $('#txtFinalInstallmentDate' + id).val() != '' || (parseInt($('#txtPrincipalOutstanding' + id).val()) > 0) || (parseInt($('#txtMonthlyDemand' + id).val()) > 0)) {
+            canValidate = true;
+        }
+        else { canValidate = false; }
+        return canValidate;
+    }
+
+
+
+
+    </script>
+
+    <script src="~/Scripts/Common/Common.js"></script>
+}

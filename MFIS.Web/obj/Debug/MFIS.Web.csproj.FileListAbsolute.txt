@@ -1,0 +1,258 @@
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Antlr3.Runtime.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\AutoMapper.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CoreComponents.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.ReportSource.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Shared.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Web.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Windows.Forms.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DataLogic.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.AspNet.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.Core.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.Consumer.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\EntityFramework.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\EntityFramework.SqlServer.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\log4net.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Logging.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Newtonsoft.Json.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Mvc.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Optimization.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Utilities.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\WebGrease.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\CoreComponents.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\DataLogic.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Logging.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Utilities.pdb
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.xml
+D:\Murali\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.csprojResolveAssemblyReference.cache
+D:\Murali\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.dll
+D:\Murali\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Antlr3.Runtime.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\AutoMapper.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CoreComponents.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.CrystalReports.Engine.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.ReportSource.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Shared.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Web.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Windows.Forms.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DataLogic.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.AspNet.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.Core.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.Consumer.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\EntityFramework.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\EntityFramework.SqlServer.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\log4net.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Logging.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Newtonsoft.Json.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Mvc.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Optimization.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Utilities.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\WebGrease.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\CoreComponents.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\DataLogic.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Logging.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Utilities.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.xml
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.csprojResolveAssemblyReference.cache
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.dll.config
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIS.Web.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Antlr3.Runtime.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\AutoMapper.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CoreComponents.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.ReportSource.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Shared.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Web.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CrystalDecisions.Windows.Forms.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DataLogic.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.AspNet.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.Core.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.Consumer.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OAuth.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\EntityFramework.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\EntityFramework.SqlServer.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\log4net.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Logging.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Newtonsoft.Json.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Mvc.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Optimization.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Utilities.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\WebGrease.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\BusinessEntities.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\BusinessLogic.dll.config
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\CoreComponents.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\DataLogic.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Logging.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\MFIEntityFrameWork.dll.config
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Utilities.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Utilities.dll.config
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Net.Http.Formatting.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Helpers.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Http.WebHost.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.Razor.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Deployment.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\System.Web.WebPages.Razor.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\WebMatrix.Data.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\bin\WebMatrix.WebData.xml
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.csprojResolveAssemblyReference.cache
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.csproj.CoreCompileInputs.cache
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\MFIS.Web\obj\Debug\MFIS.Web.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIS.Web.dll.config
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIS.Web.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIS.Web.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Antlr3.Runtime.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\AutoMapper.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\BusinessEntities.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\BusinessLogic.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CoreComponents.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CrystalDecisions.ReportSource.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CrystalDecisions.Shared.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CrystalDecisions.Web.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CrystalDecisions.Windows.Forms.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DataLogic.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.AspNet.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.Core.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.OAuth.Consumer.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.OAuth.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.OpenId.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\EntityFramework.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\EntityFramework.SqlServer.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\log4net.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Logging.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIEntityFrameWork.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Newtonsoft.Json.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Net.Http.Formatting.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Helpers.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Http.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Http.WebHost.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Mvc.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Optimization.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Razor.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.Deployment.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.Razor.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Utilities.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\WebGrease.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\WebMatrix.Data.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\WebMatrix.WebData.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\BusinessEntities.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\BusinessLogic.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\BusinessLogic.dll.config
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\CoreComponents.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\DataLogic.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Logging.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIEntityFrameWork.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\MFIEntityFrameWork.dll.config
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Utilities.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Utilities.dll.config
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Net.Http.Formatting.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Helpers.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Http.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Http.WebHost.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.Razor.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.Deployment.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\System.Web.WebPages.Razor.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\WebMatrix.Data.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\Microsoft.Web.WebPages.OAuth.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\bin\WebMatrix.WebData.xml
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\obj\Debug\MFIS.Web.csprojResolveAssemblyReference.cache
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\obj\Debug\MFIS.Web.csproj.CoreCompileInputs.cache
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\obj\Debug\MFIS.Web.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\MFIS.Web\obj\Debug\MFIS.Web.pdb

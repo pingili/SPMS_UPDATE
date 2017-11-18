@@ -1,0 +1,236 @@
+﻿@model MFIS.Web.Areas.Federation.Models.VillageModel
+@using CoreComponents;
+@{
+    ViewBag.Title = "CreateVillage";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encryptVillageId = Model.VillageID > 0 ? Model.VillageID.EncryptString() : string.Empty;
+}
+@using (Html.BeginForm())
+{    
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Village/Town Details</span>
+                    @Html.ActionLink("Add New Village/Town", "CreateVillage", null, new { @class = "btn btn-default pull-right" })
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.VillageID" id="VillageID" name="VillageID" />
+                    <div class="col-lg-4">
+                        @if (@Model.VillageID > 0)
+                        {
+                            <div class="form-group">
+                                @Html.DisplayNameFor(model => model.VillageCode)
+                                @Html.TextBoxFor(m => m.VillageCode, null, new { @class = "form-control", @readonly = "readonly", @id = "VillageCode" })
+                            </div>
+                        }
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.StateID)
+                            @Html.DropDownListFor(d => d.StateID, (SelectList)ViewBag.StateNames, "Select State", new { @class = "form-control", @id = "ddlState", @name = "ddlState", onchange = "BindDropDownOptions(this.id)" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.DisplayNameFor(c => c.DistrictID)
+                            @if (@Model.DistrictID == 0)
+                            {
+                                <select name="ddlDistrict" id="ddlDistrict" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                    <option value="">please select</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(d => d.DistrictID, (SelectList)ViewBag.Districts, "Select District", new { @class = "form-control", @id = "ddlDistrict", @name = "ddlDistrict", onchange = "BindDropDownOptions(this.id)" })
+ 
+                            }
+
+                        </div>
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.MandalID)
+                            @if (@Model.MandalID == 0)
+                            {
+                                <select name="ddlMandal" id="ddlMandal" class="form-control" onchange="BindDropDownOptions   (this.id)">
+                                    <option value="0">please select</option>
+                                </select>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(d => d.MandalID, (SelectList)ViewBag.Mandals, "Select Mandal", new { @class = "form-control", @id = "ddlMandal", @name = "ddlMandal", onchange = "BindDropDownOptions(this.id)" })
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.ClusterID)
+                            @if (@Model.ClusterID == 0)
+                            {
+                                <select name="ClusterID" id="ClusterID" class="form-control" onchange="BindDropDownOptions(this.id)">
+                                    <option value="">please select</option>
+                                </select>
+                            }
+                            else
+                            {                                
+                                @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.Clusters, "Select Cluster", new { @class = "form-control", @id = "ClusterID", @name = "ClusterID", onchange = "BindDropDownOptions(this.id)" })
+
+                            }
+                        </div>
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.Village)
+                            @Html.TextBoxFor(m => m.Village, null, new { @class = "form-control alphabet-only", @placeholder = "Village Name", @ID = "txtVillage", @Name = "txtVillage" })
+                        </div>
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.TEVillageName)
+                            @Html.TextBoxFor(m => m.TEVillageName, null, new { @class = "form-control alphabet-only", @placeholder = "గ్రామం పేరు", @ID = "TEVillageName", @Name = "TEVillageName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.VillageID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader" onclick="return SaveVillages();">Save</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader" onclick="return SaveVillages();">Submit</button>
+
+                        }
+
+                        <button type="button" class="btn btn-outline btn-primary " onclick="return Reset('@encryptVillageId');">Reset</button>
+
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+
+        </div>
+        <!-- end page-wrapper -->
+
+    </div>
+    <script type="text/javascript">
+        CustomTransliteration(['TEVillageName']);
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("VillageLookup")';
+        }
+
+        function Reset(encryptVillageId) {
+            
+            if (encryptVillageId != '')
+                window.location.href = '@Url.Content("CreateVillage?id=")' + encryptVillageId;
+            else {
+                clearAllfields();
+            }
+        }
+
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideVillageTown";
+            LoadMenu();
+        });
+
+        function clearAllfields() {
+            
+            $('#VillageCode').val('');
+            $('#txtVillage').val('');
+            $('#TEVillageName').val('');
+            $('#ddlMandal').find('option:first').attr('selected', 'selected');
+            $('#ddlDistrict').find('option:first').attr('selected', 'selected');
+            $('#ClusterID').find('option:first').attr('selected', 'selected');
+            $('#ddlState').find('option:first').attr('selected', 'selected');
+        }
+
+        function BindDropDownOptions(id) {
+            var actionUrl = '@Url.Action("BindDropDowns", "Village")';
+            if (id == "ddlState") {
+                var StateID = $("#ddlState").val();
+
+                $("#ddlDistrict").html("<option value=''>Select District </option>");
+                $("#ddlMandal").html("<option value=''>Select Mandal </option>");
+                $("#ClusterID").html("<option value=''>Select Cluster</option>");
+
+                $.post(actionUrl, { flag: "State", Id: StateID }, function (response) {
+                    $("#ddlDistrict").html(response).prepend("<option value='' selected='selected'>Select District </option>");
+                });
+            }
+            else if (id == "ddlDistrict") {
+                var DistrictID = $("#ddlDistrict").val();
+
+                $("#ddlMandal").html('').prepend("<option value=''>Select Mandal </option>");
+                $("#ClusterID").html('').prepend("<option value=''>Select Cluster </option>");;
+
+                if (DistrictID != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Village")';
+                    $.post(actionUrl, { flag: "District", Id: DistrictID }, function (response) {
+                        $("#ddlMandal").html(response).prepend("<option value='' selected='selected'>Select Mandal </option>");
+                    });
+                }
+            }
+            else if (id == "ddlMandal") {
+                var MandalId = $("#ddlMandal").val();
+
+                $("#ClusterID").html('').prepend("<option value=''>Select Cluster</option>");
+
+                if (MandalId != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Village")';
+                        $.post(actionUrl, { flag: "Mandal", Id: MandalId }, function (response) {
+                            $("#ClusterID").html(response).prepend("<option value='' selected='selected'>Select Cluster </option>");
+                        });
+                    }
+                }
+        if ($("#ddlState").find("option:selected").text() == "Select State") {
+            $("#ddlDistrict").empty();
+            $("#ddlDistrict").append("<option value=''>Select District</option>");
+            $("#ddlMandal").empty();
+            $("#ddlMandal").append("<option value=''>Select Mandal</option>");
+            $("#ClusterID").empty();
+            $("#ClusterID").append("<option value=''>Select Cluster</option>");
+        }
+        if ($("#ddlMandal").find("option:selected").text() == "Select Mandal") {
+            $("#ClusterID").empty();
+            $("#ClusterID").append("<option value=''>Select Cluster</option>")
+        }
+
+    }
+
+    function SaveVillages() {
+        //TODO : Write Validations 
+        //IF true then return true  other wise return false;
+
+        @*var actionUrl = '@Url.Action("CreateVillage", "Village")';
+        var data = $('form').serialize();
+        $.post(actionUrl, data, function (data) {
+            if (data) {
+                if (data.objid > 0) {
+                    $('#divSuccess').html('<strong>Success!</strong>' + data.Message);
+                    $('#divSuccess').show();
+                    $('#divError').hide();
+                    $('#villagecode').val(data.VillageCode);
+                }
+                else {
+                    $('#divError').html('<strong>Error!</strong>' + data.Message);
+                    $('#divError').show();
+                    $('#divSuccess').hide();
+                }
+            }
+        });*@
+    }
+    </script>
+    <script src="~/Scripts/Common/Common.js"></script>
+}

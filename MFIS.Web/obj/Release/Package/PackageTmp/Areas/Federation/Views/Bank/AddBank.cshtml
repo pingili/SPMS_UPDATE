@@ -1,0 +1,150 @@
+﻿@using CoreComponents;
+@{
+    ViewBag.Title = "Bank";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    string encbankid = Model.BankEntryID > 0 ? Model.BankEntryID.EncryptString() : string.Empty;
+}
+
+@model MFIS.Web.Areas.Federation.Models.BankMasterModel
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Bank Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddBank();">Add New Bank</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+
+                @*@RenderPage("~/Views/Shared/_Message.cshtml",ViewBag.ResultDto)*@
+
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <input type="hidden" value="@Model.BankEntryID" id="BankEntryID" name="BankEntryID" />
+                        @if (@Model.BankEntryID > 0)
+                        {
+                            <div class="form-group">
+                                <label>Bank Code</label>
+                                @Html.TextBoxFor(model => model.BankCode, new { @class = "form-control", @placeholder = "D-01", @readonly = "readonly", maxlength = "32" })
+                            </div>}
+                        <div class="form-group">
+                            <label>Bank A/C NO</label>
+                            @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control number-only", @placeholder = "A/C Number", maxlength = "20" })
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            @Html.TextBoxFor(model => model.BranchName, new { @class = "form-control alphabet-only", @placeholder = "Branch Name", maxlength = "256" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control phonenumber-only", maxlength = "10", @placeholder = "Contact Number" })
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control email-only", @placeholder = "Enter Email Address", maxlength = "64" })
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Bank Name</label>
+                            @Html.DropDownListFor(d => d.BankName, (SelectList)ViewBag.BankNames, "Select Bank", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>IFSC Code</label>
+                            @Html.TextBoxFor(model => model.IFSC, new { @class = "form-control ifsc-only", @placeholder = "IFSC Code", maxlength = "20" })
+                        </div>
+                        <div class="form-group">
+                            <label>Account Type</label>
+                            @*<select class="form-control">
+                                    <option value="Saving">Saving</option>
+                                    <option value="Current">Current</option>
+                                </select>*@
+                            @Html.DropDownListFor(d => d.AccountType, (SelectList)ViewBag.AccountTypes, "Select Account Type", new { @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            @*<textarea class="form-control" rows="5"> stree1,city,state </textarea>*@
+                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control address-only" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.BankEntryID > 0)
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader">Save</button>
+
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline btn-primary loader">Submit</button>
+
+                        }
+                        <button type="button" class="btn btn-outline btn-primary" onclick="return resetall('@encbankid')">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //$('#btnClearAll').click(function () {
+    //    $('.row').find('input:text').each(function () {
+    //        $(this).val('');
+    //    });
+    //    $(".row").find('input:text, select, textarea').val('');
+    //    $(".row").find('input:radio, input:checkbox').prop('checked', false).prop('selected', false);
+    //});
+
+
+
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Action("BankMasterLookup","Bank")';
+    }
+    function AddBank() {
+        showProgress();
+        window.location.href = '@Url.Action("AddBank","Bank")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideBank";
+        LoadMenu();
+    });
+    function resetall(encbankid) {
+        if (encbankid != '') {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("AddBank?id=")' + encbankid
+        }
+        else {
+            AddBank();
+        }
+    }
+</script>
+
+<script src="~/Scripts/Common/Common.js"></script>

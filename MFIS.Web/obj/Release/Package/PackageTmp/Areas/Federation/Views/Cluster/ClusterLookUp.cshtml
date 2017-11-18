@@ -1,0 +1,129 @@
+﻿@model IEnumerable<BusinessEntities.ClusterLookupDto>
+@using CoreComponents
+@{
+    ViewBag.Title = "ClusterLookUp";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Cluster Lookup</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddCluster();">Add New Cluster</button>
+                </div>
+
+             @if (Result != null)
+                {
+                    if (Result.ObjectId > 0)
+                    {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div> 
+                    }
+                    else
+                    {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                    }
+                }
+                
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesCluster">
+                            <thead>
+                                <tr role="row">
+                                    <th class="text-center">#</th>
+                                    <th>Cluster Code</th>
+                                    <th>Cluster Name</th>
+                                    <th>Mandal</th>
+                                    <th>Branch</th>
+                                    <th>State</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    bool isActive = item.StatusCode == Utilities.Constants.StatusCodes.Active;
+                                    string inActiveTitle = isActive ? "In-Active Cluster" : "Active Cluster";
+                                    string deleteTitle = "Delete Fundsource";
+                                    string encryptClusteId = item.ClusterID.EncryptString();
+
+                                    <tr class="gradeA odd">
+                                        <td class="text-center ">@(Model.ToList().IndexOf(item) + 1)</td>
+                                        <td class="">@item.ClusterCode</td>
+                                        <td class="">@item.ClusterName</td>
+                                        <td class="">@item.MandalName</td>
+                                        <td class="">@item.BranchName</td>
+                                        <td class="">@item.StateName</td>
+                                        <td class="text-center">
+                                            <img src="~/@(isActive ? ("Content/images/Circle_Green.png") : "Content/images/Circle_Red.png")" title="@item.Status" />
+                                        </td>
+                                        <td class="text-center ">
+                                            <img src="~/Content/images/view-icon.png" style="cursor: pointer; width: 16px; height: 16px;" title="View" onclick="ViewCluster('@encryptClusteId');" />
+                                            <img src="~/Content/images/Edit.png" style="cursor: pointer; @(isActive ? string.Empty : "display:none;")" title="Edit" onclick="EditCluster('@encryptClusteId');" />
+                                            <img style="cursor: pointer" onclick="ActiveInactiveCluster('@encryptClusteId', '@item.StatusCode');" src="~/@(isActive ? "Content/images/Circle_Red.png" : "Content/images/Circle_Green.png")" title="InActive" />
+                                            <img style="cursor: pointer" onclick="DeleteCluster('@encryptClusteId');" src="~/Content/images/delete_btn1.png" title="Delete" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+
+
+    <link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+
+        function ViewCluster(encClusterID) {
+            showProgress();
+            window.location.href = '@Url.Content("ViewCluster?id=")' + encClusterID
+        }
+        function EditCluster(ClusterID) {
+            showProgress();
+            window.location.href = '@Url.Content("CreateCluster?id=")' + ClusterID
+        }
+        function DeleteCluster(encClusterID) {
+            if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("DeleteCluster?Id=")' + encClusterID;
+        }
+
+        function ActiveInactiveCluster(encClusterID, currentStatusCode) {
+            if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("ActiveInactiveCluster?Id=")' + encClusterID;
+        }
+
+        function AddCluster() {
+            showProgress();
+            window.location.href = '@Url.Content("CreateCluster")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideCluster";
+            LoadMenu();
+            $('#dataTablesCluster').dataTable({
+                "bSort": false
+            });
+        });
+    </script>
+}

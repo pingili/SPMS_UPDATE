@@ -1,0 +1,776 @@
+﻿@model MFIS.Web.Areas.Federation.Models.GroupModel
+@{
+    ViewBag.Title = "CreateGroup";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+    // string ecngroupid = Model.GroupID > 0 ? Model.GroupID.EncryptString() : string.Empty;
+}
+<script src="~/Scripts/jquery.bpopup.min.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment.js"></script>
+@using (Html.BeginForm("CreateGroup", "Group", FormMethod.Post, new { @id = "form" }))
+{
+    bool isUpdate = Model.GroupID > 0;
+    <div class="row">
+        <div class="col-lg-12">
+            <input type="hidden" id="hdntablevalue" value="0" />
+            <input type="hidden" id="hdnMaxIntIndex" name="hdnMaxIntIndex" />
+            <input type="hidden" id="hdnMaxDepositIntIndex" name="hdnMaxDepositIntIndex" />
+
+            <input type="hidden" id="hdnloaninterest" />
+            <input type="hidden" id="hdnSubmittype" value="GROUP_DETAILS" />
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    @if (Model.GroupID == 0)
+                    {
+                        <span class="header">Manage Group Details</span>
+                    }
+                    else
+                    {
+                        <span class="header">Edit Group Details</span>
+                    }
+                    <button type="button" class="btn btn-default pull-right" onclick="AddGroup();">Add New Group</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+
+                <div class="alert alert-success" id="divSuccess" style="display: none">
+                </div>
+
+                <div class="alert alert-danger" id="divError" style="display: none">
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3" id="divgroupcode" style="@(Model.GroupID > 0 ? string.Empty : "display: none")">
+                            <div class="form-group">
+                                <input type="hidden" id="hdnObjectID" name="hdnObjectID" value="@Model.GroupID" />
+                                <label>Group Code</label>
+                                @Html.TextBoxFor(model => model.GroupCode, new { @class = "form-control required", @readonly = "readonly", @id = "txtGroupCode" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name</label><br />
+                                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control alphanumeric-only required", @placeholder = "Enter Group Name", @id = "txtGroupName", maxlength = "64" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Name(Telugu)</label><br />
+                                @Html.TextBoxFor(model => model.TEGroupName, new { @class = "form-control alphanumeric-only required", @placeholder = "Enter Group Name in Telugu ", @id = "txtGroupTeluguName", maxlength = "100" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Group Reference Number</label><br />
+                                @Html.TextBoxFor(model => model.GroupRefNumber, new { @class = "form-control alphanumeric-only required", @placeholder = "Enter Group Reference Number", @id = "txtGroupRefNumber", maxlength = "64" })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li id="lgroupdetails" class="active">
+                            <a href="#" role="tab" data-toggle="tab" onclick="return naviageTab('groupdetails', event);">Group Details
+                            </a>
+                        </li>
+                        <li id="lbankdetails" class="">
+                            <a href="#" role="tab" data-toggle="tab" onclick="return naviageTab('accountdetails', event);">Bank A/c Details
+                            </a>
+                        </li>
+                        <li id="lmembersection" class="">
+                            <a href="#membersection" role="tab" data-toggle="tab" onclick="return naviageTab('members', event);">Members
+                            </a>
+                        </li>
+                        <li id="lleadership" class="" style="display: none">
+                            <a href="#leadership" role="tab" data-toggle="tab" onclick="return naviageTab('Leaders');">Leaders
+                            </a>
+                        </li>
+                        <li id="lloanInterest" class="">
+                            <a href="#loanInterest" role="tab" data-toggle="tab" onclick="return naviageTab('loandetails');">Loan Interest
+                            </a>
+                        </li>
+                        <li id="ldepositinterest" class="">
+                            <a href="#depositinterest" role="tab" data-toggle="tab" onclick="return naviageTab('depositdetails');">Deposit Interest
+                            </a>
+                        </li>
+                        <li id="lhistory" class="" style="display: none">
+                            <a href="#history" role="tab" data-toggle="tab" onclick="return naviageTab('history');">History
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="groupdetails">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Cluster</label>
+                                    @if (@Model.ClusterID == 0)
+                                    {
+                                        @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.clusters, "Select Cluster", new { @class = "form-control required", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(d => d.ClusterID, (SelectList)ViewBag.clusters, "Select Cluster", new { @class = "form-control required", @id = "ddlclusters", @name = "ddlclusters", onchange = "BindDropDownOptions(this.id)" })
+
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label>Village</label>
+                                    @if (@Model.VillageID == 0)
+                                    {
+                                        @Html.DropDownListFor(d => d.VillageID, (SelectList)ViewBag.villages, "Select Village", new { @class = "form-control required", @id = "ddlvillages", @name = "ddlvillages", @onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(d => d.VillageID, (SelectList)ViewBag.villages, "Select Village", new { @class = "form-control required", @id = "ddlvillages", @name = "ddlvillages", @onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label>Panchayat/Colony</label>
+                                    @*     @Html.DropDownListFor(d => d.PanchayatID, (SelectList)ViewBag.panchayats, "Select Panchayats", new { @class = "form-control required", @id = "ddlpanchayat" })*@
+                                    @if (@Model.PanchayatID == 0)
+                                    {
+                                        @Html.DropDownListFor(d => d.PanchayatID, (SelectList)ViewBag.panchayats, "Select Panchayat", new { @class = "form-control required", @id = "ddlpanchayat", @name = "ddlpanchayat", @onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(d => d.PanchayatID, (SelectList)ViewBag.panchayats, "Select Panchayat", new { @class = "form-control required", @id = "ddlpanchayat", @name = "ddlpanchayat", @onchange = "BindDropDownOptions(this.id)" })
+                                    }
+                                </div>
+                                @*<div class="form-group">
+                                        <div class="col-sm-6">
+                                            <label>Meeting Start Time</label>
+                                            @Html.TextBoxFor(model => model.MeetingStartTime, new { @class = "form-control  required", @id = "MeetingStartTime", @name = "MeetingStartTime", maxlength = "8" })
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>Meeting End Time</label>
+                                            @Html.TextBoxFor(model => model.MeetingEndTime, new { @class = "form-control required", @id = "MeetingEndTime", @name = "MeetingEndTime", maxlength = "8" })
+                                        </div>
+                                    </div>*@
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @name = "txtareaAddress", @id = "txtareaAddress", maxlength = "512" })
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Formation Date</label>
+                                    @{
+                                    string FormationDate = Model.FormationDate.Ticks > 0 ? Model.FormationDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                        <input type="text" value="@FormationDate" class="form-control required Date-Only" id="txtFormationDate" name="FormationDate" placeholder="Select Formation Date" />
+                                    }
+                                </div>
+                                <div class="form-group date" id="datetimep">
+                                    <label>Federation Transactions Start Date</label>
+                                    @{
+                                    string FederationTranStartDate = Model.FederationTranStartDate.Ticks > 0 ? Model.FederationTranStartDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                        <input type="text" value="@FederationTranStartDate" class="form-control required Date-Only" id="txtFederationTranStartDate" name="FederationTranStartDate" placeholder="Select Federation Transactions Start Date" />
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label>Meeting Frequency</label>
+                                    <br />
+                                    @foreach (var item in (SelectList)ViewBag.MeetingFrrequency)
+                                    {
+                                        @Html.RadioButtonFor(model => model.MeetingFrequency, item.Value)
+                                        <label class="control-label">@item.Text</label>
+                                    }
+                                </div>
+                                <div class="form-group" id="Meetingmonth" style="display: none;">
+                                    <label>Meeting Day</label>
+                                    <input type="text" value="@Model.MeetingDay" class="form-control required number-only" id="txtMeetingDay" maxlength="2" name="MeetingDay" placeholder="Enter Meeting Day" />
+                                    @Html.Hidden("hdnMeetingDay", Model.MeetingDay)
+                                </div>
+                                <div class="form-group" id="Meetingweek" style="display: none;">
+                                    <label>Meeting Day In Week</label>
+                                    <select class="form-control required" id="MeetingDay" name="MeetingDay">
+                                        <option value="">Select Meeting Week</option>
+                                        <option value="1">SunDay</option>
+                                        <option value="2">MonDay</option>
+                                        <option value="3">TuesDay</option>
+                                        <option value="4">Wednesday</option>
+                                        <option value="5">Thursday</option>
+                                        <option value="6">Friday</option>
+                                        <option value="7">Saturday</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control email-only", @placeholder = "Enter EmailID ", @id = "txtEmail", maxlength = "64" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control number-only", maxlength = "12", @placeholder = "Enter Phone Number ", @id = "txtPhone", @name = "txtPhone" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Date of Closure/Withdrawn</label>
+                                    @{
+                                    string DateOfClosure = Model.DateOfClosure.Ticks > 0 ? Model.DateOfClosure.ToString("dd/MMM/yyyy") : string.Empty;
+                                        <input type="text" value="@DateOfClosure" class="form-control Date-Only" id="txtDateOfClosure" name="DateOfClosure" placeholder="Select Date Of Closure" />
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control number-only", maxlength = "12", @placeholder = "Enter Phone Number ", @id = "txtPhone", @name = "txtPhone" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Regular Saving Amount</label>
+                                    @Html.TextBoxFor(model => model.RegularSavingAmount, new { @class = "form-control required number-only", maxlength = "12", @placeholder = "Enter Regular Saving Amount", @id = "txtRegularSavingAmount", @name = "txtRegularSavingAmount" })
+                                </div>
+                                <div class="form-group">
+                                    <label>Regular Saving A/C Head</label>
+                                    @Html.DropDownListFor(model => model.RegularSavingsAhId, (SelectList)ViewBag.RegularSavingAccountHeads, "Select Regular Saving A/C head", new { @class = "form-control required", @id = "ddlRegularSavingAccountHead", @name = "ddlRegularSavingAccountHead" })
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="bankdetails">
+                        </div>
+                        <div class="tab-pane fade" id="membersection">
+                        </div>
+                        <div class="tab-pane fade" id="leadership">
+                        </div>
+                        <div class="tab-pane fade" id="loanInterest">
+                        </div>
+                        <div class="tab-pane fade" id="depositinterest">
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab panes -->
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        @if (Model.GroupID > 0)
+                        {
+                            <input type="button" class="btn btn-outline btn-primary" value="Save" onclick="SaveGroup()" />
+                        }
+                        else
+                        {
+                            <input type="button" class="btn btn-outline btn-primary" value="Submit" onclick="SaveGroup()" />
+                        }
+                        @if (Model.GroupID > 0)
+                        {
+                            <button type="button" class="btn btn-outline btn-primary" onclick="return clearfields('@Model.GroupID');">Reset</button>
+
+                        }
+                        else
+                        {
+                            <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        }
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                        <input type="hidden" id="hdnCurrentTab" name="hdnCurrentTab" value="groupdetails" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+
+        function clearfields(ecngroupid) {
+            if (!confirm('If you continue reset all Fields'))
+                return false;
+            window.location.href = '@Url.Content("CreateGroup?id=")' + ecngroupid;
+        }
+        function validationgroup() {
+            var validate = true;
+
+            if ($.trim($('#txtGroupName').val()) == '' && $.trim($('#txtGroupTeluguName').val()) == '' && $.trim($('#txtGroupRefNumber').val()) == '' && $.trim($('#ddlclusters').val()) == '' && $.trim($('#ddlvillages').val()) == '' && $.trim($('#txtFormationDate').val()) == '' && $.trim($('#txtFederationTranStartDate').val()) == '' && $.trim($('#ddlpanchayat').val()) == '' && $.trim($('#txtMeetingDay').val()) == '0') {
+                $('#txtGroupName,#txtGroupTeluguName,#txtGroupRefNumber,#ddlclusters,#ddlvillages,#txtFormationDate,#txtFederationTranStartDate,#ddlpanchayat').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtGroupName,#txtGroupTeluguName,#txtGroupRefNumber,#ddlclusters,#ddlvillages,#txtFormationDate,#txtFederationTranStartDate,#ddlpanchayat').css('border-color', '');
+
+            }
+            if ($.trim($('#txtGroupName').val()) == '') {
+                $('#txtGroupName').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtGroupName').css('border-color', '');
+
+            }
+            if ($.trim($('#txtGroupTeluguName').val()) == '') {
+                $('#txtGroupTeluguName').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtGroupTeluguName').css('border-color', '');
+
+            }
+            if ($.trim($('#txtGroupRefNumber').val()) == '') {
+                $('#txtGroupRefNumber').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtGroupRefNumber').css('border-color', '');
+
+            }
+            if ($.trim($('#ddlclusters').val()) == '') {
+                $('#ddlclusters').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlclusters').css('border-color', '');
+
+            }
+
+            if ($.trim($('#ddlvillages').val()) == '') {
+                $('#ddlvillages').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlvillages').css('border-color', '');
+
+            }
+            if ($.trim($('#txtFormationDate').val()) == '') {
+                $('#txtFormationDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtFormationDate').css('border-color', '');
+            }
+
+            if ($.trim($('#txtFederationTranStartDate').val()) == '') {
+                $('#txtFederationTranStartDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtFederationTranStartDate').css('border-color', '');
+            }
+
+            if ($.trim($('#txtMeetingDay').val()) == '' && $('select[name="MeetingDay"]').val() == '') {
+                var selectedFreq = $('[name="MeetingFrequency"]:checked').next().text();
+                if (selectedFreq.toLowerCase() == 'weekly') {
+                    $('select[name="MeetingDay"]').css('border-color', 'red');
+                } else
+                    $('#txtMeetingDay').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('select[name="MeetingDay"]').css('border-color', '');
+                $('#txtMeetingDay').css('border-color', '');
+            }
+            if ($.trim($('#ddlpanchayat').val()) == '') {
+                $('#ddlpanchayat').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlpanchayat').css('border-color', '');
+            }
+            if ($.trim($('#txtMeetingDay').val()) == '0') {
+                $('#txtMeetingDay').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtMeetingDay').css('border-color', '');
+            }
+
+            if ($.trim($('#txtRegularSavingAmount').val()) == '0' || $.trim($('#txtRegularSavingAmount').val()) == '') {
+                $('#txtRegularSavingAmount').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtRegularSavingAmount').css('border-color', '');
+            }
+
+            if ($.trim($('#ddlRegularSavingAccountHead').val()) == '') {
+                $('#ddlRegularSavingAccountHead').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlRegularSavingAccountHead').css('border-color', '');
+            }
+
+            return validate;
+        }
+        $(function () {
+            GroupMaster();
+
+        });
+        var GroupMaster = function () {
+            //To Save All Tabs Information
+            SaveGroup = function () {
+                var valid = validationgroup();
+
+                var selectedFreq = $('[name="MeetingFrequency"]:checked').next().text();
+                if (selectedFreq == "") {
+                    alert("Please Select Meeting Frequency");
+                    return false;
+                }
+
+                if (!valid) {
+                    return false;
+                }
+                var currentTab = $('#hdnCurrentTab').val();
+
+                var actionurl = '@Url.Action("CreateGroup", "Group")';
+                var data = $('form').serialize();
+
+                if (currentTab == 'groupdetails') {
+                    $.post(actionurl, data, function (data) {
+                        if (data != null) {
+                            DispalyMessage(data.groupid > 0, data.Message);
+                            if (data.groupid <= 0) {
+                                return false;
+                            }
+                            $('#divgroupcode').css("display", "block");
+                            $('#txtGroupCode, #hdnGroupCode').val(data.GroupCode);
+                            $('#hdnObjectID').val(data.groupid);
+
+                            if (!confirm("Do you want to proceed to bank details..?")) {
+                                return false;
+                            }
+
+                            //To Display Bank details Tab
+                            actionurl = '@Url.Action("CreateGroupBankDetails", "Group")';
+                            $.get(actionurl, { Id: data.groupid }, function (data) {
+                                if (data != null) {
+                                    $('#bankdetails').html(data);
+                                    DisplayTab('accountdetails');
+                                }
+                            });
+                        }
+                    }, 'json');
+                }
+                else if (currentTab == 'accountdetails') {
+                    actionurl = '@Url.Action("CreateGroupBankDetails", "Group")';
+                    var GroupID = $('#hdnObjectID').val();
+                    var data1 = $('form').serialize();
+                    //To Save Bank Details
+                    $.post(actionurl, data1, function (data) {
+                        if (data != null) {
+                            var isSuccess = data.groupid != null && data.ObjectCode == 'TRUE';
+                            DispalyMessage(isSuccess, data.Message);
+                            if (!isSuccess) {
+                                return false;
+                            }
+                            if (!confirm("Do you want to proceed to loan interest details..?")) {
+                                return false;
+                            }
+                            //To Display loan details Tab
+                            actionurl = '@Url.Action("CreateloaninterestDetails", "Group")';
+                            $.get(actionurl, function (data) {
+                                if (data) {
+                                    $('#loanInterest').html(data);
+                                    DisplayTab('loandetails');
+                                }
+                            });
+                        }
+                    }, 'json');
+                }
+                else if (currentTab == 'loandetails') {
+                    actionurl = '@Url.Action("CreateLoanInterestDetails", "Group")';
+                    var GroupID = $('#hdnObjectID').val();
+                    var data1 = $('form').serialize() + "&GroupId=" + GroupID;
+                    //To Save Loan Details Information
+                    $.post(actionurl, data1, function (data) {
+                        if (data != null) {
+                            var isSuccess = data.groupid != null && data.ObjectCode == 'TRUE';
+                            DispalyMessage(isSuccess, data.Message);
+                            if (isSuccess) {
+                                if (!confirm("Do you want to proceed to  Deposit Interest Rates..?")) {
+                                    return false;
+                                }
+
+                                //To Display deposit details Tab
+                                actionurl = '@Url.Action("CreatedepositinterestDetails", "Group")';
+                                $.get(actionurl, { GroupID: GroupID }, function (data) {
+                                    if (data) {
+                                        $('#depositinterest').html(data);
+                                        DisplayTab('depositdetails');
+                                    }
+                                });
+                            }
+                        }
+                    }, 'json');
+                }
+                else if (currentTab == 'depositdetails') {
+                    actionurl = '@Url.Action("CreatedepositinterestDetails", "Group")';
+                    var GroupID = $('#hdnObjectID').val();
+                    var data1 = $('form').serialize() + "&GroupId=" + GroupID;
+                    //To Save Deposit Details Information
+                    $.post(actionurl, data1, function (data) {
+                        if (data != null) {
+                            var isSuccess = data.groupid != null && data.ObjectCode == 'TRUE';
+                            DispalyMessage(isSuccess, data.Message);
+                        }
+                    }, 'json');
+                }
+            },
+
+            //To Display Success/Failure Message - Common Function
+            DispalyMessage = function (isSuccess, message) {
+                if (isSuccess) {
+                    $('#divSuccess').html('<strong>Success!</strong>' + message);
+                    $('#divSuccess').show();
+                    $('#divError').hide();
+                } else {
+                    $('#divError').html('<strong>Error!</strong>' + message);
+                    $('#divError').show();
+                    $('#divSuccess').hide();
+                }
+            },
+            AddGroup = function () {
+                showProgress();
+                window.location.href = '@Url.Action("CreateGroup", "Group")';
+            },
+            //To Navigate between tabs. provided with appropriate data loaded from user controls
+            naviageTab = function (tabtype, event) {
+                var actionurl = '';
+                var GroupID = $('#hdnObjectID').val();
+                var isUpdate = (Number(GroupID) && Number(GroupID) > 0);
+
+                if (tabtype != 'groupdetails' && !isUpdate) {
+                    alert('Please save group details to proceed further.');
+                    DisplayActiveTab('lgroupdetails');
+                    return false;//When New group user Not allowed to proceed with other tabs
+                }
+
+                $('#hdnCurrentTab').val(tabtype);
+                switch (tabtype) {
+                    case "groupdetails":
+                        actionurl = '@Url.Action("CreateGroup", "Group")';
+                        $.get(actionurl, function (data) {
+                            if (data) {
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "accountdetails":
+
+                        actionurl = '@Url.Action("CreateGroupBankDetails", "Group")';
+                        $.get(actionurl, { Id: GroupID }, function (data) {
+                            if (data) {
+                                $('#bankdetails').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "members":
+                        actionurl = '@Url.Action("Member", "Group")';
+                        $.get(actionurl, { "groupID": $('#hdnObjectID').val() }, function (data) {
+                            if (data) {
+                                $('#membersection').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "Leaders":
+                        actionurl = '@Url.Action("LeaderShip", "Group")';
+                        $.get(actionurl, function (data) {
+                            if (data) {
+                                $('#leadership').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "loandetails":
+                        GroupID = $('#hdnObjectID').val();
+                        var actionurl = '@Url.Action("CreateLoanInterestDetails", "Group")';
+                        $.get(actionurl, { GroupID: GroupID }, function (data) {
+                            if (data) {
+                                $('#loanInterest').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                    case "depositdetails":
+                        GroupID = $('#hdnObjectID').val();
+                        var actionurl = '@Url.Action("CreatedepositinterestDetails", "Group")';
+                        $.get(actionurl, { GroupID: GroupID }, function (data) {
+                            if (data) {
+                                $('#depositinterest').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                        break;
+                }
+            },
+
+
+            //To Display/Hide appropriate tabs based on type.
+            DisplayTab = function (tabType) {
+                var linkId = '';
+                var sectionId = '';
+
+                $('#groupdetails, #bankdetails, #leadership, #membersection, #loanInterest, #depositinterest').attr("class", "tab-pane fade");
+                $('#lgroupdetails, #lbankdetails, #lleadership, #lmembersection, #lloanInterest, #ldepositinterest').attr("class", "");
+                $('#hdnCurrentTab').val(tabType);
+                switch (tabType) {
+                    case "groupdetails":
+                        linkId = 'lgroupdetails';
+                        sectionId = 'groupdetails';
+                        break;
+                    case "accountdetails":
+                        linkId = 'lbankdetails';
+                        sectionId = 'bankdetails';
+                        break;
+                    case "members":
+                        linkId = 'lmembersection';
+                        sectionId = 'membersection';
+                        break;
+                    case "Leaders":
+                        linkId = 'lleadership';
+                        sectionId = 'leadership';
+                        break;
+                    case "loandetails":
+                        linkId = 'lloanInterest';
+                        sectionId = 'loanInterest';
+                        break;
+                    case "depositdetails":
+                        linkId = 'ldepositinterest';
+                        sectionId = 'depositinterest';
+                        break;
+                }
+
+                $('#' + linkId).attr("class", "active");
+                $('#' + sectionId).attr("class", "tab-pane fade active in");
+            },
+
+            //To Navigate to Lookup Page
+             BackToList = function () {
+                 showProgress();
+                 window.location.href = '@Url.Content("GroupLookUp")';
+             },
+
+            //To Dispaly active tab
+            DisplayActiveTab = function (tabLinkId) {
+                $('#lgroupdetails, #lbankdetails, #lleadership, #lmembersection, #lloanInterest, #ldepositinterest').attr("class", "");
+                $('#' + tabLinkId).attr("class", "active");
+            }
+
+            //Used to Auto selection of Side Menu
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideGroup";
+            LoadMenu();
+
+            //Date/Time Pickers Section
+            $('#txtFormationDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0",
+                onSelect: function (selectedDate) {
+                    var dt = new Date(selectedDate);
+                    dt.setDate(dt.getDate() + 1)
+                    $("#txtFederationTranStartDate").datepicker("option", "minDate", dt);
+                }
+            });
+
+            $('#txtFederationTranStartDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+            $('#txtDateOfClosure').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+            //$('#MeetingStartTime').timepicker();
+            //$('#MeetingEndTime').timepicker();
+
+            //To Apply telugu text
+            CustomTransliteration(['txtGroupTeluguName']);
+
+            //a(document).on("click.bs.tab.data-api", '[data-toggle="tab"], [data-toggle="pill"]', function (b) {
+            //    b.preventDefault(),
+            //    a(this).tab("show")
+            //})
+            $('[data-toggle="tab"]').on('click', function (b) {
+                b.preventDefault();
+            });
+        };
+
+
+         function BindDropDownOptions(id) {
+             var actionUrl = '@Url.Action("BindDropDowns", "Group")';
+            if (id == "ddlclusters") {
+                var ClusterID = $("#ddlclusters").val();
+                $.post(actionUrl, { flag: "Cluster", Id: ClusterID }, function (response) {
+                    $("#ddlvillages").html(response).prepend("<option value='' selected='selected'>Select Village </option>");
+                });
+            }
+            else if (id == "ddlvillages") {
+                var VillageID = $("#ddlvillages").val();
+                if (VillageID != "") {
+                    var actionUrl = '@Url.Action("BindDropDowns", "Group")';
+                    $.post(actionUrl, { flag: "Village", Id: VillageID }, function (response) {
+                        $("#ddlpanchayat").html(response).prepend("<option value='' selected='selected'>Select Panchayat </option>");
+                    });
+                }
+                else {
+                    $("#ddlvillages").html('').prepend("<option value='' selected='selected'>Select Village </option>");
+                    $("#ddlpanchayat").html('').prepend("<option value='' selected='selected'>Select Panchayat </option>");
+                }
+            }
+        if ($("#ddlclusters").find("option:selected").text() == "Select Cluster") {
+            $("#ddlvillages").empty();
+            $("#ddlvillages").append("<option value='' selected='selected'>Select Village </option>");
+            $("#ddlpanchayat").empty();
+            $("#ddlpanchayat").append("<option value='' selected='selected'>Select Panchayat</option>");
+        }
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            showHideFrequency();
+
+            var selectedFreq = $('[name="MeetingFrequency"]:checked').next().text();
+            if (selectedFreq.toLowerCase() == 'weekly') {
+                $('select[name="MeetingDay"]').val($('#hdnMeetingDay').val());
+            }
+
+            $('[name="MeetingFrequency"]').on('change', function () {
+                $('[name="MeetingDay"]').each(function () {
+                    $(this).val('');
+                });
+                showHideFrequency();
+            });
+            $('[name="MeetingDay"]').on('change', function () {
+                $('#hdnMeetingDay').val($(this).val());
+            });
+
+            $('input[name="MeetingDay"]').on('change', function () {
+                if ($.trim($(this).val()) == '') {
+                    return;
+                }
+                var value = parseInt($(this).val());
+                if (!isNaN(value)) {
+                    if (value <= 0 || value > 28) {
+                        $(this).val('');
+                        alert('Please enter valid Meeting day (1-28)');
+                    }
+                } else {
+                    $(this).val('');
+                    alert('Please enter valid Meeting day (1-28)');
+                }
+            });
+        });
+    });
+
+    function showHideFrequency() {
+        var selectedFreq = $('[name="MeetingFrequency"]:checked').next().text();
+        if (selectedFreq.toLowerCase() == 'weekly') {
+            $('#Meetingweek').show();
+            $('#Meetingmonth').hide();
+        } else if (selectedFreq.toLowerCase() == 'monthly') {
+            $('#Meetingweek').hide();
+            $('#Meetingmonth').show();
+        }
+    }
+
+    </script>
+}

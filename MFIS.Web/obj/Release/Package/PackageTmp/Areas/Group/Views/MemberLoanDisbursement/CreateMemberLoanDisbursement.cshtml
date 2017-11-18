@@ -1,0 +1,835 @@
+﻿@using BusinessEntities
+@using CoreComponents
+
+@{
+    ViewBag.Title = "CreateMemberLoanDisbursement";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+
+<style type="text/css">
+    .disabledbutton {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+</style>
+@model BusinessEntities.GroupLoanDisbursementDto
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    List<GroupMember> lstGroupmember = Model != null ? Model.lstGroupmember : null;
+    List<ChequeDetails> lstChequeDetails = Model != null ? Model.lstChequeDetails : null;
+    GroupLoanDisbursementDto disbursementDto = Model as GroupLoanDisbursementDto;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Member Loan Disbursement (@Model.LoanCode) (@Model.Status)</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="alert alert-success" id="divSuccess" style="display: none">
+                </div>
+                <div class="alert alert-danger" id="divError" style="display: none">
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-3" style="display:none;">
+                            <div class="form-group">
+                                <label>LoanApplication Code</label>
+                                @Html.TextBoxFor(model => model.LoanCode, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Hidden("hdnGroupId", Model.GroupID, new { @id = "hdnGroupId", @name = "hdnGroupId" })
+                            <div class="col-lg-3">
+                                @Html.HiddenFor(model => model.LoanMasterId, new { @id = "hdnLoanMasterId", @name = "LoanMasterId" })
+                                @Html.Hidden("hdntabtype", "disbursement", new { @id = "hdntabtype" })
+                                @Html.Hidden("hdnPROI", new { @id = "hdnPROI" })
+                                @Html.Hidden("hdnMaxSecurityIndex", new { @id = "hdnMaxSecurityIndex" })
+                                <label>Loan Application Date</label><br />
+                                @Html.TextBoxFor(m => m.LoanApplicationDate, Model.LoanApplicationDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Project</label>
+                                @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Purpose</label>
+                                @Html.TextBoxFor(model => model.LoanPurpose, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+
+                            <div class="form-group">
+                                <label>Loan Amount Applied</label>
+                                @* <input type="text" class="form-control" value="200000" placeholder="200000" disabled />*@
+                                @Html.TextBoxFor(model => model.LoanAmountApplied, new { @class = "form-control", @readonly = "true", @id = "txtLoanAmountApplied", Value = Model.LoanAmountApplied.ToDisplayCurrency() })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Proposed Installments</label>
+                                @Html.TextBoxFor(model => model.NoofInstallmentsProposed, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Mode</label>
+                                @Html.TextBoxFor(model => model.Mode, new { @class = "form-control", @readonly = "true" })
+                                @Html.HiddenFor(model => model.MeetingDay, new { @id = "hdnMeetingDay" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+
+                        <li class="active" id="ldisbursement">
+                            <a href="#disbursement" role="tab" onclick="return naviageTab('disbursement',event);" data-toggle="tab">
+                                Disbursement
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#GuarantorCheckDetails" role="tab" data-toggle="tab">
+                                Guarantor/Cheque Details
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#AdditionalSecurityDetails" onclick="return naviageTab('additionalsecuritydetails',event);" role="tab" data-toggle="tab">
+                                Additional Security Details
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#generatevoucher" role="tab" data-toggle="tab" onclick="return naviageTab('generatevoucher',event);">
+                                Generate Voucher
+                            </a>
+                        </li>
+                        <li id="lschedule" class="">
+                            <a href="#schedule" role="tab" data-toggle="tab" onclick="return naviageTab('schedule',event);">
+                                Schedule
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#accountclosure" role="tab" data-toggle="tab">
+                                Account Closure
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="disbursement">
+                            @Html.Partial("Disbursement", disbursementDto)
+                        </div>
+                        <div class="tab-pane fade" id="GuarantorCheckDetails">
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <strong>Guarantor Details</strong>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Adminision Code</label>
+                                                @Html.DropDownListFor(d => d.MemberID, (SelectList)ViewBag.membercodes, "Select Group", new { @class = "form-control required", @ID = "MemberCode", onchange = "GetMemberName(this.value);" })
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                @*<input value="SindhuRani" disabled="disabled" class="form-control">*@
+                                                @Html.TextBoxFor(model => model.MemberName, new { @class = "form-control", @ID = "MemberName", @readonly = "true" })
+                                            </div>
+                                            <br />
+                                            <div class="form-group">
+
+                                                <div class="col-lg-3">
+                                                    <div class="form-group">
+                                                        <button type="button" class="btn btn-outline btn-primary lock-dependent" onclick=" return AddGuarantor();">ADD</button>
+                                                        @Html.Hidden("hdnAIndex")
+                                                        @Html.Hidden("AmountId")
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-lg-push-1">
+                                                    <div class="tab-content">
+                                                        <button type="reset" class="btn btn-outline btn-primary">CLEAR</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover" id="tblGuarantor">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">#</th>
+                                                        <th>Adminision Code</th>
+                                                        <th>Name</th>
+                                                        <th>Status</th>
+                                                        <th class="text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (lstGroupmember != null)
+                                                    {
+                                                        foreach (var item in lstGroupmember)
+                                                        {
+                                                            indx++;
+                                                            <tr>
+                                                                <td class="text-center" style="display: none;">@indx </td>
+                                                                <td>
+                                                                    <input type="hidden" id="hdnMemberID_@indx" name="hdnMemberID_@indx" value="@item.MemberID" />
+                                                                    <input type="hidden" id="hdnAccountCode_@indx" name="hdnAccountCode_@indx" value="@item.MemberCode" />
+                                                                    <span>@item.MemberCode</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="hidden" id="hdnAccountName_@indx" name="hdnAccountName_@indx" value="@item.MemberName" />
+                                                                    <span>@item.MemberName</span>
+                                                                </td>
+
+                                                                <td>
+                                                                    <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit " style="cursor: pointer">
+                                                                    <img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" title="Delete " style="cursor: pointer" />
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            @Html.Hidden("hdnMaxRateIndex", indx)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="panel panel-default">
+                                    @* @model BusinessEntities.ChequeDetails*@
+                                    <div class="panel-heading">
+                                        <strong>Cheque Details</strong>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Cheque No</label>
+                                                    <input placeholder=" Enter Bank Name" class="form-control" id="chequeno">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Date</label>
+                                                    <input placeholder=" Enter Cheque Date" class="form-control" id="ChequeDate">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Amount</label>
+                                                    <input placeholder=" Enter Amount" class="form-control" id="amount">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <label>Bank Name</label>
+                                                    <input value="SBI" placeholder="Bank Name" class="form-control" id="bankname">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="form-group">
+                                                    <label>Branch Name</label>
+                                                    <input placeholder="Enter Branch Name" class="form-control" id="branchname">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="form-group" style="margin-top: 22px;">
+                                                    <button type="button" class="btn btn-outline btn-primary lock-dependent" onclick=" return AddChequedetails();">ADD</button>
+                                                    @Html.Hidden("hdnAIndex")
+                                                    @Html.Hidden("AmountId")
+
+                                                    <button type="reset" class="btn btn-outline btn-primary">CLEAR</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-striped table-bordered table-hover" id="tblCheque">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            <th>Bank</th>
+                                                            <th>Cheque No</th>
+                                                            <th>Amount</th>
+                                                            <th>Date</th>
+                                                            <th>Status</th>
+                                                            <th class="text-center">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (lstChequeDetails != null)
+                                                        {
+                                                            foreach (var item in lstChequeDetails)
+                                                            {
+                                                                indx++;
+                                                                <tr>
+                                                                    <td class="text-center" style="display: none;">@indx </td>
+                                                                    <td>
+                                                                        <input type="hidden" id="hdnLoanChequeID_@indx" name="hdnLoanChequeID_@indx" value="@item.LoanChequeID" />
+                                                                        <input type="hidden" id="hdnBankName_@indx" name="hdnBankName_@indx" value="@item.BankName" />
+                                                                        <span>@item.BankName</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="hidden" id="hdnChequeNumber_@indx" name="hdnChequeNumber_@indx" value="@item.ChequeNumber" />
+                                                                        <span>@item.ChequeNumber</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="hidden" id="hdnAmount_@indx" name="hdnAmount_@indx" value="@item.Amount" />
+                                                                        <span>@item.Amount</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="hidden" id="hdnChequeDate_@indx" name="hdnChequeDate_@indx" value="@item.ChequeDate" />
+                                                                        <span>@item.ChequeDate</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit " style="cursor: pointer">
+                                                                        <img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" title="Delete " style="cursor: pointer" />
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                @Html.Hidden("hdnMaxRateIndex", indx)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="AdditionalSecurityDetails">
+                        </div>
+                        <div class="tab-pane fade" id="generatevoucher">
+                        </div>
+                        <div class="tab-pane fade" id="schedule">
+                        </div>
+                        <div class="tab-pane fade" id="accountclosure">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Account Closing Date</label>
+                                        <input type="date" class="form-control" value="10/10/2015" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <div class="form-group" style="margin-top: 20px;">
+                                        <button type="reset" class="form-control btn btn-default pull-right" onclick="BackToList();">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; padding: 0 0 35px 55px;">
+                        <button type="button" class="btn btn-outline btn-primary lock-dependent" onclick="SaveLoanDisbursement();" id="savebutton">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary" id="resetbutton">Reset</button>
+                        <span id="RepaymentStatusSpan" class="alert alert-danger" style="display: none"></span>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end page-wrapper -->
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        //$(document).ready(function () {
+        //    $('#ChequeDate1').datepicker({
+        //        dateFormat: "dd/M/yy",
+        //        changeMonth: true,
+        //        changeYear: true,
+        //        yearRange: "-60:+0"
+        //    });
+        //});
+    </script>
+}
+<script>
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("../MemberLoanDisbursement/MemberLoanDisbursementLookup")';
+    }
+
+</script>
+<script type="text/javascript">
+
+    function AddGuarantor() {
+        // var AccountCode = $.trim($("#MemberCode").val());
+        var AccountCode = $("#MemberCode option:selected").text();
+        // var AHID = $.trim($("#MemberCode").val());
+        var AccountName = $.trim($("#MemberName").val());
+        //  var AccountName = $("#MemberName option:selected").text();
+        var editIndx = $.trim($("#hdnAIndex").val());
+        var AmountId = $.trim($("#AmountId").val());
+
+        if (Number(editIndx)) {
+            //update new AddMoney
+            $("#AddAmountDto" + editIndx).val(AccountCode);
+            $("#hdnAccountCode_" + editIndx).parent().find('span').text(AccountCode);
+
+            $("#hdnAccountName_" + editIndx).val(AccountName);
+            $("#hdnAccountName_" + editIndx).parent().find('span').text(AccountName);
+
+        } else {
+            //Add new Interest Rate
+
+            var newIndex = Number($('#hdnMaxRateIndex').val()) + 1;
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow1(newIndex, AccountCode, AccountName);
+
+            $("#tblGuarantor tbody").append(newRow);
+            $('#hdnMaxRateIndex').val(newIndex);
+        }
+    }
+    function loadNewRow1(indx, AccountCode, AccountName) {
+        var row = '<tr class="gradeA even">';
+        row += '<td><input type="hidden" id ="indx' + indx + '" name ="indx' + indx + '" value="' + indx + '"/> <span>' + indx + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnAccountCode_' + indx + '" name ="hdnAccountCode_' + indx + '" value="' + AccountCode + '"/> <span>' + AccountCode + '</span></td>';
+        row += '<td><input type="hidden" id ="hdnAccountName_' + indx + '" name ="hdnAccountName_' + indx + '" value="' + AccountName + '"/> <span>' + AccountName + '</span></td>';
+        row += '<td><img src="../../Content/images/Circle_Green.png" onclick="editRate(this, ' + indx + ')"</td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + indx + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + indx + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+    function AddChequedetails() {
+        var chequeno = $("#chequeno").val();
+        var ChequeDate = $("#ChequeDate").val();
+        var amount = $("#amount").val();
+        var bankname = $("#bankname").val();
+        //var AHID = $.trim($("#MemberCode").val());
+        var editIndx = $($("#hdnAIndex").val());
+        var AmountId = $($("#AmountId").val());
+
+        if (Number(editIndx)) {
+            //update new AddMoney
+            $("#hdnChequeNumber_" + editIndx).val(chequeno);
+            $("#hdnChequeNumber_" + editIndx).parent().find('span').text(chequeno);
+
+            $("#hdnChequeDate_" + editIndx).val(ChequeDate);
+            $("#hdnChequeDate_" + editIndx).parent().find('span').text(ChequeDate);
+
+            $("#hdnAmount_" + editIndx).val(chequeno);
+            $("#hdnAmount_" + editIndx).parent().find('span').text(amount);
+
+            $("#hdnBankName_" + editIndx).val(ChequeDate);
+            $("#hdnBankName_" + editIndx).parent().find('span').text(bankname);
+
+        } else {
+            //Add new Interest Rate
+
+            var newIndex = Number($('#hdnMaxRateIndex').val()) + 1;
+            newIndex = newIndex == 0 ? 1 : newIndex;
+
+            var newRow = loadNewRow(newIndex, chequeno, ChequeDate, amount, bankname);
+
+            $("#tblCheque tbody").append(newRow);
+            $('#hdnMaxRateIndex').val(newIndex);
+        }
+    }
+    function loadNewRow(indx, chequeno, ChequeDate, amount, bankname) {
+        var row = '<tr class="gradeA even">';
+        row += '<td><input type="hidden" id ="indx' + indx + '" name ="indx' + indx + '" value="' + indx + '"/> <span>' + indx + '</span></td>';
+        row += '<td><input type="hidden" id ="bankname' + indx + '" name ="bankname' + indx + '" value="' + bankname + '"/> <span>' + bankname + '</span></td>';
+        row += '<td><input type="hidden" id ="chequeno' + indx + '" name ="chequeno' + indx + '" value="' + chequeno + '"/> <span>' + chequeno + '</span></td>';
+        row += '<td><input type="hidden" id ="amount' + indx + '" name ="amount' + indx + '" value="' + amount + '"/> <span>' + amount + '</span></td>';
+        row += '<td><input type="hidden" id ="ChequeDate' + indx + '" name ="ChequeDate' + indx + '" value="' + ChequeDate + '"/> <span>' + ChequeDate + '</span></td>';
+        row += '<td><img src="../../Content/images/Circle_Green.png" onclick="editRate(this, ' + indx + ')"</td>';
+        row += '<td><img src="../../Content/images/Edit.png" onclick="editRate(this, ' + indx + ');" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, ' + indx + ');"</td>';
+        row += '</tr>';
+        return row;
+    }
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGroupLoanDisbursement";
+        LoadMenu();
+    });
+    function GetMemberName(id) {
+        $.post('@Url.Action("GetMemberName")' + '/' + id, {},
+                function (data) {
+                    $('#MemberName').val(data.MemberName);
+                }, 'json');
+    }
+    $(function () {
+        LoanDisbursement();
+    });
+
+    var LoanDisbursement = function () {
+        SaveLoanDisbursement = function () {
+            var tabtype = $('#hdntabtype').val();
+            var valid = validationDisbursement(tabtype);
+            if (tabtype == 'disbursement' && valid == true) {
+                var actionurl = '@Url.Action("CreateDisbursement", "MemberLoanDisbursement")';
+                var data = $('form').serialize();
+                $.post(actionurl, data, function (data) {
+                    if (data != null) {
+                        var isSuccess = data.LoanMasterID != null && data.ObjectCode == 'TRUE';
+                        DispalyMessage(isSuccess, data.Message);
+                        if (!isSuccess) {
+                            return false;
+                        }
+
+                    }
+                }, 'json');
+            }
+            if (tabtype == 'schedule') {
+
+                var LoanAmount = $('#txtDisBursedAmount').val();
+                var interestRate = $('#txtROI').val();
+                var loanperiod = $('#NoOfInstallments').val();
+                var loanStartDate = $('#txtFirstInstallmentStartsFrom').val();
+                var LoanMasterId = $('#hdnLoanMasterId').val();
+                var PROI = 0;
+                actionurl = '@Url.Action("CreateSchedule", "MemberLoanDisbursement")';
+                $.post(actionurl, { LoanMasterID: LoanMasterId, LoanAmount: LoanAmount, InterestRate: interestRate, loanperiod: loanperiod, StartPaymentDate: loanStartDate, PROI: PROI }, function (data) {
+                    if (data != null) {
+                        var isSuccess = data.LoanMasterID != null && data.ObjectCode == 'TRUE';
+                        DispalyMessage(isSuccess, data.Message);
+                        if (!isSuccess) {
+                            return false;
+                        }
+
+                    }
+                }, 'json');
+
+
+            }
+            if (tabtype == 'genaratevoucher') {
+
+
+            }
+            if (tabtype == 'securitydetails') {
+
+                var actionurl = '@Url.Action("SaveAdditionalSecuritiesDetails", "GroupLoanDisbursement")';
+                var data = $('form').serialize();
+                $.post(actionurl, data, function (data) {
+                    if (data != null) {
+                        var isSuccess = data.LoanMasterID != null && data.ObjectCode == 'TRUE';
+                        DispalyMessage(isSuccess, data.Message);
+                        if (!isSuccess) {
+                            return false;
+                        }
+
+                    }
+                }, 'json');
+
+            }
+            if (tabtype == 'RepaymentStarated') {
+
+                $('#RepaymentStatusSpan').html('Repayment started you are not able to update disbursement details');
+                $('#RepaymentStatusSpan').show();
+                return false;
+
+            }
+        }
+        naviageTab = function (tabtype, event) {
+            var actionurl = '';
+            $('#RepaymentStatusSpan').html('');
+            $('#RepaymentStatusSpan').hide();
+            var GroupLoanDisbursement = $('#hdnLoanMasterId').val();
+            if (tabtype != "generatevoucher") {
+                $('#savebutton').show();
+                $('#resetbutton').show();
+            }
+            switch (tabtype) {
+                case "disbursement":
+                    var LoanMasterId = $('#hdnLoanMasterId').val();
+                    var action = '@Url.Action("CheckForDisbursementStart", "GroupLoanDisbursement")'
+                    actionurl = '@Url.Action("Disbursement", "GroupLoanDisbursement")' + '/' + LoanMasterId;
+                    $.get(actionurl, { LoanMasterId: LoanMasterId }, function (data) {
+                        if (data) {
+                            $('#disbursement').html(data);
+                            DisplayTab(tabtype);
+                            $.post(action, { LoanMasterId: LoanMasterId }, function (data) {
+                                if (!(data.isDisbursed)) {
+
+                                }
+                                else {
+                                    $("#disbursement").addClass("disabledbutton");
+                                    $('#hdntabtype').val("RepaymentStarated");
+
+                                }
+                            });
+
+                        }
+
+                    });
+                    break;
+                case "schedule":
+                    var LoanAmount = $('#txtDisBursedAmount').val();
+                    var interestRate = $('#txtROI').val();
+                    var loanperiod = $('#NoOfInstallments').val();
+                    var loanStartDate = $('#txtFirstInstallmentStartsFrom').val();
+                    var LoanMasterId = $('#hdnLoanMasterId').val();
+                    if (interestRate != "" && loanperiod != '' && loanStartDate != '' && LoanAmount != '' && LoanAmount != undefined && interestRate != undefined && loanperiod != undefined && loanStartDate != undefined) {
+                        actionurl = '@Url.Action("Schedule", "MemberLoanDisbursement")';
+                        $.post(actionurl, { LoanMasterId: LoanMasterId, LoanAmount: LoanAmount, InterestRate: interestRate, loanperiod: loanperiod, StartPaymentDate: loanStartDate }, function (data) {
+                            if (data) {
+                                $('#schedule').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                    }
+                    else {
+                        alert('Please Save Disbutrsement')
+                        return false;
+                    }
+                    break;
+                case "generatevoucher":
+                    var LoanAmount = $('#txtDisBursedAmount').val();
+                    if (LoanAmount != '' && LoanAmount != undefined) {
+                        actionurl = '@Url.Action("GenerateVoucher", "MemberLoanDisbursement")';
+                        $.get(actionurl, { LoanMasterId: $('#hdnLoanMasterId').val() }, function (data) {
+                            if (data) {
+                                $('#generatevoucher').html(data);
+                                DisplayTab(tabtype);
+                            }
+                        });
+                    }
+                    else {
+                        alert('Please Save Disbutrsement')
+                        return false;
+                    }
+
+                    break;
+                case "additionalsecuritydetails":
+                    actionurl = '@Url.Action("AdditionalSecuritiesDetails", "MemberLoanDisbursement")';
+                    $.get(actionurl, function (data) {
+                        if (data) {
+                            $('#AdditionalSecurityDetails').html(data);
+                            DisplayTab(tabtype);
+                        }
+                    });
+                    break;
+                case "loandetails":
+                    GroupID = $('#hdnObjectID').val();
+                    var actionurl = '@Url.Action("CreateLoanInterestDetails", "Group")';
+                    $.get(actionurl, { GroupID: GroupID }, function (data) {
+                        if (data) {
+                            $('#loanInterest').html(data);
+                            DisplayTab(tabtype);
+                        }
+                    });
+                    break;
+                case "depositdetails":
+                    GroupID = $('#hdnObjectID').val();
+                    var actionurl = '@Url.Action("CreatedepositinterestDetails", "Group")';
+                    $.get(actionurl, { GroupID: GroupID }, function (data) {
+                        if (data) {
+                            $('#depositinterest').html(data);
+                            DisplayTab(tabtype);
+                        }
+                    });
+                    break;
+            }
+        },
+
+                    DispalyMessage = function (isSuccess, message) {
+                        if (isSuccess) {
+                            $('#divSuccess').html('<strong>Success!</strong>' + message);
+                            $('#divSuccess').show();
+                            $('#divError').hide();
+                        } else {
+                            $('#divError').html('<strong>Error!</strong>' + message);
+                            $('#divError').show();
+                            $('#divSuccess').hide();
+                        }
+                    },
+
+        //To Display/Hide appropriate tabs based on type.
+                    DisplayTab = function (tabType) {
+                        var linkId = '';
+                        var sectionId = '';
+
+                        $('#disbursement', '#schedule').attr("class", "tab-pane fade");
+                        $('#ldisbursement', '#lschedule').attr("class", "");
+
+                        switch (tabType) {
+                            case "disbursement":
+                                linkId = 'ldisbursement';
+                                sectionId = 'disbursement';
+                                break;
+                            case "schedule":
+                                linkId = 'lschedule';
+                                sectionId = 'schedule';
+                                break;
+                            case "members":
+                                linkId = 'lmembersection';
+                                sectionId = 'membersection';
+                                break;
+                            case "Leaders":
+                                linkId = 'lleadership';
+                                sectionId = 'leadership';
+                                break;
+                            case "loandetails":
+                                linkId = 'lloanInterest';
+                                sectionId = 'loanInterest';
+                                break;
+                            case "depositdetails":
+                                linkId = 'ldepositinterest';
+                                sectionId = 'depositinterest';
+                                break;
+                        }
+
+                        $('#' + linkId).attr("class", "active");
+                        $('#' + sectionId).attr("class", "tab-pane fade active in");
+                    }
+
+    }
+    function validationDisbursement(tabtype) {
+
+        var validate = true;
+        if (tabtype == 'disbursement') {
+
+            //if ($.trim($('#PrincipleAHId').val()) == '' && $.trim($('#noOfInstalments').val()) == '0' && $.trim($('#txtDisBursedAmount').val()) == '' && $.trim($('#txtDisbursementDate').val()) == '' && $.trim($('#txtDueDay').val()) == '' && $.trim($('#txtFirstInstallmentStartsFrom').val()) == '' && $.trim($('#txtLastInstallmentDate').val()) == '' && $.trim($('#monthlyprincipaldemand').val()) == '' && $.trim($('#ddlProjects').val()) == '' && $.trim($('#SLAccountName').val()) == '') {
+            //    $('#PrincipleAHId,#txtROI,#noOfInstalments,#txtDisBursedAmount,#txtDisbursementDate,#txtDueDay,#txtFirstInstallmentStartsFrom,#txtLastInstallmentDate,#monthlyprincipaldemand,#ddlProjects,#SLAccountName').css('border-color', 'red');
+            //    validate = false;
+            //}
+            //else {
+            //    $('#PrincipleAHId,#txtROI,#noOfInstalments,#txtDisBursedAmount,#txtDisbursementDate,#txtDueDay,#txtFirstInstallmentStartsFrom,#txtLastInstallmentDate,#monthlyprincipaldemand,#ddlProjects,#SLAccountName').css('border-color', '');
+            //}
+            if ($.trim($('#ddlInterestMaster').val()) == '') {
+                $('#ddlInterestMaster').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlInterestMaster').css('border-color', '');
+            }
+
+            if ($.trim($('#txtROI').val()) == '') {
+                $('#txtROI').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtROI').css('border-color', '');
+            }
+
+            if ($.trim($('#NoOfInstallments').val()) == '0') {
+                $('#NoOfInstallments').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#NoOfInstallments').css('border-color', '');
+            }
+
+            if ($.trim($('#txtDisBursedAmount').val()) == '') {
+                $('#txtDisBursedAmount').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtDisBursedAmount').css('border-color', '');
+            }
+            
+            var tMode = $('#TransactionMode').val();
+
+            if (tMode == "C") {
+                if ($.trim($('#DisbursementDate').val()) == '') {
+                    $('#DisbursementDate').css('border-color', 'red');
+                    validate = false;
+                }
+                else {
+                    $('#DisbursementDate').css('border-color', '');
+
+                }
+            } else {
+                if ($.trim($('#txtDisbursementDate').val()) == '') {
+                    $('#txtDisbursementDate').css('border-color', 'red');
+                    validate = false;
+                }
+                else {
+                    $('#txtDisbursementDate').css('border-color', '');
+
+                }
+
+                if ($.trim($('#BankEntryId').val()) == '') {
+                    $('#BankEntryId').css('border-color', 'red');
+                    validate = false;
+                }
+                else {
+                    $('#BankEntryId').css('border-color', '');
+                }
+
+                if (tMode == "BC") {
+                    if ($.trim($('#ChequeNumber').val()) == '') {
+                        $('#ChequeNumber').css('border-color', 'red');
+                        validate = false;
+                    }
+                    else {
+                        $('#ChequeNumber').css('border-color', '');
+                    }
+                    if ($.trim($('#ChequeDate').val()) == '') {
+                        $('#ChequeDate').css('border-color', 'red');
+                        validate = false;
+                    }
+                    else {
+                        $('#ChequeDate').css('border-color', '');
+                    }
+                }
+            }
+            if ($.trim($('#txtFirstInstallmentStartsFrom').val()) == '') {
+                $('#txtFirstInstallmentStartsFrom').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtFirstInstallmentStartsFrom').css('border-color', '');
+
+            }
+
+            if ($.trim($('#txtLastInstallmentDate').val()) == '') {
+                $('#txtLastInstallmentDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#txtLastInstallmentDate').css('border-color', '');
+
+            }
+            if ($.trim($('#monthlyprincipaldemand').val()) == '') {
+                $('#monthlyprincipaldemand').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#monthlyprincipaldemand').css('border-color', '');
+            }
+        }
+        return validate;
+    }
+
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGroupLoanDisbursement";
+        LoadMenu();
+    });
+
+
+</script>
+

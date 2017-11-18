@@ -1,0 +1,226 @@
+﻿@using BusinessEntities;
+@model IEnumerable<GroupMeetingLookupDto>
+@using CoreComponents
+
+@{
+    ViewBag.Title = "GroupMeetingLookup";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+
+    List<GroupMeetingLookupDto> lst = Model as List<GroupMeetingLookupDto>;
+}
+
+@using (Html.BeginForm())
+{
+    System.Globalization.DateTimeFormatInfo mfi = new System.Globalization.DateTimeFormatInfo();
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Group Meeting Lookup</span>
+                    @if (ViewBag.OpenMeetings != null)
+                    {
+                        var item = ViewBag.OpenMeetings as GroupMeetingLookupDto;
+                        string encryptGroupMeetingID = item.GroupMeetingID.EncryptString();
+                        <button type="button" class="btn btn-default pull-right" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');">Lock Open Meetings</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-default pull-right" onclick="AddGroupMeeting();">Add Group Meeting</button>
+                    }
+                </div>
+                @if (Result != null && Result.ObjectId > 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div>
+                }
+                else if (Result != null && Result.ObjectId < 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="tblGroupMeeting">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Month</th>
+                                    <th>Lock Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    int monthCounter = 1;
+                                    int currentMonth = 0, currentYear = 0;
+                                    int i = monthCounter;
+                                    foreach (var item in Model)
+                                    {
+
+                                        if (currentYear == item.MeetingDate.Year && currentMonth == item.MeetingDate.Month)
+                                        {
+                                            continue;
+                                        }
+                                        var trclass = "red";
+                                        string encryptGroupMeetingID = item.GroupMeetingID.EncryptString();
+                                        currentYear = item.MeetingDate.Year;
+                                        currentMonth = item.MeetingDate.Month;
+
+                                        var lst1 = lst.FindAll(l => l.MeetingDate.Month == currentMonth && l.MeetingDate.Year == currentYear);
+                                        if (item.MeetingLockStatus.ToUpper() == "OPEN")
+                                        {
+                                            trclass = "green";
+                                        }
+                                        <tr class=@trclass>
+                                            <td class="text-center" style="width: 5%">
+                                                <img style="cursor:pointer;" src="~/Content/images/icon-plus.png" onclick="toggleTable(@i,this);" id="toggleicon" title="Expand" />
+                                            <td>@(monthCounter++)</td>
+                                            <td>@(mfi.GetMonthName(currentMonth) + " - " + currentYear)</td>
+                                            <td>@item.MeetingLockStatus</td>
+                                            @if (item.MeetingLockStatus.ToUpper() == "OPEN")
+                                            {
+                                                <td class="text-center">
+                                                    <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditGroupMeeting('@encryptGroupMeetingID');" />
+                                                    <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID');" />
+                                                    <img src="~/Content/images/1468095521_unlock.png" style="cursor: pointer" title="Unlock" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');" />
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">
+                                                    <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'V');" />
+                                                    <img src="~/Content/images/1468082722_lock.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID','U');" />
+                                                </td>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td colspan="4">
+                                                <table class="table table-striped table-bordered table-hover" id="tblGroupMeetingDetails_@i" style="display:none">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Meeting Date</th>
+                                                            <th>Conducted</th>
+                                                            <th>Type</th>
+                                                            <th>Members</th>
+                                                        </tr>
+                                                    </thead>
+                                                    @foreach (var objMeeting in lst1)
+                                                    {
+
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    @objMeeting.MeetingDate.ToDisplayDateFormat()
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? "Yes" : "No")
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? (objMeeting.IsSpecialMeeting ? "Special" : "Regular") : "")
+                                                                </td>
+                                                                <td>
+                                                                    @(objMeeting.IsConducted ? objMeeting.MembersCount.ToString() : "")
+                                                                </td>
+
+                                                            </tr>
+                                                        </tbody>
+                                                    }
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr class="gradeA odd">
+                                        <td colspan="5">No Meetings Found!</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+    <link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <style>
+        .red {
+            color: red;
+        }
+
+        .green {
+            color: green;
+        }
+    </style>
+    <script>
+        function AddGroupMeeting() {
+            showProgress();
+            window.location.href = '@Url.Content("CreateGroupMeeting")';
+        }
+        function EditGroupMeeting(id) {
+            showProgress();
+            window.location.href = '@Url.Content("CreateGroupMeeting")';
+        }
+        function ViewGroupMeeting(id, type) {
+            showProgress();
+            if (type == 'U') {
+                var OpenMeetings = '@ViewBag.OpenMeetings';
+                if (OpenMeetings != null && OpenMeetings!="") {
+                    alert('If you want to OPEN this Meeting \n  LOCK Other Meetings')
+                    hideProgress();
+                    return false;
+                } else {  window.location.href = '@Url.Content("GroupMeetingView?id=")' + id + '&type=' + type;}
+            }
+            window.location.href = '@Url.Content("GroupMeetingView?id=")' + id + '&type=' + type;
+        }
+        function DeleteGroupMeeting(encryptGroupMeetingID) {
+            if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("DeleteGroupMeeting?Id=")' + encryptGroupMeetingID;
+        }
+
+        function ActiveInactiveGroupMeeting(encryptGroupMeetingID, currentStatusCode) {
+            if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+                return false;
+            showProgress();
+            window.location.href = '@Url.Content("ActiveInactiveGroupMeeting?Id=")' + encryptGroupMeetingID;
+        }
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideGroupMeeting";
+            LoadMenu();
+            $('#tblGroupMeeting').dataTable({
+                "bSort": false
+            });
+        });
+        function toggleTable(monthCounter, src) {
+            var lTable = $("#tblGroupMeetingDetails_" + monthCounter);
+            if (lTable.css('display') == 'none') {
+                lTable.show(500);
+                $(src).attr('src', '/Content/images/icon-minus.png')
+
+            } else {
+                lTable.hide(500);
+                $(src).attr('src', '/Content/images/icon-plus.png')
+
+            }
+
+        }
+    </script>
+
+}

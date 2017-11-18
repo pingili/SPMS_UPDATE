@@ -1,0 +1,62 @@
+﻿@model IEnumerable<BusinessEntities.ClusterAssignmentDto>
+@using CoreComponents
+@{
+    ViewBag.Title = "EmployeeClusterDetails";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Assign Clusters to Employees</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="AddClusters();">Add/Update Cluster Assignment</button>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesDistrict">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Employee Name</th>
+                                    <th>Role Name(s)</th>
+                                    <th>Cluster Name(s)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr class="gradeA odd">
+                                        <td class="text-center ">@(Model.ToList().IndexOf(item) + 1)</td>
+                                        <td class="text-center">@item.EmployeeName</td>
+                                        <td class="text-center">@item.RoleName</td>
+                                        <td class="">@item.ClusterName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+
+}
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideAssignCluster";
+        LoadMenu();
+    });
+    function AddClusters() {
+        window.location.href = '@Url.Content("AssignClusterToEmployee")';
+    }
+</script>

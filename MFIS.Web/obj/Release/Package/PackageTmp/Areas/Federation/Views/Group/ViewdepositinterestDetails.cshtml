@@ -1,0 +1,67 @@
+﻿@using BusinessEntities
+@using (Html.BeginForm())
+{
+    int indx = 0;
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover" id="tbldepositinterest">
+            <thead>
+                <tr>
+                    <th class="text-center" style="display: none">#</th>
+                    <th>Apply TO Deposit Principle A/C Head</th>
+                    <th>Apply TO Deposit Int A/C Head</th>
+                    <th>Base</th>
+                    <th>ROI</th>
+                    <th>From Date</th>
+                </tr>
+            </thead>
+            <tbody id="depositinterestbody">
+                @{ List<BusinessEntities.GroupInterestRatesDto> objlst = new List<BusinessEntities.GroupInterestRatesDto>();
+                   if (ViewBag.GroupInterestRates != null)
+                   {
+
+                       objlst = ViewBag.GroupInterestRates;
+                   }
+                }
+                @if (objlst != null)
+                {
+                    foreach (var item in objlst)
+                    {
+                        indx++;
+                    <tr>
+                        <td class="text-center" style="display: none;">@indx </td>
+                        <td class="text-center" style="display: none;">@indx<input type="hidden" id ="hdndepositentryId_@indx" name ="hdndepositentryId_@indx" /></td>
+                        <td>
+                            <input type="hidden" id ="hdndepositprincipleAChead_@indx" name ="hdndepositprincipleAChead_@indx" value="@item.PrincipalAHID"/>
+                            <span>@item.PrincipalAH</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositInterestACHead_@indx" name ="hdndepositInterestACHead_@indx"" value="@item.InterestAHID"/>
+                            <span>@item.InterestAH </span></td>
+                        <td>
+                            <input type="hidden" id ="hdndepositBase_@indx" name ="hdndepositBase_@indx" value="@item.Base"/>
+                            <span>@item.BaseText</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositrateofint_@indx" name ="hdndepositrateofint_@indx" value="@item.ROI"/>
+                            <span>@item.ROI</span>
+
+                        </td>
+                        <td>
+                            <input type="hidden" id ="hdndepositfromdate_@indx" name ="hdndepositfromdate_@indx" value="@item.FromDate.ToString("dd/MMM/yyyy")"/>
+                            <span>@item.FromDate.ToString("dd/MMM/yyyy")</span>
+                        </td>
+                        <td style="display: none">
+                            <img src="../../Content/images/Edit.png" onclick="editRate(this, @indx);" title="Edit Rate" style="cursor: pointer"><img src="../../Content/images/delete_btn1.png" onclick="deleteRate(this, @indx);" />
+                        </td>
+                    </tr>
+                    }
+                }
+
+            </tbody>
+
+        </table>
+        @Html.Hidden("hdnMaxDepIntIndex", indx)
+    </div>
+}

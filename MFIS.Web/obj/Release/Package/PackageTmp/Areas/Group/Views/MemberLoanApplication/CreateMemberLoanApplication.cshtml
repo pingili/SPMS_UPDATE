@@ -1,0 +1,654 @@
+﻿@model BusinessEntities.MemberLoanApplicationDto
+@using CoreComponents;
+@using BusinessEntities;
+@{
+    ViewBag.Title = "CreateMemberLoanApplication";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+    string ecnloanmasterid = Model.LoanMasterId > 0 ? Model.LoanMasterId.EncryptString() : string.Empty;
+}
+@using (Html.BeginForm("CreateMemberLoanApplication", "MemberLoanApplication", FormMethod.Post))
+{
+    bool isView = ViewBag.isView != null ? ViewBag.isView : false;
+    string userRoleCode = ViewBag.RoleCode;
+    int appLevel = Model.ApprovalLevel;
+    string statusCode = Model.StatusCode;
+    string loanCode = string.IsNullOrWhiteSpace(Model.LoanCode) ? "N/A" : Model.LoanCode;
+    ResultDto res = TempData["Result"] != null ? TempData["Result"] as ResultDto : null;
+    string message = res != null ? res.Message : string.Empty;
+    if (!string.IsNullOrWhiteSpace(message))
+    {
+        //loanCode = ViewBag.Result.ObjectCode;
+    }
+    string LoanApplicationDate = string.Empty;
+    var lstApprovals = Model.LoanMasterId > 0 && Model.lstApprovals != null ? Model.lstApprovals : new List<MemberLoanApprovalDto>();
+    MemberLoanApprovalDto objApp = null;
+
+    <style type="text/css">
+        #tblApprovals input[type="text"] {
+            width: 98%;
+        }
+
+        #tblApprovals input[type="radio"] {
+            width: 16px;
+        }
+
+        #tblApprovals textarea {
+            width: 98%;
+        }
+
+        #tblApprovals td, #tblApprovals th {
+            vertical-align: middle;
+            text-align: left;
+        }
+    </style>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Member Loan Application - @loanCode  @(!string.IsNullOrWhiteSpace(Model.Status) ? "(" + Model.Status + ")" : "")</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(message))
+                {
+                    <div class="alert @(res.ObjectId > 0 ? "alert-success" : "alert-danger")">
+                        <strong>@(res.ObjectId > 0 ? "Success" : "Error")!</strong> @message
+                    </div>
+                }
+                <div class="panel-body">
+                    <input type="hidden" value="@Model.LoanMasterId" id="LoanMasterId" name="LoanMasterId" />
+                    <div class="row" id="dvMain">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Member Name</label><br>
+                                @Html.DropDownListFor(d => Model.MemberID, (SelectList)ViewBag.MemberNames, "Select Member", new { @class = "form-control required" })
+                                @Html.HiddenFor(m => m.LoanCode)
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Application Date</label><br>
+                                @Html.DropDownList("LoanApplicationDate", (SelectList)ViewBag.MonthMeetings, "Select Date", new { @class = "required form-control" })
+                                @{
+                LoanApplicationDate = Model.LoanApplicationDate.Ticks > 0 ? Model.LoanApplicationDate.ToDisplayDateFormat() : string.Empty;
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Amount</label>
+                                @Html.TextBox("LoanAmountApplied", Model.LoanAmountApplied.ToDisplayCurrency(), new { @class = "form-control required number-only", @onchange = "ChangeLoanAmount();" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>No.Of Installments</label>
+                                <input type="text" name="NoofInstallmentsProposed" maxlength="3" id="NoofInstallmentsProposed" class="form-control required number-only" onchange="javascript:ChangeLoanAmount();" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Type</label>
+                                @Html.DropDownListFor(model => Model.InterestMasterID, (SelectList)ViewBag.Interest, "Select Loan Type", new { @class = "form-control required", @id = "ddlInterestMaster", @name = "InterestMasterID", @onchange = "GetInterestDetails(this.id);" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Principal Account Head</label><br />
+                                @Html.TextBoxFor(model => model.PrincipleAHName, "", new { @class = "form-control", @id = "PrincipleAHName", @name = "PrincipleAHName", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Interest Account Head</label><br />
+                                @Html.TextBoxFor(model => model.InterestAHName, "", new { @class = "form-control", @id = "InterestAHName", @name = "InterestAHName", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Interest Rate %</label>
+                                @Html.TextBoxFor(model => model.ROI, new { @readonly = "readonly", @class = "form-control" })
+                                @Html.HiddenFor(m => m.InterestRateID)
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Monthly Due Day</label>
+                                <input type="text" class="form-control" id="txtDueDay" name="txtDueDay" readonly="true" value="@ViewBag.MeetingDueDay" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Mode</label>
+                                @Html.DropDownListFor(d => Model.Mode, (SelectList)ViewBag.Modes, new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Project Purpose</label>
+                                @Html.DropDownListFor(m => m.ProjectID, (SelectList)ViewBag.projects, "Select Project", new { @class = "form-control required", onchange = "BindLoanPurposeByProjectId(this.id)" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Loan Purpose</label>
+                                @Html.DropDownListFor(d => d.LoanPurpose, (SelectList)ViewBag.LoanPurposeName, "Select Loan Purpose", new { @class = "form-control required" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Reference Number</label>
+                                @Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Source of fund</label>
+                                <select id="SourceOfFund" name="SourceOfFund" class="form-control required">
+                                    <option value="GOF">Group Own Fund</option>
+                                    <option value="OF">Other</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Transaction Mode</label><br />
+                                @Html.DropDownListFor(m => m.TransactionMode, new List<SelectListItem>
+                                    {
+                                    new SelectListItem{ Text="Cash", Value = "C" },
+                                    new SelectListItem{ Text="Cash Deposit at Bank", Value = "BD" },
+                                    new SelectListItem {Text="Cheque Deposit at Bank",Value="BC" }
+                                    }, new { @class = "form-control required" })
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin: 5px 0" />
+                    <div class="table-responsive">
+                        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                            <table class="table table-striped table-bordered table-hover dataTable no-footer" aria-describedby="dataTables-example_info" id="tblApprovals">
+                                <thead>
+                                    <tr role="row">
+                                        <th style="width: 5%;"></th>
+                                        <th style="width: 15%;">Approver Name</th>
+                                        <th style="width: 10%;">Saction/<br />
+                                            Recommended Amount</th>
+                                        <th style="width: 5%;">No Of Installments</th>
+                                        <th>Comments</th>
+                                        <th class="text-right" style="width: 20%;">APP/REJ</th>
+                                        <th style="width: 15%;" class="text-right">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                objApp = lstApprovals.Find(l => l.ApprovalType == "CA");
+                if (objApp == null) { objApp = new MemberLoanApprovalDto(); }
+                                    }
+                                    <tr class="gradeA odd" id="trGL">
+                                        <td>
+                                            <label>GROUP</label>
+                                        </td>
+                                        <td>
+                                            <label>@objApp.ActionBy</label></td>
+                                        <td>
+                                            <input type="text" id="GLSactionAmount" name="GLSactionAmount" class="form-control number-only" value="@(objApp.LoanSanctionAmount > 0 ? objApp.LoanSanctionAmount.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="GLInstallments" name="GLInstallments" class="form-control number-only" value="@(objApp.NoOfInstallments > 0 ? objApp.NoOfInstallments.ToString() : " ")" />
+                                        </td>
+                                        <td>
+
+                                            <textarea id="GLComments" name="GLComments" class="form-control">@(!string.IsNullOrWhiteSpace(objApp.ApprovalComments) ? objApp.ApprovalComments : "")</textarea>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButton("GLAction", "APP", Convert.ToString(objApp.Action) == "APP", new { @class = "form-control" })<label>APPROVE</label>
+                                            @Html.RadioButton("GLAction", "REJ", Convert.ToString(objApp.Action) == "REJ", new { @class = "form-control" })<label>REJECT</label>
+                                        </td>
+                                        <td>
+                                            @*<label id="lblGLActionDate">@(objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("MMMM dd, yyyy hh:mm tt") : string.Empty) </label>*@
+                                             @{string GLActionDate = objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                                <input type="text" value="@GLActionDate" class="form-control Date-Only financial-year-begin-date-picker required" id="lblGLActionDate" name="lblGLActionDate" readonly="" placeholder="Select Date" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    @{
+                objApp = lstApprovals.Find(l => l.ApprovalType == "CDA");
+                if (objApp == null) { objApp = new MemberLoanApprovalDto(); }
+                                    }
+                                    <tr class="gradeA odd" id="trCDA">
+                                        <td>
+                                            <label>C.D.A</label>
+                                        </td>
+                                        <td>
+                                            <label>@objApp.ActionBy</label></td>
+                                        <td>
+                                            <input type="text" id="CDASactionAmount" name="CDASactionAmount" class="form-control number-only" value="@(objApp.LoanSanctionAmount > 0 ? objApp.LoanSanctionAmount.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="CDAInstallments" name="CDAInstallments" class="form-control number-only" value="@(objApp.NoOfInstallments > 0 ? objApp.NoOfInstallments.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <textarea id="CDAComments" name="CDAComments" class="form-control">@(!string.IsNullOrWhiteSpace(objApp.ApprovalComments) ? objApp.ApprovalComments : "")</textarea>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButton("CDAAction", "APP", Convert.ToString(objApp.Action) == "APP", new { @class = "form-control" })<label>APPROVE</label>
+                                            @Html.RadioButton("CDAAction", "REJ", Convert.ToString(objApp.Action) == "REJ", new { @class = "form-control" })<label>REJECT</label>
+                                            @Html.Hidden("hdnCDAAction")
+                                        </td>
+                                        <td>
+                                            @*<label id="lblCDAActionDate">@(objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("MMMM dd, yyyy hh:mm tt") : string.Empty) </label>*@
+                                             @{string CDAActionDate = objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                                <input type="text" value="@CDAActionDate" class="form-control Date-Only financial-year-begin-date-picker required" id="lblCDAActionDate" name="lblCDAActionDate" readonly="" placeholder="Select Date" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    @{
+                objApp = lstApprovals.Find(l => l.ApprovalType == "RI");
+                if (objApp == null) { objApp = new MemberLoanApprovalDto(); }
+                                    }
+                                    <tr class="gradeA odd" id="trRI">
+                                        <td>
+                                            <label>R.I</label>
+                                        </td>
+                                        <td>
+                                            <label>@objApp.ActionBy</label></td>
+                                        <td>
+                                            <input type="text" id="RISactionAmount" name="RISactionAmount" class="form-control number-only " value="@(objApp.LoanSanctionAmount > 0 ? objApp.LoanSanctionAmount.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="RIInstallments" name="RIInstallments" class="form-control number-only" value="@(objApp.NoOfInstallments > 0 ? objApp.NoOfInstallments.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <textarea id="RIComments" name="RIComments" class="form-control">@(!string.IsNullOrWhiteSpace(objApp.ApprovalComments) ? objApp.ApprovalComments : "")</textarea>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButton("RIAction", "APP", Convert.ToString(objApp.Action) == "APP", new { @class = "form-control" })<label>APPROVE</label>
+                                            @Html.RadioButton("RIAction", "REJ", Convert.ToString(objApp.Action) == "REJ", new { @class = "form-control" })<label>REJECT</label>
+                                            @Html.Hidden("hdnRIAction")
+                                        </td>
+                                        <td>
+                                            @*<label id="lblRIActionDate">@(objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("MMMM dd, yyyy hh:mm tt") : string.Empty) </label>*@
+                                            @{string RIActionDate = objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                                <input type="text" value="@RIActionDate" class="form-control Date-Only financial-year-begin-date-picker required" id="lblRIActionDate" name="lblRIActionDate" readonly="" placeholder="Select Date" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    @{
+                objApp = lstApprovals.Find(l => l.ApprovalType == "MD");
+                if (objApp == null) { objApp = new MemberLoanApprovalDto(); }
+                                    }
+                                    <tr class="gradeA odd" id="trMD">
+                                        <td>
+                                            <label>M.D</label>
+                                        </td>
+                                        k
+                                        <td>
+                                            <label>@objApp.ActionBy</label></td>
+                                        <td>
+                                            <input type="text" id="MDSactionAmount" name="MDSactionAmount" class="form-control number-only" value="@(objApp.LoanSanctionAmount > 0 ? objApp.LoanSanctionAmount.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="MDInstallments" name="MDInstallments" class="form-control number-only" value="@(objApp.NoOfInstallments > 0 ? objApp.NoOfInstallments.ToString() : " ")" />
+                                        </td>
+                                        <td>
+                                            <textarea id="MDComments" name="MDComments" class="form-control">@(!string.IsNullOrWhiteSpace(objApp.ApprovalComments) ? objApp.ApprovalComments : "")</textarea>
+                                        </td>
+                                        <td>
+                                            @Html.RadioButton("MDAction", "APP", Convert.ToString(objApp.Action) == "APP", new { @class = "form-control" })<label>APPROVE</label>
+                                            @Html.RadioButton("MDAction", "REJ", Convert.ToString(objApp.Action) == "REJ", new { @class = "form-control" })<label>REJECT</label>
+                                            @Html.Hidden("hdnMDAction")
+                                        </td>
+                                        <td>
+                                            @*<label id="lblMDActionDate">@(objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("MMMM dd, yyyy hh:mm tt") : string.Empty) </label>*@
+                                             @{string MDActionDate = objApp.ActionDate.Ticks > 0 ? objApp.ActionDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                                <input type="text" value="@MDActionDate" class="form-control Date-Only financial-year-begin-date-picker required" id="lblMDActionDate" name="lblMDActionDate" readonly="" placeholder="Select Date" />
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        @if (!isView)
+                        {                        
+                            <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validation();">Submit</button>
+                            if (Model.LoanMasterId > 0)
+                            {
+                            <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validateConfirm(false);" formaction="ConfirmMemberLoanApplication" formmethod="post">Forward/Confirm</button>
+                            }
+                        }
+@*<button type="reset" class="btn btn-outline btn-primary" onclick="return resetall('@ecnloanmasterid')">Reset</button>*@
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                        @Html.HiddenFor(m => m.StatusCode)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+    <script type="text/javascript">
+        var loanApplDate = '@LoanApplicationDate';
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("MemberLoanApplicationLookup")';
+        }
+        function resetall(encryptLoanMasterID) {
+            if (encryptLoanMasterID != '') {
+                if (!confirm('If you continue reset all Fields'))
+                    return false;
+                window.location.href = '@Url.Content("CreateMemberLoanApplication?id=")' + encryptLoanMasterID
+            }
+            else {
+                $("#MemberID").val('');
+                $("#LoanApplicationDate").val('');
+                $("#LoanPurpose").val('');
+                $("#LoanAmountApplied").val('');
+                $("#NoofInstallmentsProposed").val('');
+                $("#ProjectID").val('');
+            }
+        }
+
+        $(document).ready(function () {
+            if ('@Model.NoofInstallmentsProposed' != null && '@Model.NoofInstallmentsProposed' != '' && '@Model.NoofInstallmentsProposed' != '0')
+                $('#NoofInstallmentsProposed').val('@Model.NoofInstallmentsProposed');
+            if ('@Model.Mode' != null && '@Model.Mode' != '' && '@Model.Mode' != '0')
+                $('#Mode').val('@Model.Mode');
+            if ('@(Model != null && !string.IsNullOrEmpty(Model.SourceOfFund) ? Model.SourceOfFund : "")' != '')
+                $('#SourceOfFund').val('@Model.SourceOfFund');
+
+            if ('@(Model != null && !string.IsNullOrEmpty(Model.TransactionMode) ? Model.TransactionMode : "")' != '')
+                $('#TransactionMode').val('@Model.TransactionMode');
+            if (loanApplDate != '') {
+                $('#LoanApplicationDate').val(loanApplDate);
+            }
+            UserRoleBasedApprovals();
+            LoadAmounts();
+        });
+
+
+        function UserRoleBasedApprovals() {
+            var roleCode = '@userRoleCode';
+            var appLevel = Number('@appLevel');
+            var statusCode = '@statusCode';
+
+            $('#trGL, #trCDA, #trRI, #trMD').find('input[type="text"],input[type="radio"],textarea').prop('readonly', true);
+            $('#trGL, #trCDA, #trRI, #trMD').find('input[type="radio"]').prop('disabled', true);
+
+            if (appLevel == 0 || statusCode == 'INITIATED') {
+                $('#trGL').find('input[type="text"],input[type="radio"],textarea').prop('readonly', false);
+                $('#trGL').find('input[type="radio"]').prop('disabled', false);
+            }
+
+            else {
+                $('#dvMain').find('input[type="text"],input[type="radio"],textarea,select').prop('disabled', true);
+
+                if (statusCode == 'FOR_CDA_REVIEW') {
+                    $('#trCDA').find('input[type="text"],input[type="radio"],textarea').prop('readonly', false);
+                    $('#trCDA').find('input[type="radio"]').prop('disabled', false);
+                }
+
+                else if (statusCode == 'FOR_RI_REVIEW') {
+                    $('#trRI').find('input[type="text"],input[type="radio"],textarea').prop('readonly', false);
+                    $('#trRI').find('input[type="radio"]').prop('disabled', false);
+                }
+
+                else if (statusCode == 'FOR_MD_APPROVAL') {
+                    $('#trMD').find('input[type="text"],input[type="radio"],textarea').prop('readonly', false);
+                    $('#trMD').find('input[type="radio"]').prop('disabled', false);
+                }
+            }
+        }
+
+        function LoadAmounts() {
+            var appLevel = Number('@appLevel');
+            var statusCode = '@statusCode';
+
+            if (statusCode == 'INITIATED') {
+                if ($.trim($('#GLSactionAmount').val()) == '') {
+                    $('#GLSactionAmount').val($('#LoanAmountApplied').val());
+                }
+
+                if ($.trim($('#GLInstallments').val()) == '') {
+                    $('#GLInstallments').val($('#NoofInstallmentsProposed').val());
+                }
+            }
+            else if (statusCode == 'FOR_CDA_REVIEW') {
+                if ($.trim($('#CDASactionAmount').val()) == '') {
+                    $('#CDASactionAmount').val($('#GLSactionAmount').val());
+                }
+
+                if ($.trim($('#CDAInstallments').val()) == '') {
+                    $('#CDAInstallments').val($('#GLInstallments').val());
+                }
+            }
+            else if (statusCode == 'FOR_RI_REVIEW') {
+                if ($.trim($('#RISactionAmount').val()) == '') {
+                    $('#RISactionAmount').val($('#CDASactionAmount').val());
+                }
+
+                if ($.trim($('#RIInstallments').val()) == '') {
+                    $('#RIInstallments').val($('#CDAInstallments').val());
+                }
+            }
+            else if (statusCode == 'FOR_MD_APPROVAL') {
+                if ($.trim($('#MDSactionAmount').val()) == '') {
+                    $('#MDSactionAmount').val($('#RISactionAmount').val());
+                }
+
+                if ($.trim($('#MDInstallments').val()) == '') {
+                    $('#MDInstallments').val($('#RIInstallments').val());
+                }
+            }
+        }
+
+        function validateConfirm(isSave) {
+            var appLevel = Number('@appLevel');
+            var statusCode = '@statusCode';
+
+            var sanctionAmount = '';
+            var installments = '';
+            var comments = '';
+            var action = '';
+            var hdnActionId = '';
+            var AcionDate = '';
+
+            if (appLevel == 0 || statusCode == 'INITIATED') {
+                sanctionAmount = $.trim($('#GLSactionAmount').val());
+                installments = $.trim($('#GLInstallments').val());
+                comments = $.trim($('#GLComments').val());
+                action = $('input[type="radio"]#GLAction')[0].checked ? 'APP' : $('input[type="radio"]#GLAction')[1].checked ? 'REJ' : '';
+                AcionDate = $.trim($('#lblGLActionDate').val());
+            }
+            if (statusCode == 'FOR_CDA_REVIEW') {
+
+                sanctionAmount = $.trim($('#CDASactionAmount').val());
+                installments = $.trim($('#CDAInstallments').val());
+                comments = $.trim($('#CDAComments').val());
+                action = $('input[type="radio"]#CDAAction')[0].checked ? 'APP' : $('input[type="radio"]#CDAAction')[1].checked ? 'REJ' : '';
+                hdnActionId = '#hdnCDAAction';
+                AcionDate = $.trim($('#lblCDAActionDate').val());
+            }
+
+            if (statusCode == 'FOR_RI_REVIEW') {
+                sanctionAmount = $.trim($('#RISactionAmount').val());
+                installments = $.trim($('#RIInstallments').val());
+                comments = $.trim($('#RIComments').val());
+                action = $('input[type="radio"]#RIAction')[0].checked ? 'APP' : $('input[type="radio"]#RIAction')[1].checked ? 'REJ' : '';
+                hdnActionId = '#hdnRIAction';
+                AcionDate = $.trim($('#lblRIActionDate').val());
+            }
+
+            if (statusCode == 'FOR_MD_APPROVAL') {
+                sanctionAmount = $.trim($('#MDSactionAmount').val());
+                installments = $.trim($('#MDInstallments').val());
+                comments = $.trim($('#MDComments').val());
+                action = $('input[type="radio"]#MDAction')[0].checked ? 'APP' : $('input[type="radio"]#MDAction')[1].checked ? 'REJ' : '';
+                hdnActionId = '#hdnMDAction';
+                AcionDate = $.trim($('#lblMDActionDate').val());
+            }
+
+            if (action == '') {
+                alert('Please select APPROVE / REJECT');
+                return false;
+            }
+            if (AcionDate == '') {
+                alert("Please enter Approve/REJECT Date")
+                return false;
+            }
+
+            if (hdnActionId != '') {
+                $(hdnActionId).val(action);
+            }
+
+            if (action == 'APP') {
+                if (sanctionAmount == '' || installments == '' || !Number(sanctionAmount) || !Number(installments) || Number(installments) <= 0 || Number(sanctionAmount) <= 0) {
+                    alert('Please enter valid Sanction Amount / No of Installments');
+                    return false;
+                }
+            } else {
+                if (comments == '') {
+                    alert('Please enter comments');
+                    return false;
+                }
+            }
+
+            if (!isSave) {
+                return confirm('if you click OK the request will move to next level and cannot be rollback your action.\n Do you wish to proceed?');
+            }
+            return true;
+        }
+
+        function validation() {
+            var validate = true;
+            if ($.trim($('#MemberID').val()) == '' && $.trim($('#LoanApplicationDate').val()) == '' && $.trim($('#LoanPurpose').val()) == '' && $.trim($('#LoanAmountApplied').html()) == '' && $.trim($('#NoofInstallmentsProposed').val()) == '' && $.trim($('#ddlInterestMaster').val()) == '' && $.trim($('#ProjectID').val()) == '') {
+                $('#MemberID,#LoanApplicationDate,#LoanPurpose,#LoanAmountApplied,#NoofInstallmentsProposed,#ddlInterestMaster,#ProjectID').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#MemberID,#LoanApplicationDate,#LoanPurpose,#LoanAmountApplied,#NoofInstallmentsProposed,#ddlInterestMaster,#ProjectID').css('border-color', '');
+
+            }
+            if ($.trim($('#MemberID').val()) == '') {
+                $('#MemberID').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#MemberID').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanAmountApplied').val()) == '0') {
+                $('#LoanAmountApplied').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanAmountApplied').css('border-color', '');
+
+            }
+            if ($.trim($('#NoofInstallmentsProposed').val()) == '') {
+                $('#NoofInstallmentsProposed').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#NoofInstallmentsProposed').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanPurpose').val()) == '') {
+                $('#LoanPurpose').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanPurpose').css('border-color', '');
+
+            }
+            if ($.trim($('#LoanApplicationDate').val()) == '') {
+                $('#LoanApplicationDate').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#LoanApplicationDate').css('border-color', '');
+
+            }
+            if ($.trim($('#ddlInterestMaster').val()) == '') {
+                $('#ddlInterestMaster').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ddlInterestMaster').css('border-color', '');
+            }
+            if ($.trim($('#ProjectID').val()) == '') {
+                $('#ProjectID').css('border-color', 'red');
+                validate = false;
+            }
+            else {
+                $('#ProjectID').css('border-color', '');
+            }
+            @* if (validate) {
+                var action = '@Url.Action("CheckLoanExisted")';
+                var Memberid = $('#MemberID').val();
+                var interestid = $('#ddlInterestMaster').val();
+                $.post(action, { InterestID: interestid, MemberID: Memberid }, function (data) {
+                    if (data.IsChecked) {
+                        validate = true
+                    }
+                    else {
+                        alert("Unable to create Loan: Outstanding Amount Exists for this member")
+                        validate = false;
+                    }
+                },'json');
+            }*@
+            if (!validate)
+                return false;
+
+            return validateConfirm(true);
+
+        }
+
+        function BindLoanPurposeByProjectId(id) {
+            var value = $('#' + id).val();
+            var action = '@Url.Action("GetLoanPurposeByProjectID", "MemberLoanApplication")';
+            $.post(action, { ProjectID: value }, function (response) {
+                $('#LoanPurpose').html(response).prepend("<option value='' selected='Selected'>Select LoanPurpose</option>");
+            });
+        }
+
+        function ChangeLoanAmount() {
+            var statusCode = '@statusCode';
+            if (statusCode == "INITIATED" || statusCode == '') {
+                $('#LoanAmountApplied').val();
+                $('#GLSactionAmount').val($('#LoanAmountApplied').val());
+                $('#GLInstallments').val($('#NoofInstallmentsProposed').val());
+            }
+        }
+
+        function GetInterestDetails(id) {
+            $('#PrincipleAHName').val('');
+            $('#InterestAHName').val('');
+            $('#ROI').val('');
+            $('#InterestRateID').val('');
+
+            var value = $('#' + id).val();
+            var action = '@Url.Action("GetLoanAccountHeadInterestDetails", "MemberLoanApplication")' + '?groupInterestId=' + value;
+            $.post(action
+                , {}
+                , function (data) {
+                    $('#PrincipleAHName').val(data.PrincipalAhName);
+                    $('#InterestAHName').val(data.InterestAhName);
+                    $('#ROI').val(data.ROI);
+                    $('#InterestRateID').val(data.interestRateId);
+
+                }
+                , 'json');
+        }
+        $(document).ready(function () {
+            menuLink = "menuTransactions";
+            subMenuLink = "lnkSideGroupLoanApplication";
+            LoadMenu();
+        });
+    </script>
+}

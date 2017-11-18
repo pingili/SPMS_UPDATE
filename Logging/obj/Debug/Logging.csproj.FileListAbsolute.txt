@@ -1,0 +1,26 @@
+D:\Murali\SPMS\SPMS\Logging\bin\Debug\Logging.dll
+D:\Murali\SPMS\SPMS\Logging\bin\Debug\Logging.pdb
+D:\Murali\SPMS\SPMS\Logging\bin\Debug\log4net.dll
+D:\Murali\SPMS\SPMS\Logging\obj\Debug\Logging.csprojResolveAssemblyReference.cache
+D:\Murali\SPMS\SPMS\Logging\obj\Debug\Logging.dll
+D:\Murali\SPMS\SPMS\Logging\obj\Debug\Logging.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\bin\Debug\Logging.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\bin\Debug\Logging.pdb
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\bin\Debug\log4net.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\obj\Debug\Logging.csprojResolveAssemblyReference.cache
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\obj\Debug\Logging.dll
+D:\VENKAT\From Gundu\SPMS\SPMS\Logging\obj\Debug\Logging.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\bin\Debug\Logging.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\bin\Debug\Logging.pdb
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\bin\Debug\log4net.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\obj\Debug\Logging.csprojResolveAssemblyReference.cache
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\obj\Debug\Logging.csproj.CoreCompileInputs.cache
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\obj\Debug\Logging.dll
+C:\Users\chandan\source\repos\SPMS\SPMS\Logging\obj\Debug\Logging.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\bin\Debug\Logging.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\bin\Debug\Logging.pdb
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\bin\Debug\log4net.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\obj\Debug\Logging.csprojResolveAssemblyReference.cache
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\obj\Debug\Logging.csproj.CoreCompileInputs.cache
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\obj\Debug\Logging.dll
+C:\Users\chandan\Source\Repos\SPMS_UPDATE\Logging\obj\Debug\Logging.pdb

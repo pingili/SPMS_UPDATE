@@ -1,0 +1,39 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "AccountHeadTableView";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@{
+    DataTable dt = new DataTable();
+    if (ViewBag.AccountHeadDt != null)
+    {
+        dt = ViewBag.AccountHeadDt;
+    }
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Account Head TreeView</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="Accountingtree();">Back To Accounting Tree</button>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        @Html.Partial("_Table", dt)
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    function Accountingtree() {
+
+        window.location.href = '@Url.Action("AccountTree", "AccountTree")';
+    }
+</script>

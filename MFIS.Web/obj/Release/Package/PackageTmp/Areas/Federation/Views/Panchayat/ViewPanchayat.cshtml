@@ -1,0 +1,84 @@
+﻿@model BusinessEntities.PanchayatViewDto
+@using CoreComponents;
+
+@{
+    ViewBag.Title = "ViewPanchayat";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{ 
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Panchayat Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.PanchayatCode)
+                            @Html.TextBoxFor(m => m.PanchayatCode, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.State)
+                            @Html.TextBoxFor(m => m.State, null, new { @class = "form-control", @readonly = "readonly" })
+
+                        </div>
+
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.District)
+                            @Html.TextBoxFor(m => m.District, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.TEPanchayatName)
+                            @Html.TextBoxFor(m => m.TEPanchayatName, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.Mandal)
+                            @Html.TextBoxFor(m => m.Mandal, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.Village)
+                            @Html.TextBoxFor(m => m.Village, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.DisplayNameFor(model => model.Panchayat)
+                            @Html.TextBoxFor(m => m.Panchayat, null, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px; height:30px;">
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+
+        </div>
+        <!-- end page-wrapper -->
+
+    </div>
+    <script>
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("PanchayatLookup")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSidePanchayat";
+            LoadMenu();
+        });
+    </script>
+}

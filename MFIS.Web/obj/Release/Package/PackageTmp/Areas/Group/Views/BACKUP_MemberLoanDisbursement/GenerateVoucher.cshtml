@@ -1,0 +1,164 @@
+﻿@model BusinessEntities.DisbursementVoucherDto
+@using CoreComponents;
+@using (Html.BeginForm())
+{
+    <div class="row">
+        @{  
+    string display = string.IsNullOrEmpty(Model.VoucherNumber) ? "none" : "block";
+            <div id="hdnvouchernumber" style="display:@display;">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Voucher Number</label>
+                        @Html.TextBoxFor(m => m.VoucherNumber, null, new { @class = "form-control", @Id = "VoucherNumber", @Name = "VoucherNumber", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Voucher Type</label>
+                        @Html.TextBoxFor(m => m.TransactionMode, null, new { @class = "form-control", @Id = "VoucherType", @Name = "VoucherType", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Voucher Date</label>
+                        @Html.TextBoxFor(m => m.TransactionDate, null, new { @class = "form-control", @Id = "VoucherDate", @Name = "VoucherDate", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>}
+
+    </div>
+    <div class="row">
+        <div id="GenerateVoucherhide">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Tanscation Mode</label><br>
+                    <input type="radio" name="TransactionMode" id="Cash" value="C" checked="">&nbsp; Cash &nbsp;
+                                <input type="radio" name="TransactionMode" id="Bank" value="B">&nbsp; Bank &nbsp;    
+                </div>
+                @Html.Hidden("GroupId", "", new { @id = "GroupId", @name = "GroupId" })
+                @Html.Hidden("hdnAccountNumber", "", new { @id = "hdnAccountNumber", @name = "hdnAccountNumber" })
+            </div>
+            <div class="col-lg-2" id="Amount">
+                <div class="form-group">
+                    <label>Disbursed Amount</label>
+                    @if (string.IsNullOrEmpty(Model.VoucherNumber))
+                    {
+                        @Html.TextBox("money", " ", new { @class = "form-control", @id = "money", @name = "money", onkeypress = "return validateNumbersOnly(event);" })
+                    }
+                    else
+                    {
+                        @Html.TextBox("money", " ", new { @class = "form-control", @id = "money", @name = "money", @readonly = "readonly" })
+                    }
+                </div>
+            </div>
+            <div class="TransactionDisplayMode">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Group Bank Account Number</label>
+                        @Html.DropDownList("FederationBankAccountNumber", (SelectList)ViewBag.federationbanks, "Select AccountNo", new { @class = "form-control required", @id = "FederationBankAccountNumber", onchange = "GetFAccountName(this.value);", @name = "FederationBankAccountNumber" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Group Bank Account Name</label>
+                        @Html.TextBoxFor(model => model.BankName, new { @class = "form-control", @id = "FaccountName", @name = "BankName", @readonly = "readonly", @placeholder = "Federation Bank Account Name" })
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label>Cheque Number</label>
+                        @Html.TextBoxFor(model => model.ChequeNumber, new { @class = "form-control", @placeholder = "Enter ChequeNumber", @id = "ChequeNumber", @name = "ChequeNumber" })
+
+                        @* <input class="form-control" placeholder="Cheque Number" />*@
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label>Cheque Date</label>
+                        @{ string ChequeDate = "";
+                           if (Model != null)
+                           {
+                               ChequeDate = Model.ChequeDate.Ticks > 0 ? Model.ChequeDate.ToString("dd/MMM/yyyy") : string.Empty;
+                           }
+                            <input type="text" value="@ChequeDate" class="form-control" id="ChequeDate1" name="ChequeDate1" readonly="true" placeholder="Select ChequeDate" />
+                        }
+                    </div>
+                </div>
+            </div>
+            @if (string.IsNullOrEmpty(Model.VoucherNumber))
+            {
+                <div class="col-lg-3">
+                    <div class="form-group" style="margin-top: 20px;">
+                        <button type="button" class="form-control btn btn-outline btn-primary pull-right lock-dependent" onclick="GeneratePaymentVoucher();">Generate Payment Voucher</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function GetFAccountName(id) {
+        $.post('@Url.Action("GetFAccountName")' + '/' + id, {},
+                    function (data) {
+                        $('#FaccountName').val(data.FaccountName);
+                    }, 'json');
+    }
+    if ($('#Cash').val() == "C") {
+        $('.TransactionDisplayMode').hide();
+        $('#money').show();
+    }
+    $("#Bank").click(function () {
+
+        $('.TransactionDisplayMode').show();
+    });
+    $("#Cash").click(function () {
+
+        $('.TransactionDisplayMode').hide();
+        $('#money').show();
+    });
+    var LoanAmount = $('#txtDisBursedAmount').val();
+    $('#money').val(LoanAmount);
+    $('#savebutton').hide();
+    $('#resetbutton').hide();
+    $('#hdntabtype').val('generatevoucher');
+    function GeneratePaymentVoucher() {
+        var transactionmode = $('input[name="TransactionMode"]:checked').val()
+        var LoanAmount = $('#txtDisBursedAmount').val();
+        LoanAmount = (LoanAmount.replace(',', '')).trim();
+        var LoanMasterId = $('#hdnLoanMasterId').val();
+        var bankentryId = $('#FederationBankAccountNumber').val();
+        var accountnumber = $('#FederationBankAccountNumber option:selected').text();
+        $('#hdnAccountNumber').val(accountnumber);
+        var GroupId = $('#hdnGroupId').val();
+        $('#GroupId').val(GroupId);
+        var actionurl = '@Url.Action("GeneratePaymentVoucher", "MemberLoanDisbursement")';
+        var data = $('form').serialize();
+        $.post(actionurl, data, function (data) {
+            if (data != null) {
+                $("#hdnvouchernumber").show();
+                $("#GenerateVoucherhide").hide();
+                var isSuccess = data.LoanMasterID != null && data.ObjectCode == data.ObjectCode;
+                DispalyMessage(isSuccess, data.Message);
+                $("#VoucherNumber").val(data.ObjectCode);
+                $("#VoucherType").val(data.VoucherType);
+                $("#VoucherDate").val(data.VoucherDate);
+                if (!isSuccess) {
+                    return false;
+                }
+
+            }
+        }, 'json');
+
+
+    }
+    $(document).ready(function () {
+
+        $('#ChequeDate1').datepicker({
+            dateFormat: "dd-M-yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+0"
+
+        });
+    });
+</script>

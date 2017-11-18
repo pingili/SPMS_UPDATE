@@ -1,0 +1,732 @@
+﻿@model MFIS.Web.Areas.Federation.Models.EmployeeModel
+
+@{
+    ViewBag.Title = "CreateEmployee";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("CreateEmployee", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">Manage Employee Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="addEmployee();">Add New Employee</button>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+
+                @if (ViewBag.Result != null && ViewBag.Result.ObjectId > 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result.ObjectId < 0 && !string.IsNullOrEmpty(ViewBag.Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @ViewBag.Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-2">
+
+                            <input type="hidden" value="@Model.EmployeeID" id="EmployeeID" name="EmployeeID" />
+                            <input type="hidden" value="@Model.EmployeeID" id="hdnObjectID" name="hdnObjectID" />
+
+                            <input type="hidden" id="hdnMaxRateIndex" name="hdnMaxRateIndex" />
+                            <input type="hidden" id="hdnMaxIntIndex" name="hdnMaxIntIndex" />
+
+                            @if (ViewBag.CurrentTab == null)
+                            {
+                                <input type="hidden" value="PersonalDetails" id="CurrentTab" name="CurrentTab" />
+                            }
+                            else
+                            {
+                                <input type="hidden" value="@ViewBag.CurrentTab" id="CurrentTab" name="CurrentTab" />
+                            }
+                            @if (Model.EmployeeID > 0)
+                            {
+
+                                <div class="form-group">
+                                    @Html.DisplayNameFor(m => m.EmployeeCode)
+                                    @Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", @readonly = "readonly", @placeholder = "M-101010109" })
+                                </div>
+                            }
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.EmployeeRefCode)
+                                @Html.TextBoxFor(m => m.EmployeeRefCode, new { @class = "form-control", @placeholder = "M-101010109" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.EmployeeName)
+                                @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control required alphabet-only", @placeholder = "Employee Name" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.TEEmployeeName)
+                                @Html.TextBoxFor(model => model.TEEmployeeName, new { @class = "form-control required alphabet-only", @placeholder = "తెలుగు పేరు " })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+
+                                @if (Model.Photo != null)
+                                { 
+                                    <img src="@("/" + Model.Photo)"  id="employee" class="employee" alt="" style="width:90px;height:60px;">
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/FileNotFound.png" alt="" id="employee" style="width: 90px; height: 60px;">
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.BranchCode)
+                                @Html.DropDownListFor(m => m.BranchID, (SelectList)ViewBag.BranchCode, "---select--", new { @class = "form-control", onchange = "GetBranchName(this.value)", @placeholder = "Branch Code" })
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.BranchName)
+                                @Html.TextBoxFor(m => m.BranchName, new { @class = "form-control required alphabet-only", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.SurName)
+                                @Html.TextBoxFor(m => m.SurName, new { @class = "form-control required alphabet-only", @placeholder = "Enter SurName" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                @Html.DisplayNameFor(m => m.TESurName)
+                                @Html.TextBoxFor(model => model.TESurName, new { @class = "form-control required alphabet-only", @placeholder = "తెలుగు ఇంటి పేరు  " })
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group" style="margin-top: 10px; padding-top: 10px;">
+                                <input type="file" name="Photo" id="Photo" style="position: absolute; opacity: 0" onchange='openFile(this,  "employee")'>
+                                <input type="text" id="Photo_display" onclick="$('#Photo').click();" value=''
+                                    placeholder="Upload Your Photo (JPG,PNG,GIF,PDF)" title="Upload Your Photo (JPG,PNG,GIF,PDF)"
+                                    class="form-control form-ip upload" />
+                                @* @if (Model.Photo!=null)
+                                            { 
+                                               <img src="@("/" + Model.Photo)"  id="employee" class="employee" alt="" style="width:90px;height:60px;">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Content/images/FileNotFound.png" alt="" id="employee" style="width: 90px; height: 60px;">
+                                            }*@
+
+                            </div>
+                        </div>
+                        @*<div class="col-lg-2">
+                            <div class="form-group" style="padding-top: 18px;">         
+                                <input type="file" name="Photo" id="Photo">
+                            </div>
+                        </div>*@
+                    </div>
+
+                    <div>
+                        <label style="color: #A94442;">Cluster :<span id="cluster"></span>, Village :<span id="village"></span></label>
+                    </div>
+                    <!-- Nav tabs -->
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active" tabindex="1">
+                            <a href="#personaldetails" onclick='movetotab("personaldetails");' role="tab" data-toggle="tab">Personal Details
+                            </a>
+                        </li>
+                        <li tabindex="2">
+                            <a href="#proofs" onclick='movetotab("proofs");' role="tab" data-toggle="tab">Proofs
+                            </a>
+                        </li>
+                        <li tabindex="3">
+                            <a href="#familydetails" onclick='movetotab("familydetails");' role="tab" data-toggle="tab">Income &amp; Family Details
+                            </a>
+                        </li>
+                        <li tabindex="4">
+                            <a href="#BANKAccountDetails" onclick='movetotab("BANKAccountDetails");' role="tab" data-toggle="tab">Bank A/c Details
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="personaldetails" class="tab-pane fade active in">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.ClusterID)
+                                        @Html.DropDownListFor(m => m.ClusterID, (SelectList)ViewBag.clusters, "---select--", new { @class = "form-control", @placeholder = "D-01" })
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var ec = '@Model.ClusterID';
+                                                if (ec != '' && ec != '0' && $('#ClusterID').val() == '') {
+                                                    $('#ClusterID').val(ec);
+                                                }
+                                            });
+                                        </script>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.EducationQualification)
+                                        @Html.DropDownListFor(m => m.EducationQualification, (SelectList)ViewBag.educationQualification, "---select--", new { @class = "form-control", @placeholder = "D-01" })
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var ec = '@Model.EducationQualification';
+                                                if (ec != '' && ec != '0' && $('#EducationQualification').val() == '') {
+                                                    $('#EducationQualification').val(ec);
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.DOJ)
+
+                                        @{
+                                string DOJ = Model.DOJ.Ticks > 0 ? Model.DOJ.ToString("dd/MMM/yyyy") : string.Empty;
+                                            <input type="text" value="@DOJ" class="form-control" id="DOJ" name="DOJ" readonly="true" placeholder="Select Date Of Joing" />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.Email)
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control required email-only", @placeholder = "Enter Email" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div style="height: 57px;" class="form-group">
+                                        @Html.DisplayNameFor(m => m.Gender)
+                                        <div style="height: 40px;">
+                                            <label>
+                                                <input type="radio" name="Gender" id="optionsRadios1" value="M" checked="">Female
+                                            </label>
+
+                                            <label>
+                                                <input type="radio" name="Gender" id="optionsRadios2" value="F">Male
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.Designation)
+                                        @Html.DropDownListFor(m => m.Designation, (SelectList)ViewBag.Desigination, "---select--", new { @class = "form-control" })
+
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                var ec = '@Model.Designation';
+                                                if (ec != '' && ec != '0' && $('#Designation').val() == '') {
+                                                    $('#Designation').val(ec);
+                                                }
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    @Html.DisplayNameFor(m => m.DOB)
+
+                                    @{
+                                string DOB = Model.DOB.Ticks > 0 ? Model.DOB.ToString("dd/MMM/yyyy") : string.Empty;
+                                        <input type="text" value="@DOB" class="form-control required" id="DOB" name="DOB" readonly="true" placeholder="Select DOB" />
+                                    }
+                                </div>
+                                <div class="col-lg-3">
+                                    <div style="height: 57px;" class="form-group">
+                                        <label>Disablity</label>
+                                        <div style="height: 40px;">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="Radio1" value="option1" checked="">No 
+                                            </label>
+
+                                            <label>
+                                                <input type="radio" name="optionsRadios" id="Radio2" value="option2">Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Contact Number</label>
+                                        @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control required phonenumber-only", @placeholder = "Mobile Number" })
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.FromDate)
+                                        @{
+                                string fromdate = Model.FromDate.Ticks > 0 ? Model.FromDate.ToString("dd/MMM/yyyy") : string.Empty;
+
+                                            <input type="text" value="@fromdate" class="form-control" id="FromDate" name="FromDate" readonly="true" placeholder="Select From Date" />
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.DateofRetirement)
+
+                                        @{
+                                string DateofRetirement = Model.DateofRetirement.Ticks > 0 ? Model.DateofRetirement.ToString("dd/MMM/yyyy") : string.Empty;
+
+                                            <input type="text" value="@DateofRetirement" class="form-control" id="DateofRetirement" name="DateofRetirement" readonly="true" placeholder="Select Date Of Retirement" />
+
+                                   
+                                        }
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.Religion)
+                                        @Html.DropDownListFor(m => m.Religion, (SelectList)ViewBag.Religion, "---select--", new { @class = "form-control" })
+                                   </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.MaritalStatus)
+                                        <select name="MaritalStatus" id="MaritalStatus" class="form-control">
+                                            <option>-Select-</option>
+                                            <option value="M">Married</option>
+                                            <option value="U">Unmarried</option>
+                                            <option value="S">Single</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.ToDate)
+                                        @{
+                                string ToDate = Model.ToDate.Ticks > 0 ? Model.ToDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                            <input type="text" value="@ToDate" class="form-control" id="ToDate" name="ToDate" readonly="true" placeholder="Select To Date" />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.PresentAddress)
+                                        @Html.TextAreaFor(m => m.PresentAddress, 2, 5, new { @class = "form-control", @placeholder = "Please enter Present Address" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.PermanentAddress)
+                                        @Html.TextAreaFor(m => m.PermanentAddress, 2, 5, new { @class = "form-control", @placeholder = "Please enter Permanent Address " })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.BloodGroup)
+                                        @Html.DropDownListFor(d => Model.BloodGroup, (SelectList)ViewBag.BloodGroup, "Select BloodGroup", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.SocialCategory)
+                                        @Html.DropDownListFor(m => m.SocialCategory, (SelectList)ViewBag.socialCategory, "---select socialCategory--", new { @class = "form-control", @placeholder = "D-01" })
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.EmergencyContactNumber)
+                                        @Html.TextBoxFor(m => m.EmergencyContactNumber, new { @class = "form-control required", @placeholder = "Emergency Contact Number" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.EmergencyContactName)
+                                        @Html.TextBoxFor(m => m.EmergencyContactName, new { @class = "form-control", @placeholder = "Emergency Contact Name" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="familydetails" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.NomineeName)
+                                        @Html.TextBoxFor(m => m.NomineeName, new { @class = "form-control required", @placeholder = "Nominee Name" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.SocialCategory)
+                                        @Html.DropDownListFor(m => m.SocialCategory, (SelectList)ViewBag.socialCategory, "---select--", new { @class = "form-control", @placeholder = "D-01" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.NomineeRelationship)
+                                        @Html.DropDownListFor(d => Model.NomineeRelationship, (SelectList)ViewBag.nomineeRelationship, "Select Nominee ", new { @class = "form-control required" })
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.FamilyIncome)
+                                    @*@Html.DropDownListFor(d => Model.FamilyIncome, (SelectList)ViewBag.familyIncome, "Select familyIncome", new { @class = "form-control required" })*@
+                                    <select class="form-control">
+                                        <option>---select Income--</option>
+                                        <option>Below 10,000</option>
+                                        <option>10,001-20,000</option>
+                                        <option>20,001-30,000</option>
+                                        <option>30,001-40,000</option>
+                                        <option>40,001 and Above</option>
+                                    </select>
+
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.NonEarningMembersInFamily)
+                                        @Html.TextBoxFor(m => m.NonEarningMembersInFamily, new { @class = "form-control", @placeholder = "Non Earning Members In Family Ex:03" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.ParentGuardianName)
+                                        @Html.TextBoxFor(m => m.ParentGuardianName, new { @class = "form-control", @placeholder = "Parent Guardian Name" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.DisplayNameFor(m => m.EarningMembersInFamily)
+                                        @Html.TextBoxFor(m => m.EarningMembersInFamily, new { @class = "form-control", @placeholder = "Earning Members In Family  Ex:03" })
+                                    </div>
+                                    <div class="form-group input-group">
+
+                                        @Html.DisplayNameFor(m => m.AssetsInNameOfEmployee)
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(m => m.AssetsInNameOfEmployee, new { @class = "form-control number only", @placeholder = "Assets In Name Of the Employee  Ex:50000" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            @Html.DisplayNameFor(m => m.ParentGuardianRelationship)
+                                            @Html.DropDownListFor(d => Model.ParentGuardianRelationship, (SelectList)ViewBag.parentGuardionRelationship, "Select Parent/Guardian Relationship", new { @class = "form-control required" })                                         
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="proofs" class="tab-pane fade">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Aadhar Number</label>
+                                        @*@Html.TextBoxFor(model => model.MobileNumber, new { @class = "form-control", @placeholder = "9948764483" })*@
+                                        <input class="form-control alphanumeric-only required" value="@Model.AadharNo" id="AADHAR" name="AADHAR" maxlength="12" placeholder="Enter Aadhar No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>VoterID</label>
+                                        @*@Html.TextBoxFor(model => model, new { @class = "form-control", @placeholder = "9948764483" })*@
+
+                                        <input class="form-control alphanumeric-only" value="@Model.VoterNo" id="VoterID" name="VoterID" maxlength="14" placeholder="Enter Voter ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PAN Card</label>
+                                        @*@Html.TextBoxFor(model => model, new { @class = "form-control", @placeholder = "9948764483" })*@
+
+                                        <input class="form-control alphanumeric-only" value="@Model.PANNo" id="PANCard" name="PANCard" maxlength="17"  placeholder="Enter PAN Card NO" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Aadhar Uplaod</label>
+                                        <input type="file" name="fileAadhar" id="fileAadhar" style="position: absolute; opacity: 0" onchange='openFile(this,  "aadharimage")'>
+                                        <input type="text" class="form-control form-ip upload" title="Upload Your Aadhar (JPG,PNG,GIF,PDF)" placeholder="Upload Your Photo (JPG,PNG,GIF,PDF)" value="" onclick="$('#fileAadhar').click();" id="fileAadhar_display" readonly="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>VoterID Uplaod</label>
+
+                                        <input type="file" name="fileVoter" id="fileVoter" style="position: absolute; opacity: 0" onchange='openFile(this,  "voterimage")'>
+                                        <input type="text" class="form-control form-ip upload" title="Upload Your Voter (JPG,PNG,GIF,PDF)" placeholder="Upload Your Voter (JPG,PNG,GIF,PDF)" value="" onclick="$('#fileVoter').click();" id="fileVoter_display" readonly="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PAN Card Uplaod</label>
+
+                                        <input type="file" name="filePan" id="filePan" style="position: absolute; opacity: 0" onchange='openFile(this,  "panimage")'>
+                                        <input type="text" class="form-control form-ip upload" title="Upload Your PAN (JPG,PNG,GIF,PDF)" placeholder="Upload Your PAN (JPG,PNG,GIF,PDF)" value="" onclick="$('#filePan').click();" id="filePan_display" readonly="true">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+
+
+                                    <div class="form-group">
+                                        @if (!string.IsNullOrEmpty(Model.AadharImagePath))
+                                        { 
+                                            <img src="@("/" + Model.AadharImagePath)" alt="" id="aadharimage" style="width:90px;height:60px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/FileNotFound.png" alt="" id="aadharimage" style="width: 90px; height: 60px;">
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        @if (!string.IsNullOrEmpty(Model.VoterImagePath))
+                                        { 
+                                            <img src="@("/" + Model.VoterImagePath)" alt="" id="voterimage"  style="width:90px;height:60px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/FileNotFound.png" alt="" id="voterimage" style="width: 90px; height: 60px;">
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        @if (!string.IsNullOrEmpty(Model.PANImagePath))
+                                        { 
+                                            <img src="@("/" + Model.PANImagePath)" alt="" id="panimage" style="width:90px;height:60px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/FileNotFound.png" alt="" id="panimage" style="width: 90px; height: 60px;">
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Ration Card </label>
+                                        <input class="form-control alphanumeric-only required" value="@Model.RationNo" id="RationCard" maxlength="20" placeholder="Enter Ration Card No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Job Card</label>
+                                        <input class="form-control alphanumeric-only"value="@Model.JobcardNo" id="JobCard" maxlength="12" placeholder="Enter Job Card No">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Ration Card Uplaod</label>
+
+                                        <input type="file" name="fileRation" id="fileRation" style="position: absolute; opacity: 0" onchange='openFile(this,  "rationimage")'>
+                                        <input type="text" class="form-control form-ip upload" title="Upload Your Ration Card (JPG,PNG,GIF,PDF)" placeholder="Upload Your Ration Card (JPG,PNG,GIF,PDF)" value="" onclick="$('#fileRation').click();" id="fileRation_display" readonly="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>job Card Uplaod</label>
+
+                                        <input type="file" name="fileJobcard" id="fileJobcard" style="position: absolute; opacity: 0" onchange='openFile(this,  "jobcardimage")'>
+                                        <input type="text" class="form-control form-ip upload" title="Upload Your Job Card (JPG,PNG,GIF,PDF)" placeholder="Upload Your Job Card (JPG,PNG,GIF,PDF)" value="" onclick="$('#fileJobcard').click();" id="fileJobcard_display" readonly="true">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        @if (!string.IsNullOrEmpty(Model.RationImagePath))
+                                        { 
+                                            <img src="@("/" + Model.RationImagePath)" alt="" id="rationimage" style="width:90px;height:60px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/FileNotFound.png" alt="" id="rationimage" style="width: 90px; height: 60px;">
+                                        
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        @if (!string.IsNullOrEmpty(Model.JobcardImagePath))
+                                        { 
+                                            <img src="@("/" + Model.JobcardImagePath)" alt="" id="jobcardimage" style="width:90px;height:60px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/FileNotFound.png" alt="" id="jobcardimage" style="width: 90px; height: 60px;">
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.EmployeeID > 0)
+                        {
+
+                            <div class="tab-pane fade" id="bankdetails">
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;">
+                        <button type="submit" class="btn btn-outline btn-primary" onclick="return validate();">Submit</button>
+                        <button type="reset" class="btn btn-outline btn-primary">Reset</button>
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        }
+    </div>
+</div>
+<script src="~/Scripts/jquery.bpopup.min.js"></script>
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#FromDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#DOB').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+            $('#DateofRetirement').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+            $('#DOJ').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+            $('#ToDate').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+
+        });
+    </script>
+
+}
+
+<script>
+    function addEmployee() {
+        window.location.href = '@Url.Action("CreateEmployee","Employee")';
+    }
+    function GetBranchName(id) {
+        $.post('@Url.Action("GetBranchName")' + '/' + id, {},
+                function (data) {
+                    $('#BranchName').val(data.BranchName);
+                    //$('#Panchayat').val(data.PanchayatName);
+                    //$('#village').html(data.VillageName);
+                    //$('#cluster').html(data.ClusterName);
+                }, 'json');
+    }
+</script>
+
+<script type="text/javascript">
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("~/Employee/EmployeeLookUp")';
+    }
+    $(document).ready(function () {
+        menuLink = "menuOrganization";
+        subMenuLink = "lnkSideEmployee";
+        LoadMenu();
+    });
+    CustomTransliteration(['TEEmployeeName']);
+    CustomTransliteration(['TESurName']);
+    function movetotab(tabname) {
+        showProgress();
+        $('#CurrentTab').val(tabname);
+        if (tabname == 'BANKAccountDetails') {
+
+            var actionurl = '@Url.Action("CreateGroupBankDetails", "Group")';
+            $.get(actionurl, function (data) {
+                if (data) {
+                   
+                    $('#bankdetails').html(data);
+                    $('#bankdetails').css("display", "block");
+                    $('#bankdetails').attr("class", "tab-pane fade active in");
+                }
+            });
+        }
+    }
+    function validate() {
+        var SelectedTab = $('#CurrentTab').val();
+        var validateResult = true;
+
+        if (SelectedTab == 'PersonalDetails') {
+            var requiredFieldArray = ['BranchID', 'EmployeeName', 'MobileNumber', 'FromDate', 'DOB', 'EducationQualification', 'Email', 'Religion'];
+        }
+        if (SelectedTab == 'familydetails') {
+            var RequiredPersonalDetails = ['NomineeName', 'SocialCategory', 'NomineeRelationship', 'MonthlyIncome', 'EarningMembersInFamily', 'ParentGuardianRelationship', 'IncomeFrequency'];
+        }
+        if (SelectedTab == 'proofs') {
+            id = "ration"
+            var RequiredPersonalDetails = ['AADHAR', 'PANCard', 'RationCard'];
+        }
+        var validateResult = RequiredFieldValidation(requiredFieldArray);
+        return validateResult;
+    }
+
+    var openFile = function (srcInput, imgId) {
+        //Validation
+        var ext = srcInput.value.match(/\.(.+)$/)[1];
+        ext = ext.toLowerCase();
+        if (!(ext == 'jpg' || ext == 'jpeg' || ext == 'png')) {
+            alert('Invalid File Format, Please Upload JPG, JPEG, PNG Types');
+            return false;
+        }
+        $('#' + srcInput.id + '_display').val(srcInput.value);
+
+        var reader = new FileReader();
+        reader.onload = function () {
+            var dataURL = reader.result;
+            var output = document.getElementById(imgId);
+
+            output.src = dataURL;
+        };
+        reader.readAsDataURL(srcInput.files[0]);
+    };
+
+    $(document).ready(function () {
+        if ('@Model.MaritalStatus' != null && '@Model.MaritalStatus' != '' && '@Model.MaritalStatus' != '0')
+            $('#MaritalStatus').val('@Model.MaritalStatus');
+
+        if ('@Model.Religion' != null && '@Model.Religion' != '' && '@Model.Religion' != '0')
+            $('#Religion').val(@Model.Religion);
+
+        if ('@Model.EducationQualification' != null && '@Model.EducationQualification' != '' && '@Model.EducationQualification' != '0')
+            $('#EducationQualification').val(@Model.EducationQualification);
+
+        if ('@Model.SocialCategory' != null && '@Model.SocialCategory' != '' && '@Model.SocialCategory' != '0')
+            $('#SocialCategory').val('@Model.SocialCategory');
+
+        if ('@Model.NomineeRelationship' != null && '@Model.NomineeRelationship' != '' && '@Model.NomineeRelationship' != '0')
+            $('#NomineeRelationship').val(@Model.NomineeRelationship);
+
+        if ('@Model.BloodGroup' != null && '@Model.BloodGroup' != '' && '@Model.BloodGroup' != '0')
+            $('#BloodGroup').val(@Model.BloodGroup);
+
+
+    });
+</script>

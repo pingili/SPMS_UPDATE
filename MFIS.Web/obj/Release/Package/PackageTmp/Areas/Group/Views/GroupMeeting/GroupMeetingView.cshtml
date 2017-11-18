@@ -1,0 +1,125 @@
+﻿@model System.Collections.Generic.List<BusinessEntities.GroupMeetingViewDto>
+@using CoreComponents
+@{
+    ViewBag.Title = "ViewGroupMeeting";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+@using BusinessEntities;
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements || ViewBag.pageType.ToString()=="U"-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">@ViewBag.MeetingHeader</span>
+                    @if (ViewBag.PageType != null && ViewBag.PageType.ToString() == "L")
+                    {
+                        <input type="button" class="btn btn-default pull-right" value="Lock Open Meeting" onclick="LockOpenMeetings('@ViewBag.PageType.ToString()',' @ViewBag.groupMeetingId');" />
+                    }
+                    @if (ViewBag.PageType != null && ViewBag.pageType.ToString() == "U")
+                    {
+                        <input type="button" class="btn btn-default pull-right" value="Un Lock Meeting" onclick="LockOpenMeetings('@ViewBag.PageType.ToString()',' @ViewBag.groupMeetingId');" />
+                    }
+                    <button type="button" class="btn btn-default pull-right" style="margin-right: 5px;" onclick="BackToList();">Back To List</button>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered table-hover">
+                        <tbody>
+                            @foreach (var meeting in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <table width="100%" border="2" cellspacing="1" cellpadding="1">
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <label>Meeting Date</label>
+                                                </td>
+                                                <td>@(string.Format("{0} - {1}", meeting.MeetingDate.ToDisplayDateFormat(), meeting.IsSplMeeting ? "Special" : "Regular"))</td>
+                                            </tr>
+                                            @if (meeting.IsConducted)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <label>Objective</label>
+                                                    </td>
+                                                    <td>@meeting.MeetingObjective</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Comments</label>
+                                                    </td>
+                                                    <td>@meeting.MeetingComments</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Attended Members</label>
+                                                    </td>
+                                                    <td>@meeting.Members</td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <label>Conducted?</label>
+                                                    </td>
+                                                    <td>Not Conducted</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Reason</label>
+                                                    </td>
+                                                    <td>@meeting.ReasonName</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>Comments</label>
+                                                    </td>
+                                                    <td>@meeting.OtherReason</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkSideGroupMeeting";
+        LoadMenu();
+    });
+    function BackToList() {
+        showProgress();
+        window.location.href = '@Url.Content("GroupMeetingLookup")';
+    }
+
+    function LockOpenMeetings(type, meetingId)
+    {
+        if (type == 'L')
+        {
+            if (confirm('if you continue, open meeting will be lock . \n Do you wish to continue?'))
+            {
+                showProgress();
+                window.location.href = '@Url.Content("GroupMeetingLock?type=")' + type + '&meetingId=' + meetingId;
+            }
+        }
+        if (type == 'U')
+        {
+            if (confirm('if you continue, Locked meeting will be Open . \n Do you wish to continue?'))
+            {
+                showProgress();
+                window.location.href = '@Url.Content("GroupMeetingLock?type=")' + type + '&meetingId=' + meetingId;
+            }
+        }
+
+    }
+</script>

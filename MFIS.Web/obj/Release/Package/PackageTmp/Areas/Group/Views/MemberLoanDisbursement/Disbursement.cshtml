@@ -1,0 +1,318 @@
+﻿@model BusinessEntities.GroupLoanDisbursementDto
+@using CoreComponents;
+
+@using (Html.BeginForm())
+{
+    <div class="panel panel-default col-lg-12">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Group Loan Interest Master</label>
+                @Html.DropDownListFor(model => Model.InterestMasterID, (SelectList)ViewBag.Interest, "Select Loan Interest Master", new { @class = "form-control required", @id = "ddlInterestMaster", @name = "InterestMasterID", @onchange = "GetInterestDetails(this.id);" })
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Principal Account Head</label><br />
+                    @Html.HiddenFor(m => m.PrincipleAHId)
+                    @Html.TextBoxFor(model => model.PrincipleAHName, "", new { @class = "form-control", @id = "PrincipleAHName", @name = "PrincipleAHName", @disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Interest Account Head</label><br />
+                    @Html.HiddenFor(m => m.InterestRateID)
+                    @Html.TextBoxFor(model => model.InterestAHName, "", new { @class = "form-control", @id = "InterestAHName", @name = "InterestAHName", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Interest Rate %</label>
+                    @Html.TextBoxFor(model => model.ROI, new { @disabled = "disabled", @class = "form-control", @id = "txtROI", @name = "InterestRate" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Monthly Due Day</label>
+                    <input type="text" class="form-control" id="txtDueDay" name="txtDueDay" readonly="true" value="@Model.MeetingDay" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Disbursed Amount</label>
+                    <input type="text" class="form-control number-only required" value="@Model.DisbursedAmount.ToDisplayCurrency()" placeholder="Amount" id="txtDisBursedAmount" name="txtDisBursedAmount" onchange="getmonthlyinstallment();" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group" id="">
+                    <label>No.Of Installments</label>
+                    @{
+                        @Html.TextBoxFor(model => model.NoOfInstallments, new { @class = "form-control required number-only", @maxlength = "3", @id = "NoOfInstallments", @name = "NoOfInstallments", @onchange = "changelastinstallmentdate(this.id);" })
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>RefNo</label>
+                    <input type="text" class="form-control" id="RefNo" name="RefNo" value="@Model.LoanRefNumber" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Transaction Mode</label><br />
+                    @Html.DropDownListFor(m => m.TransactionMode, new List<SelectListItem>
+                                 {
+                                    new SelectListItem{ Text="Cash", Value = "C" },
+                                    new SelectListItem{ Text="Cash Deposit at Bank", Value = "BD" },
+                                    new SelectListItem {Text="Cheque Deposit at Bank",Value="BC" }
+                                 }, new { @class = "form-control required" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Disbursement Date</label>
+                    @Html.DropDownListFor(m => m.DisbursementDate, (SelectList)ViewBag.MonthMeetings, "Select Date", new { @class = "form-control required", @id = "DisbursementDate" })
+                    <input type="text" value="@Model.DisbursementDate.ToDisplayDateFormat()" class="form-control required" id="txtDisbursementDate" name="txtDisbursementDate" readonly="true" placeholder="Select DisbursementDate" style="display:none;" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>1st Installment Starts From</label>
+                    @Html.TextBox("txtFirstInstallmentStartsFrom", Model.InstallmentStartFrom.ToDisplayDateFormat(), new { @class = "form-control required", @id = "txtFirstInstallmentStartsFrom", @name = "txtFirstInstallmentStartsFrom", @placeholder = "DD/MM/YYY" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Final installment Date</label>
+                    @Html.TextBox("txtLastInstallmentDate", Model.FinalInstallmentDate.ToDisplayDateFormat(), new { @class = "form-control required", @id = "txtLastInstallmentDate", @name = "txtLastInstallmentDate", @placeholder = "DD/MM/YYY", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Monthly Principal Demand</label>
+                    <input type="text" readonly="readonly" id="monthlyprincipaldemand" value="@Model.MonthlyPrincipalDemand.ToDisplayCurrency()" name="monthlyprincipaldemand" class="form-control" />
+                </div>
+            </div>
+            <div class="col-lg-3 dv-cheque">
+                <div class="form-group">
+                    <label>Cheque Number</label>
+                    @Html.TextBoxFor(m => m.ChequeNumber, null, new { @class = "form-control number-only required" })
+                </div>
+            </div>
+            <div class="col-lg-3 dv-cheque">
+                <div class="form-group">
+                    <label>Cheque Date</label>
+                    <input type="text" value="@Model.chequedate.ToDisplayDateFormat()" class="form-control required" id="ChequeDate" name="ChequeDate" placeholder="Select ChequeDate" readonly="true" />
+                </div>
+            </div>
+            <div class="col-lg-3" id="dvToBank">
+                <div class="form-group">
+                    <label>Group Bank Account</label>
+                    @Html.DropDownListFor(m => m.BankEntryId, (SelectList)ViewBag.slBankAh, "Select Bank Account Head", new { @class = "form-control required" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdninterestRateId" value="@Model.GroupInterstRateID" name="hdninterestRateId">
+    <input type="hidden" id="hdnPrincipalAHID" name="hdnPrincipalAHID" value="@Model.PrincipleAHId">
+    <input type="hidden" id="hdninterestMasterId" name="hdninterestMasterId" value="@Model.InterestMasterID">
+}
+<script type="text/javascript">
+    var v = new Date();
+    function TransactionModeChange() {
+        var tMode = $('#TransactionMode').val();
+        $('.dv-cheque').hide();
+        if (tMode == "C") {
+            $('#dvToBank').hide();
+            $('#DisbursementDate').show();
+            $('#txtDisbursementDate').hide();
+        } else {
+            $('#DisbursementDate').hide();
+            $('#txtDisbursementDate').show();
+            $('#dvToBank').show();
+
+            if (tMode == "BC") {
+                $('.dv-cheque').show();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        var transactionDate = '@(Model != null ? Model.DisbursementDate.ToDisplayDateFormat() : string.Empty)';
+        $('#DisbursementDate').val(transactionDate);
+        $('#hdntabtype').val('disbursement');
+        var noofinstallments = $('#NoOfInstallments').val();
+        TransactionModeChange();
+
+        $('#TransactionMode').on('change', function () {
+            TransactionModeChange();
+            DisbursementDateChange();
+        });
+
+        $('#txtFirstInstallmentStartsFrom').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: false,
+            changeDate: false,
+            yearRange: "-60:+100",
+            onSelect: function (selectedDate) {
+                var meetingDay = parseInt($('#txtDueDay').val());
+                var oldValue = $("#txtLastInstallmentDate").val();
+                var dt = new Date(selectedDate);
+
+                if (dt.getDate() != meetingDay) {
+                    $("#txtLastInstallmentDate").val(oldValue);
+                } else {
+                    dt.setDate(dt.getDate() + 1)
+                }
+
+                $("#txtLastInstallmentDate").datepicker("option", "minDate", dt);
+                changelastinstallmentdate();
+            },
+            beforeShowDay: function (date) {
+                var meetingDay = parseInt($('#txtDueDay').val());
+                if (date.getDate() == meetingDay) {
+                    return [true, ''];
+                }
+
+                return [false, ''];
+            }
+        });
+        $('#txtLastInstallmentDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+100"
+
+        });
+        $('#ChequeDate').datepicker({
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-10:+20",
+            minDate: __currentOpenMonth,
+            defaultDate: __currentOpenMonth
+        });
+
+        $('#txtDisbursementDate').datepicker({
+            minDate: new Date($('#LoanApplicationDate').val()),
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+100",
+            onSelect: function (selectedDate) {
+                DisbursementDateChange(selectedDate)
+            }
+        });
+
+        $('#DisbursementDate').on('change', function () {
+            var selectedDate = new Date($(this).val());
+            DisbursementDateChange(selectedDate);
+        });
+    });
+
+    function DisbursementDateChange(selectedDate) {
+        debugger;
+        var dt = new Date(getDisbursementDate());
+        var meetingday = $('#txtDueDay').val();
+        if (dt.getDate() >= parseInt(meetingday)) {
+            dt.setMonth(dt.getMonth() + 1)
+        }
+        dt.setDate(parseInt(meetingday));
+
+        $("#txtFirstInstallmentStartsFrom").datepicker("option", "minDate", dt);
+        //$("#txtFirstInstallmentStartsFrom").datepicker("option", "dateFormat", "dd/M/yy");
+        $("#txtFirstInstallmentStartsFrom").val(getFormattedDateString(dt));
+        changelastinstallmentdate();
+    }
+
+    function getmonthlyinstallment() {
+        var amount = $('#txtDisBursedAmount').val();
+        var noofinstallments = $('#NoOfInstallments').val();
+        if (amount != '' && noofinstallments != '' && parseInt(amount) != 0 && !isNaN(noofinstallments) && parseInt(noofinstallments) != 0) {
+            amount = amount.replace(',', '');
+            noofinstallments = noofinstallments.replace(',', '');
+            var monthlyamount = parseInt(parseInt(amount) / parseInt(noofinstallments));
+            $('#monthlyprincipaldemand').val(monthlyamount);
+        }
+    }
+
+    function getFormattedDateString(dt) {
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var date = dt;
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+
+        return day + '/' + monthNames[monthIndex] + '/' + year;
+    }
+
+    function getDisbursementDate() {
+        var tMode = $('#TransactionMode').val();
+        if (tMode == "C") {
+            return $('#DisbursementDate').val();
+        } else {
+            return $('#txtDisbursementDate').val();
+        }
+    }
+
+    function changelastinstallmentdate() {
+        var noofinstallments = $('#NoOfInstallments').val();
+        if (noofinstallments == '') {
+            $('#txtLastInstallmentDate').val('');
+            return;
+        }
+        if (parseInt(noofinstallments) <= 0) {
+            $('#NoOfInstallments').val('0');
+            $('#txtLastInstallmentDate').val('');
+            $('#monthlyprincipaldemand').val('0');
+        }
+        var disbursementDate = getDisbursementDate();
+        var firstInstallmentDate = $('#txtFirstInstallmentStartsFrom').val();
+
+        if (disbursementDate == '' || firstInstallmentDate == '') {
+            $('#txtLastInstallmentDate').val('');
+            if (disbursementDate == '')
+                $('#txtFirstInstallmentStartsFrom').val('');
+            $('#monthlyprincipaldemand').val('0');
+            return;
+        }
+        //add months is noof installments
+
+        var fiDate = new Date(firstInstallmentDate);
+        fiDate.setMonth(fiDate.getMonth() + parseInt(noofinstallments));
+
+        //assigmn
+        $('#txtLastInstallmentDate').val(getFormattedDateString(fiDate));
+
+
+        //cal emi
+        getmonthlyinstallment();
+
+    }
+
+    function GetInterestDetails(id) {
+        $('#ddldepositprincipleACHead').val('');
+        $('#ddldepositInterestACHead').val('');
+        $('#txtROI').val(0);
+        $('#hdninterestRateId').val('');
+        $('#hdnPROI').val('');
+        $('#hdnPrincipalAHID').val('');
+        var value = $('#' + id).val();
+        var action = '@Url.Action("GetInterestDetails", "GroupLoanOB")' + '/' + value;
+        $.post(action
+            , {}
+            , function (data) {
+                $('#PrincipleAHName').val(data.result.PrincipalAHName);
+                $('#PrincipleAHId').val(data.result.PrincipalAHID);
+                $('#hdnPrincipalAHID').val(data.result.PrincipalAHID);
+                $('#InterestAHName').val(data.result.InterestName);
+                $('#txtROI').val(data.result.InterestRate);
+                $('#InterestRateID').val(data.result.InterestRateID);
+                $('#hdninterestRateId').val(data.result.InterestRateID);
+                $('#hdnPROI').val(data.result.PenalROI);
+
+            }
+            , 'json');
+    }
+
+</script>

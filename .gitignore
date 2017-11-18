@@ -3,3 +3,12 @@
 ################################################################################
 
 /MFIEntityFrameWork/bin/Debug
+/.vs/config
+/.vs/SPMS/v15
+/BusinessEntities/bin
+/BusinessEntities/obj
+/BusinessLogic
+/CoreComponents
+/DataLogic
+/MFIEntityFrameWork
+/MFIS.Web/Areas/Group/Views/BACKUP_MemberLoanDisbursement

@@ -1,0 +1,99 @@
+﻿@model BusinessEntities.ClusterViewDto
+@using CoreComponents;
+@{
+    ViewBag.Title = "ViewCluster";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+<div class="row">
+        <div class="col-lg-12">
+
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">View Cluster Details</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                </div>
+                
+                <div class="panel-body">
+                    <div class="col-lg-4">
+                         <div class="form-group">
+                                <label>ClusterCode</label>
+                             @Html.TextBoxFor(m => m.ClusterCode, new { @class="form-control",@readonly="readonly"})
+                            </div>
+                        <div class="form-group">
+                            <label>State</label>
+                            @Html.TextBoxFor(m => m.State, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+
+                        <div class="form-group">
+                            <label>Branch</label>
+                            @Html.TextBoxFor(m => m.Branch, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                     @*   <div class="form-group">
+                            <label>FromDate</label>
+                            @Html.TextBox("ManagerFromDate", Model.FromDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })
+                        </div>*@
+                       
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>TEClusterName</label>
+                            @Html.TextBoxFor(m => m.TEClusterName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            <label>ClusterName</label>
+                            @Html.TextBoxFor(m => m.ClusterName, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            <label>District</label>
+                            @Html.TextBoxFor(m => m.District, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                       
+                       
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Cluster Start Date</label>
+                           @* @Html.TextBox("ManagerFromDate", Model.StartDate.ToDisplayDateFormat(), new { @class = "form-control", @readonly = "readonly" })*@
+                           @* @Html.TextBoxFor(m => m.StartDate, new { @class="form-control",@readonly="readonly"})*@
+                             @{                                
+                        string StartDate = Model.StartDate.Ticks > 0 ? Model.StartDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@StartDate" class="form-control " readonly="readonly" />
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label>Mandal</label>
+                            @Html.TextBoxFor(m => m.Mandal, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group" style="margin-left: 16px;margin-bottom:13px">
+                        &nbsp;&nbsp;
+                        <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                    </div>
+                    <!-- End Form Elements -->
+                </div>
+            </div>
+        </div>
+        <!-- end page-wrapper -->
+    </div>
+
+    <script type="text/javascript">
+        CustomTransliteration(['TEClusterName']);
+
+        function BackToList() {
+            showProgress();
+            window.location.href = '@Url.Content("ClusterLookup")';
+        }
+        $(document).ready(function () {
+            menuLink = "menuOrganization";
+            subMenuLink = "lnkSideCluster";
+            LoadMenu();
+        });
+    </script>
+    
+}

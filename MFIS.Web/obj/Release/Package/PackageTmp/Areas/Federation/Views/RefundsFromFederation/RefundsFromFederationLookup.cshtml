@@ -1,0 +1,128 @@
+﻿@using BusinessEntities;
+@model IEnumerable<RefundsFromFederationLookUpDto>
+@using CoreComponents
+
+@{
+    ViewBag.Title = "RefundsFromFederationLookup";
+    Layout = "~/Views/Shared/_FedarationLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+
+    var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Form Elements -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">RefundsFrom FederationLookup Lookup</span>
+                    <button type="button" class="btn btn-default pull-right" onclick="addrecord();">Add New Refunds From Fedearation</button>
+                </div>
+                @if (Result != null && Result.ObjectId > 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-success">
+                        <strong>Success!</strong> @Result.Message
+                    </div>
+                }
+                else if (Result != null && Result.ObjectId < 0 && !string.IsNullOrEmpty(Result.Message))
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> @Result.Message
+                    </div>
+                }
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="RefundsFromFederation">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Vocher NO</th>
+                                    <th>Employee Name</th>
+                                    <th>Member Name</th>
+                                    <th>Cluster Name</th>
+                                    <th>GroupCode</th>
+                                    <th>Date</th>
+                                    <th>CashReceipt(Dr)</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        bool isActive = item.StatusCode == Utilities.Constants.StatusCodes.Active;
+                                        string inActiveTitle = isActive ? "In-Active" : "Active";
+                                        string encryptAccountMasterID = item.AccountMasterID.EncryptString();
+                                        string deleteTitle = "Delete";
+                                    <tr class="gradeA odd">
+                                        <td class="text-center">@(Model.ToList().IndexOf(item) + 1)</td>
+                                        <td>@item.VoucherNumber</td>
+                                        <td>@item.EmployeeCode </td>
+                                        <td>@item.MemberName</td>
+                                        <td>@item.clustername </td>
+                                        <td>@item.GroupCode </td>
+                                        <td>@item.TransactionDate </td>
+                                        <td>@item.Amount </td>
+                                        <td class="text-center">
+                                            <img src="~/@(isActive ? ("Content/images/Circle_Green.png") : "Content/images/Circle_Red.png")" title="@item.Status" />
+                                        </td>
+                                        <td class="text-center">
+                                            <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditRefundsFromFederation('@encryptAccountMasterID');"/>
+                                            <img style="cursor: pointer" onclick="return ActiveInactiveRefundsFromFederation('@encryptAccountMasterID', '@item.StatusCode');" src="~/@(isActive ? "Content/images/Circle_Red.png" : "Content/images/Circle_Green.png")" title="@inActiveTitle" />
+                                            <img style="cursor: pointer" onclick="DeleteRefundsFromFederation('@encryptAccountMasterID');" src="~/Content/images/delete_btn1.png" title="@deleteTitle" />
+                                        </td>
+                                    </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Form Elements -->
+        </div>
+    </div>
+}
+<link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        menuLink = "menuTransactions";
+        subMenuLink = "lnkRefundsFromFederation";
+        LoadMenu();
+        $('#RefundsFromFederation').dataTable({
+            "bSort": false
+        });
+    });
+    function addrecord() {
+        showProgress();
+        window.location.href = '@Url.Content("CreateRefundsFromFederation")';
+    }
+</script>
+<script type="text/javascript">
+
+    function EditRefundsFromFederation(id) {
+        showProgress();
+        window.location.href = '@Url.Content("CreateRefundsFromFederation?id=")' + id
+    }
+    function DeleteRefundsFromFederation(encryptAccountMasterID) {
+        if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
+            return false;
+        showProgress();
+        window.location.href = '@Url.Content("DeleteRefundsFromFederation?Id=")' + encryptAccountMasterID;
+    }
+
+    function ActiveInactiveRefundsFromFederation(encryptAccountMasterID, currentStatusCode) {
+        if (!confirm(currentStatusCode == 'ACT' ? 'Do you wish to Inactive the selected record?' : 'Do you wish to active the selected record?'))
+            return false;
+        showProgress();
+        window.location.href = '@Url.Content("ActiveInactiveRefundsFromFederation?Id=")' + encryptAccountMasterID;
+    }
+
+</script>
+
+
