@@ -53,8 +53,8 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
         public ActionResult CreateBankLoan(BankLoanDto objLoan)
         {
             var resultDto = new ResultDto();
-            int GroupId = GroupInfo.GroupID;
-            objLoan.GroupId = GroupId;
+            objLoan.GroupId = GroupInfo.GroupID;
+            objLoan.UserID = UserInfo.UserID;
             resultDto = _bankLoanService.InsertUpdateBankLoanApplication(objLoan);
             objLoan.LoanCode = resultDto.ObjectCode;
             objLoan.BankLoanId = resultDto.ObjectId;
@@ -105,7 +105,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
         {
             int GroupID = GroupInfo.GroupID;
             List<BankLoanLookupDto> lstbankloanapplicationDto = new List<BankLoanLookupDto>();
-            // lstbankloanapplicationDto = _bankLoanService.Lookup(GroupID, UserInfo.UserID);
+            lstbankloanapplicationDto = _bankLoanService.Lookup(GroupID, UserInfo.UserID);
             return View(lstbankloanapplicationDto);
         }
 
