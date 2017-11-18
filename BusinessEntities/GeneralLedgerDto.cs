@@ -21,7 +21,11 @@ namespace BusinessEntities
         public string AHCode { get; set; }
         public long AccountTranID { get; set; }
         public string AHName { get; set; }
+        public string BankName { get; set; }
+        public string AccountNumner { get; set; }
+        public string Branch { get; set; }
         public DateTime TDate { get; set; }
+        public string VrNumber { get; set; }
         public decimal DrAmount { get; set; }
         public decimal CrAmount { get; set; }
         public decimal Balance { get; set; }

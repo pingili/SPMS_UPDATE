@@ -121,7 +121,7 @@ BEGIN
 				AND (TDATE >= GIR.FromDate AND (GIR.ToDate IS NULL OR GIR.ToDate <= TDATE))
 			GROUP BY InterestAHID, t.AHTechCode, MemberID, TDATE, ROI
 		)A
-	)--select * from ENTRIES
+	)
 	,
 	Entries_Interest as(
 
@@ -148,7 +148,7 @@ BEGIN
 		,CAST((total * ROI * datediff(dd, tdate, isnull(caldate, @MonthEnd)))/36500 AS INT) INTEREST_Bal
 	from Entries_Interest
 	order by MemberID, InterestAHID, TDATE
-	select * from #ENTRIES
+	--select * from #ENTRIES
 	INSERT INTO @TBL_TOTAL_ASONDATE
 	SELECT T.AHID, 
 		A.MemberID, 
@@ -211,7 +211,8 @@ BEGIN
 		SELECT @HLoanInt = Demand FROM @TBL  WHERE AHTechCode = 'HOUSINGLOAN_INTEREST' AND MemberID = @MemberID 
 
 		INSERT INTO @FINAL_TBL
-		SELECT @MemberID, IIF(ISNULL(MemberRefCode, '') = '', MemberCode, MemberRefCode), MemberName, @PSPrincipal, @PSInt, @SSPrincipal, @SSInt, @SLoanDate, @SLoanPrincipal, @SLoanInt, @BLoanDate, @BLoanPrincipal, @BLoanInt, @HLoanDate, @HLoanPrincipal, @HLoanInt
+		SELECT @MemberID, IIF(ISNULL(MemberRefCode, '') = '', MemberCode, MemberRefCode), MemberName, @PSPrincipal, @PSInt, @SSPrincipal, @SSInt, @SLoanDate, @SLoanPrincipal, @SLoanInt, @BLoanDate, @BLoanPrincipal, @BLoanInt, @HLoanDate, @HLoanPrincipal, @HLoa
+nInt
 		FROM Member 
 		WHERE MemberID = @MemberID
 
@@ -230,4 +231,5 @@ BEGIN
 	FROM @FINAL_TBL
 
 END
+
 
