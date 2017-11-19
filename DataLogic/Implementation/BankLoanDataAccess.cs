@@ -195,7 +195,7 @@ namespace DataLogic
                 objLoanApplication.LoanNumber = Convert.ToString(dr["LinkageNumber"]);
                 objLoanApplication.Narration = Convert.ToString(dr["Narration"]);
                 objLoanApplication.EMI = Convert.ToInt32(dr["EMI"]);
-                
+
             }
             return objLoanApplication;
         }
@@ -218,24 +218,20 @@ namespace DataLogic
             while (dr.Read())
             {
                 objLoan = new BankLoanLookupDto();
-                //objLoan.LoanMasterId = Convert.ToInt32(dr["LoanMasterID"]);
-                //objLoan.LoanCode = Convert.ToString(dr["LoanCode"]);
-                //objLoan.LoanType = Convert.ToString(dr["LoanType"]);
-                //objLoan.MemberName = Convert.ToString(dr["MemberName"]);
-                //objLoan.Purpose = Convert.ToString(dr["Purpose"]);
-                //objLoan.LoanAmountApplied = Convert.ToInt32(dr["LoanAmountApplied"]);
-                //if (dr["DisbursedAmount"] != DBNull.Value)
-                //    objLoan.DisbursedAmount = Convert.ToDecimal(dr["DisbursedAmount"]);
-                //if (dr["DisbursementDate"] != DBNull.Value)
-                //    objLoan.DisbursementDate = Convert.ToDateTime(dr["DisbursementDate"]);
-                //objLoan.Status = Convert.ToString(dr["Status"]);
-                //objLoan.StatusCode = Convert.ToString(dr["StatusCode"]);
-                //if (dr["AppLevel"] != DBNull.Value)
-                //    objLoan.ApprovalLevel = Convert.ToInt32(dr["AppLevel"]);
-                //objLoan.CanEdit = Convert.ToBoolean(dr["CanEdit"]);
-                //objLoan.CanView = Convert.ToBoolean(dr["CanView"]);
-                //objLoan.CanDelete = Convert.ToBoolean(dr["CanDelete"]);
-                //lstLoans.Add(objLoan);
+                objLoan.BankLoanId = Convert.ToInt32(dr["BankLoanId"]);
+                objLoan.BankName = Convert.ToString(dr["BankName"]);
+                objLoan.RequestedAmount = Convert.ToDecimal(dr["RequestedAmount"]);
+                objLoan.RequestedDate = Convert.ToDateTime(dr["RequestDate"]);
+                objLoan.ApprovedAmount = Convert.ToDecimal(dr["ApprovedAmount"]);
+                objLoan.LinkageNumber = Convert.ToString(dr["LinkageNumber"]);
+                objLoan.ApprovedDate = Convert.ToDateTime(dr["ApprovedDate"]);
+                objLoan.DisbursedAmount = Convert.ToDecimal(dr["DisbursementAmount"]);
+                objLoan.DisbursedDate = Convert.ToDateTime(dr["DisbursementDate"]);
+                objLoan.Status = Convert.ToString(dr["Status"]);
+                objLoan.StatusCode = Convert.ToString(dr["StatusCode"]);
+                objLoan.NoOfInstallments = Convert.ToInt32(dr["NoOfInStallments"]);
+                objLoan.EMI = Convert.ToDecimal(dr["EMI"]);
+                lstLoans.Add(objLoan);
             }
             return lstLoans;
         }
@@ -247,7 +243,7 @@ namespace DataLogic
             try
             {
                 AdoHelper objAdo = new AdoHelper();
-                SqlParameter[] parms = new SqlParameter[19];
+                SqlParameter[] parms = new SqlParameter[20];
 
                 parms[0] = new SqlParameter("@BankLoanId", obj.BankLoanId);
                 parms[0].SqlDbType = System.Data.SqlDbType.Int;
@@ -308,6 +304,9 @@ namespace DataLogic
                 parms[18] = new SqlParameter("@DueDate", SqlDbType.Date);
                 parms[18].Value = obj.DueDate;
 
+                parms[19] = new SqlParameter("@GLAHID", SqlDbType.Int);
+                parms[19].Value = obj.GLAHId;
+
                 objAdo.ExecNonQueryProc("uspBankLoanInsertUpdate", parms);
 
                 resultDto.ObjectId = Convert.ToInt32(parms[0].Value);
@@ -323,7 +322,8 @@ namespace DataLogic
             }
             catch (Exception ex)
             {
-                resultDto.Message = string.Format("Service layer error occured while saving the {0} details", obectName);
+
+                resultDto.Message = ex.Message;/*string.Format("Service layer error occured while saving the {0} details", obectName)*/;
                 resultDto.ObjectId = -98;
             }
             return resultDto;

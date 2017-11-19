@@ -1,4 +1,7 @@
 ﻿@using BusinessEntities;
+@{
+    CurrentUser userInfo = (CurrentUser)HttpContext.Current.Session[Utilities.Constants.SessionKeys.SK_USERINFO];
+}
 @model IEnumerable<GroupMeetingLookupDto>
 @using CoreComponents
 
@@ -89,14 +92,17 @@
                                                 <td class="text-center">
                                                     <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="EditGroupMeeting('@encryptGroupMeetingID');" />
                                                     <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID');" />
-                                                    <img src="~/Content/images/1468095521_unlock.png" style="cursor: pointer" title="Unlock" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');" />
+                                                    <img src="~/Content/images/1468095521_unlock.png" style="cursor: pointer" title="lock" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'L');" />
                                                 </td>
                                             }
                                             else
                                             {
                                                 <td class="text-center">
                                                     <img src="~/Content/images/view-icon.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID', 'V');" />
-                                                    <img src="~/Content/images/1468082722_lock.png" style="cursor: pointer" title="View" onclick="ViewGroupMeeting('@encryptGroupMeetingID','U');" />
+                                                    @if (userInfo.RoleCode == "MD" || userInfo.RoleCode == "CDA")
+                                                    {
+                                                        <img src="~/Content/images/1468082722_lock.png" style="cursor: pointer" title="UnLock" onclick="ViewGroupMeeting('@encryptGroupMeetingID','U');" />
+                                                    }
                                                 </td>
                                             }
                                         </tr>
