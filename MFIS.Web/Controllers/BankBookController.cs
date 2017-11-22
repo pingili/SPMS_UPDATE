@@ -96,6 +96,9 @@ namespace MFIS.Web.Controllers
             ViewBag.BankName = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x=>x.BankName).First().ToString() : "";
             ViewBag.AccountNumber = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.AccountNumner).First().ToString() : "";
             ViewBag.Branch = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.Branch).First().ToString() : "";
+            ViewBag.Group = GroupInfo.GroupName;
+            ViewBag.GroupCode = GroupInfo.GroupCode;
+            ViewBag.Cluster = GroupInfo.Cluster;
             OrgAddress = Convert.ToString(cmd.Parameters["@OrgAddress"].Value);
             con.Close();
 
