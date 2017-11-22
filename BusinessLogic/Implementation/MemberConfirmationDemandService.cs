@@ -18,6 +18,11 @@ namespace BusinessLogic.Implementation
             return objDal.GetMemberConfirmationReport(GroupId, UserId, dtTranDate);
         }
 
+        public List<DateTime> GetGroupMeetings(int groupID)
+        {
+            return objDal.GetGroupMeetings(groupID);
+        }
+
         public List<MemberDemandSheetDto> GetMemberDemandSheetReport(int GroupId, int UserId, DateTime dtTranDate)
         {
             return objDal.GetMemberDemandSheetReport(GroupId, UserId, dtTranDate);

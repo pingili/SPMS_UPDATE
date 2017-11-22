@@ -9,6 +9,7 @@ namespace BusinessEntities
     public class MemberConfirmationDto
     {
         public int MemberId { get; set; }
+        public DateTime MeetingDate { get; set; }
         public string MemberCode { get; set; }
         public string MemberName { get; set; }
         public int PSPrincipal { get; set; }

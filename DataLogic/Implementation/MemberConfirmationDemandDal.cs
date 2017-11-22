@@ -76,6 +76,28 @@ namespace DataLogic.Implementation
             return lstMemberConfirmation;
         }
 
+        public List<DateTime> GetGroupMeetings(object groupId)
+        {
+            List<DateTime> lstGroupMeetings = new List<DateTime>();
+
+            AdoHelper objado = new AdoHelper();
+            SqlParameter[] parms = new SqlParameter[1];
+
+            parms[0] = new SqlParameter("@GroupID", groupId);
+            parms[0].SqlDbType = System.Data.SqlDbType.Int;
+
+            SqlDataReader dr = objado.ExecDataReaderProc("uspGetGroupMeetings", parms);
+            while (dr.Read())
+            {
+                DateTime meetingDate = new DateTime();
+                if (dr["meetingDate"] != DBNull.Value)
+                    meetingDate = Convert.ToDateTime(dr["meetingDate"]).Date;
+                lstGroupMeetings.Add(meetingDate);
+            }
+
+            return lstGroupMeetings;
+        }
+
         public List<MemberDemandSheetDto> GetMemberDemandSheetReport(int GroupId, int UserId, DateTime dtTranDate)
         {
             List<MemberDemandSheetDto> lstMemberDemandSheet = new List<MemberDemandSheetDto>();

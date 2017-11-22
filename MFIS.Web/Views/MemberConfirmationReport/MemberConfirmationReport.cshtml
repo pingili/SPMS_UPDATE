@@ -14,6 +14,12 @@
         </div>
         <div class="panel-body">
             <hr />
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Group Meeting Date</label>
+                    @Html.DropDownList("GroupMeeting", (SelectList)ViewBag.GroupMeeting, "Select Meeting Date", new { @id = "GroupMeeting", @class = "form-control required", onchange = "getMemberConfirmation(this.value);" })
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralLedger">
                     <thead>
