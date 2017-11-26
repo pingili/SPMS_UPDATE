@@ -2,15 +2,17 @@
 ALTER PROC [dbo].[uspMemberConfirmationReport]
 	@GroupId	INT ,
 	@AsOnDate	DATE = NULL,
-	@UserId		INT = NULL
+	@UserId		INT = NULL,
+	@MeetingDate Date
+
 AS
 BEGIN
  --   Declare @GroupId int
 	--SET @GroupId  = 282
 
-	DECLARE @MeetingDate DATE
-	SELECT @MeetingDate =  MAX(MeetingDate)
-	FROM GroupMeeting GMT JOIN StatusMaster SM ON SM.StatusID = GMT.LockStatus WHERE StatusCode = 'OPEN' AND GroupID = @GroupId
+	--DECLARE @MeetingDate DATE
+	--SELECT @MeetingDate =  MAX(MeetingDate)
+	--FROM GroupMeeting GMT JOIN StatusMaster SM ON SM.StatusID = GMT.LockStatus WHERE StatusCode = 'OPEN' AND GroupID = @GroupId
 
 	DECLARE @AHID_OB_TBL TABLE(AHID INT, SLAHID INT, CrAmount DECIMAL(18, 2), DrAmount DECIMAL(18, 2), OpeningBalanceType VARCHAR(50), AHTechCode VARCHAR(50))
 	DECLARE @FYStartDate DATE = (SELECT SettingValue FROM SystemSettings WHERE SettingName=  'FINANCIAL_YEAR_BEGIN')
@@ -211,8 +213,7 @@ BEGIN
 		SELECT @HLoanInt = Demand FROM @TBL  WHERE AHTechCode = 'HOUSINGLOAN_INTEREST' AND MemberID = @MemberID 
 
 		INSERT INTO @FINAL_TBL
-		SELECT @MemberID, IIF(ISNULL(MemberRefCode, '') = '', MemberCode, MemberRefCode), MemberName, @PSPrincipal, @PSInt, @SSPrincipal, @SSInt, @SLoanDate, @SLoanPrincipal, @SLoanInt, @BLoanDate, @BLoanPrincipal, @BLoanInt, @HLoanDate, @HLoanPrincipal, @HLoa
-nInt
+		SELECT @MemberID, IIF(ISNULL(MemberRefCode, '') = '', MemberCode, MemberRefCode), MemberName, @PSPrincipal, @PSInt, @SSPrincipal, @SSInt, @SLoanDate, @SLoanPrincipal, @SLoanInt, @BLoanDate, @BLoanPrincipal, @BLoanInt, @HLoanDate, @HLoanPrincipal, @HLoanInt
 		FROM Member 
 		WHERE MemberID = @MemberID
 

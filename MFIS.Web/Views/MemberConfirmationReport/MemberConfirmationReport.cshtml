@@ -14,10 +14,14 @@
         </div>
         <div class="panel-body">
             <hr />
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <label>Group Meeting Date</label>
-                    @Html.DropDownList("GroupMeeting", (SelectList)ViewBag.GroupMeeting, "Select Meeting Date", new { @id = "GroupMeeting", @class = "form-control required", onchange = "getMemberConfirmation(this.value);" })
+            <div class="col-lg-12" style="padding-bottom:30px">
+                <div class="col-lg-4">
+                    <div class="form-group pull-right">
+                        <label>Group Meeting Date</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    @Html.DropDownList("GroupMeeting", (SelectList)ViewBag.GroupMeeting, "Select Meeting Date", new { @id = "GroupMeeting", @class = "form-control required pull-left", onchange = "getMemberConfirmation(this.value);" })
                 </div>
             </div>
             <div class="table-responsive">
@@ -65,30 +69,30 @@
                         {
                             foreach (var a in Model)
                             {
-                            <tr class="gradeA odd">
-                                <td>@(++Index)</td>
-                                <td>@a.MemberCode</td>
-                                <td>@a.MemberName</td>
-                                <td>@a.PSPrincipal</td>
-                                <td>@a.PSInt</td>
-                                <td>@(a.PSPrincipal + a.PSInt)</td>
+                                <tr class="gradeA odd">
+                                    <td>@(++Index)</td>
+                                    <td>@a.MemberCode</td>
+                                    <td>@a.MemberName</td>
+                                    <td>@a.PSPrincipal</td>
+                                    <td>@a.PSInt</td>
+                                    <td>@(a.PSPrincipal + a.PSInt)</td>
 
-                                <td>@a.SSPrincipal</td>
-                                <td>@a.SSInt</td>
-                                <td>@(a.SSPrincipal + a.SSInt)</td>
+                                    <td>@a.SSPrincipal</td>
+                                    <td>@a.SSInt</td>
+                                    <td>@(a.SSPrincipal + a.SSInt)</td>
 
-                                <td>@a.SLoanDate.ToDisplayDateFormat()</td>
-                                <td>@a.SLoanPrincipal</td>
-                                <td>@a.SLoanInt</td>
+                                    <td>@a.SLoanDate.ToDisplayDateFormat()</td>
+                                    <td>@a.SLoanPrincipal</td>
+                                    <td>@a.SLoanInt</td>
 
-                                <td>@a.BLoanDate.ToDisplayDateFormat()</td>
-                                <td>@a.BLoanPrincipal</td>
-                                <td>@a.BLoanInt</td>
+                                    <td>@a.BLoanDate.ToDisplayDateFormat()</td>
+                                    <td>@a.BLoanPrincipal</td>
+                                    <td>@a.BLoanInt</td>
 
-                                <td>@a.HLoanDate.ToDisplayDateFormat()</td>
-                                <td>@a.HLoanPrincipal</td>
-                                <td>@a.HLoanInt</td>
-                            </tr>
+                                    <td>@a.HLoanDate.ToDisplayDateFormat()</td>
+                                    <td>@a.HLoanPrincipal</td>
+                                    <td>@a.HLoanInt</td>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -116,5 +120,22 @@
             subMenuLink = "lnkMemberConfirmation";
             LoadMenu();
         });
+        function getMemberConfirmation(groupmeeting) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("MemberConfirmationReport", "MemberConfirmationReport")",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    groupmeetingdate: groupmeeting
+                }),
+                success: function (result) {
+                    //do something
+                },
+                error: function (req, status, error) {
+                    //error
+                }
+            });
+                }
+
     </script>
 }
