@@ -183,13 +183,13 @@
                                 <tr>
                                     <th>Loan Given Amount </th>
                                     <td>
-                                        <input type="text" id="txtLoanAmountGiven1" class="form-control" name="LoanAmountGiven1" tabindex="6" value="@Model.LoanAmountGiven1.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(1);CalculatePrincipleAmmountOnDemand(1);" /></td>
+                                        <input type="text" id="txtLoanAmountGiven1" class="form-control" name="LoanAmountGiven1" tabindex="6" value="@Model.LoanAmountGiven1.ToDisplayCurrency().00" onchange="CalculateMonthlyDemond(1);CalculatePrincipleAmmountOnDemand(1);" /></td>
                                     <td>
-                                        <input type="text" id="txtLoanAmountGiven2" class="form-control" name="LoanAmountGiven2" value="@Model.LoanAmountGiven2.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
+                                        <input type="text" id="txtLoanAmountGiven2" class="form-control" name="LoanAmountGiven2" value="@Model.LoanAmountGiven2.ToDisplayCurrency().00" onchange="CalculateMonthlyDemond(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
                                     <td>
-                                        <input type="text" id="txtLoanAmountGiven3" class="form-control" name="LoanAmountGiven3" value="@Model.LoanAmountGiven3.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
+                                        <input type="text" id="txtLoanAmountGiven3" class="form-control" name="LoanAmountGiven3" value="@Model.LoanAmountGiven3.ToDisplayCurrency().00" onchange="CalculateMonthlyDemond(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
                                     <td>
-                                        <input type="text" id="txtLoanAmountGiven4" class="form-control" name="LoanAmountGiven4" value="@Model.LoanAmountGiven4.ToDisplayCurrency()" onchange="CalculateMonthlyDemond(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
+                                        <input type="text" id="txtLoanAmountGiven4" class="form-control" name="LoanAmountGiven4" value="@Model.LoanAmountGiven4.ToDisplayCurrency().00" onchange="CalculateMonthlyDemond(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
                                 </tr>
                                 <tr>
                                     <th>Loan Disbursed Date</th>
@@ -275,69 +275,69 @@
                                 <tr>
                                     <th>Last Paid Date</th>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtLastPaidDate1" class="form-control" name="LastPaidDate1" tabindex="13" value="@Convert.ToDateTime(Model.LastPaidDate1).ToDisplayDateFormat()" /></td>
+                                        <input type="text"  id="txtLastPaidDate1" class="form-control" name="LastPaidDate1" tabindex="13" value="@Convert.ToDateTime(Model.LastPaidDate1).ToDisplayDateFormat()" /></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtLastPaidDate2" class="form-control" name="LastPaidDate2" value="@Convert.ToDateTime(Model.LastPaidDate2).ToDisplayDateFormat()" /></td>
+                                        <input type="text" id="txtLastPaidDate2" class="form-control" name="LastPaidDate2" value="@Convert.ToDateTime(Model.LastPaidDate2).ToDisplayDateFormat()" /></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtLastPaidDate3" class="form-control" name="LastPaidDate3"  value="@Convert.ToDateTime(Model.LastPaidDate3).ToDisplayDateFormat()"/></td>
+                                        <input type="text"  id="txtLastPaidDate3" class="form-control" name="LastPaidDate3"  value="@Convert.ToDateTime(Model.LastPaidDate3).ToDisplayDateFormat()"/></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtLastPaidDate4" class="form-control" name="LastPaidDate4" value="@Convert.ToDateTime(Model.LastPaidDate4).ToDisplayDateFormat()"/></td>
+                                        <input type="text"  id="txtLastPaidDate4" class="form-control" name="LastPaidDate4" value="@Convert.ToDateTime(Model.LastPaidDate4).ToDisplayDateFormat()"/></td>
                                 </tr>
 
                                 <tr>
                                     <th>Principal Amount Outstanding</th>
                                     <td>
-                                        <input type="text" id="txtPrincipalOutstanding1" class="form-control" name="PrincipalOutstanding1" tabindex="14"  value="@Model.PrincipalOutstanding1.ToDisplayCurrency()" onchange="CalculateTotal(1);CalculatePrincipleAmmountOnDemand(1);"/></td>
+                                        <input type="text" id="txtPrincipalOutstanding1" class="form-control" name="PrincipalOutstanding1" tabindex="14"  value="@Model.PrincipalOutstanding1.ToDisplayCurrency().00" onchange="CalculateTotal(1);CalculatePrincipleAmmountOnDemand(1);"/></td>
                                     <td>
-                                        <input type="text" id="txtPrincipalOutstanding2" class="form-control" name="PrincipalOutstanding2" value="@Model.PrincipalOutstanding2.ToDisplayCurrency()" onchange="CalculateTotal(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
-                                    <td>
-                                        <input type="text" id="txtPrincipalOutstanding3" class="form-control" name="PrincipalOutstanding3" value="@Model.PrincipalOutstanding3.ToDisplayCurrency()" onchange="CalculateTotal(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
-                                    <td>
-                                        <input type="text" id="txtPrincipalOutstanding4" class="form-control" name="PrincipalOutstanding4" value="@Model.PrincipalOutstanding4.ToDisplayCurrency()" onchange="CalculateTotal(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
+                                        <input type="text" id="txtPrincipalOutstanding2" class="form-control" name="PrincipalOutstanding2" value="@Model.PrincipalOutstanding2.ToDisplayCurrency().00" onchange="CalculateTotal(2);CalculatePrincipleAmmountOnDemand(2);"/></td>
+                                    <td>                                                                                                         
+                                        <input type="text" id="txtPrincipalOutstanding3" class="form-control" name="PrincipalOutstanding3" value="@Model.PrincipalOutstanding3.ToDisplayCurrency().00" onchange="CalculateTotal(3);CalculatePrincipleAmmountOnDemand(3);"/></td>
+                                    <td>                                                                                                         
+                                        <input type="text" id="txtPrincipalOutstanding4" class="form-control" name="PrincipalOutstanding4" value="@Model.PrincipalOutstanding4.ToDisplayCurrency().00" onchange="CalculateTotal(4);CalculatePrincipleAmmountOnDemand(4);"/></td>
                                 </tr>
                                 <tr>
                                     <th>Interest Due</th>
                                     <td>
-                                        <input type="text" id="txtInterestDue1" class="form-control" name="InterestDue1" tabindex="15" value="@Model.InterestDue1.ToDisplayCurrency()" onchange="CalculateTotal(1);"/></td>
+                                        <input type="text" id="txtInterestDue1" class="form-control" name="InterestDue1" tabindex="15" value="@Model.InterestDue1.ToDisplayCurrency().00" onchange="CalculateTotal(1);"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestDue2" class="form-control" name="InterestDue2" value="@Model.InterestDue2.ToDisplayCurrency()" onchange="CalculateTotal(2);"/></td>
+                                        <input type="text" id="txtInterestDue2" class="form-control" name="InterestDue2" value="@Model.InterestDue2.ToDisplayCurrency().00" onchange="CalculateTotal(2);"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestDue3" class="form-control" name="InterestDue3" value="@Model.InterestDue3.ToDisplayCurrency()" onchange="CalculateTotal(3);"/></td>
+                                        <input type="text" id="txtInterestDue3" class="form-control" name="InterestDue3" value="@Model.InterestDue3.ToDisplayCurrency().00" onchange="CalculateTotal(3);"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestDue4" class="form-control" name="InterestDue4" value="@Model.InterestDue4.ToDisplayCurrency()" onchange="CalculateTotal(4);"/></td>
+                                        <input type="text" id="txtInterestDue4" class="form-control" name="InterestDue4" value="@Model.InterestDue4.ToDisplayCurrency().00" onchange="CalculateTotal(4);"/></td>
                                 </tr>
                                 <tr>
                                     <th>Total</th>
                                     <td>
-                                        <input type="text" id="txtTotal1" class="form-control" name="txtTotal1" tabindex="16" value="@Model.Total1.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtTotal1" class="form-control" name="txtTotal1" tabindex="16" value="@Model.Total1.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtTotal2" class="form-control" name="txtTotal2" value="@Model.Total2.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtTotal2" class="form-control" name="txtTotal2" value="@Model.Total2.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtTotal3" class="form-control" name="txtTotal3" value="@Model.Total3.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtTotal3" class="form-control" name="txtTotal3" value="@Model.Total3.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtTotal4" class="form-control" name="txtTotal4" value="@Model.Total4"/></td>
+                                        <input type="text" id="txtTotal4" class="form-control" name="txtTotal4" value="@Model.Total4.ToDisplayCurrency().00"/></td>
                                 </tr>
                                 <tr>
                                     <th>Principal O.D</th>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtPrincipalOD1" class="form-control" name="PrincipalOD1" tabindex="17" value="@Model.PrincipalOD1.ToDisplayCurrency()" /></td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD1" class="form-control" name="PrincipalOD1" tabindex="17" value="@Model.PrincipalOD1.ToDisplayCurrency().00" /></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtPrincipalOD2" class="form-control" name="PrincipalOD2" value="@Model.PrincipalOD2.ToDisplayCurrency()" /></td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD2" class="form-control" name="PrincipalOD2" value="@Model.PrincipalOD2.ToDisplayCurrency().00" /></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtPrincipalOD3" class="form-control" name="PrincipalOD3" value="@Model.PrincipalOD3.ToDisplayCurrency()"/></td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD3" class="form-control" name="PrincipalOD3" value="@Model.PrincipalOD3.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" readonly="readonly" id="txtPrincipalOD4" class="form-control" name="PrincipalOD4" value="@Model.PrincipalOD4.ToDisplayCurrency()"/></td>
+                                        <input type="text" readonly="readonly" id="txtPrincipalOD4" class="form-control" name="PrincipalOD4" value="@Model.PrincipalOD4.ToDisplayCurrency().00"/></td>
                                 </tr>
                                 <tr>
                                     <th>Interest O.D</th>
                                     <td>
-                                        <input type="text" id="txtInterestOD1" class="form-control" name="txtInterestOD1" tabindex="18" value="@Model.Interest1"/></td>
+                                        <input type="text" id="txtInterestOD1" class="form-control" name="txtInterestOD1" tabindex="18" value="@Model.InterestOD1"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestOD2" class="form-control" name="txtInterestOD2" value="@Model.Interest2"/></td>
+                                        <input type="text" id="txtInterestOD2" class="form-control" name="txtInterestOD2" value="@Model.InterestOD2"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestOD3" class="form-control" name="txtInterestOD3" value="@Model.Interest3"/></td>
+                                        <input type="text" id="txtInterestOD3" class="form-control" name="txtInterestOD3" value="@Model.InterestOD3"/></td>
                                     <td>
-                                        <input type="text" id="txtInterestOD4" class="form-control" name="txtInterestOD4" value="@Model.Interest4"/></td>
+                                        <input type="text" id="txtInterestOD4" class="form-control" name="txtInterestOD4" value="@Model.InterestOD4"/></td>
                                 </tr>
                                 <tr>
                                 </tr>
@@ -345,13 +345,13 @@
                                 <tr>
                                     <th>Monthly Demand</th>
                                     <td>
-                                        <input type="text" id="txtMonthlyDemand1" class="form-control" name="MonthlyDemand1" tabindex="19" value="@Model.MonthlyDemand1.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtMonthlyDemand1" class="form-control" name="MonthlyDemand1" tabindex="19" value="@Model.MonthlyDemand1.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtMonthlyDemand2" class="form-control" name="MonthlyDemand2"  value="@Model.MonthlyDemand2.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtMonthlyDemand2" class="form-control" name="MonthlyDemand2"  value="@Model.MonthlyDemand2.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtMonthlyDemand3" class="form-control" name="MonthlyDemand3"  value="@Model.MonthlyDemand3.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtMonthlyDemand3" class="form-control" name="MonthlyDemand3"  value="@Model.MonthlyDemand3.ToDisplayCurrency().00"/></td>
                                     <td>
-                                        <input type="text" id="txtMonthlyDemand4" class="form-control" name="MonthlyDemand4"  value="@Model.MonthlyDemand4.ToDisplayCurrency()"/></td>
+                                        <input type="text" id="txtMonthlyDemand4" class="form-control" name="MonthlyDemand4"  value="@Model.MonthlyDemand4.ToDisplayCurrency().00"/></td>
                                 </tr>
                                 <tr>
                                     <th></th>
@@ -762,34 +762,34 @@
         //        $('#txtLastPaidDate4').datepicker("option", "minDate", date)
         //    }
         //});
-        //$("#txtLastPaidDate1").datepicker({
-        //    //dateFormat: "HH/MM",
-        //    dateFormat: "dd/M/yy",
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    yearRange: "-60:+20"
-        //});
-        //$("#txtLastPaidDate2").datepicker({
-        //    //dateFormat: "HH/MM",
-        //    dateFormat: "dd/M/yy",
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    yearRange: "-60:+20"
-        //});
-        //$("#txtLastPaidDate3").datepicker({
-        //    //dateFormat: "HH/MM",
-        //    dateFormat: "dd/M/yy",
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    yearRange: "-60:+20"
-        //});
-        //$("#txtLastPaidDate4").datepicker({
-        //    //dateFormat: "HH/MM",
-        //    dateFormat: "dd/M/yy",
-        //    changeMonth: true,
-        //    changeYear: true,
-        //    yearRange: "-60:+20"
-        //});
+        $b("#txtLastPaidDate1").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20"
+        });
+        $b("#txtLastPaidDate2").datepicker({
+            dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20"
+        });
+        $b("#txtLastPaidDate3").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20"
+        });
+        $b("#txtLastPaidDate4").datepicker({
+            //dateFormat: "HH/MM",
+            dateFormat: "dd/M/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-60:+20"
+        });
 
     });
 

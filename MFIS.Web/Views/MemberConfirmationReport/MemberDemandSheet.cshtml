@@ -110,7 +110,7 @@
         function getMemberDemand(groupmeeting) {
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("MemberConfirmationReport", "MemberConfirmationReport")",
+                url: "@Url.Action("MemberDemandSheet","MemberConfirmationReport")",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     groupmeetingdate: groupmeeting

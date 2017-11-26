@@ -23,9 +23,9 @@ namespace BusinessLogic.Implementation
             return objDal.GetGroupMeetings(groupID);
         }
 
-        public List<MemberDemandSheetDto> GetMemberDemandSheetReport(int GroupId, int UserId, DateTime dtTranDate)
+        public List<MemberDemandSheetDto> GetMemberDemandSheetReport(int GroupId, int UserId, DateTime dtTranDate,DateTime groupmeeting)
         {
-            return objDal.GetMemberDemandSheetReport(GroupId, UserId, dtTranDate);
+            return objDal.GetMemberDemandSheetReport(GroupId, UserId, dtTranDate,groupmeeting);
         }
 
 
