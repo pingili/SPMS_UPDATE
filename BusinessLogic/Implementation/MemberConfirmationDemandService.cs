@@ -13,9 +13,9 @@ namespace BusinessLogic.Implementation
 {
     public class MemberConfirmationDemandService
     {
-        public List<MemberConfirmationDto> GetMemberConfirmationReport(int GroupId, int UserId, DateTime dtTranDate)
+        public List<MemberConfirmationDto> GetMemberConfirmationReport(int GroupId, int UserId, DateTime dtTranDate, DateTime meetingDate)
         {
-            return objDal.GetMemberConfirmationReport(GroupId, UserId, dtTranDate);
+            return objDal.GetMemberConfirmationReport(GroupId, UserId, dtTranDate,meetingDate);
         }
 
         public List<DateTime> GetGroupMeetings(int groupID)

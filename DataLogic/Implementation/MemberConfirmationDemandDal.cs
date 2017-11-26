@@ -11,12 +11,12 @@ namespace DataLogic.Implementation
 {
     public class MemberConfirmationDemandDal
     {
-        public List<MemberConfirmationDto> GetMemberConfirmationReport(int GroupId, int UserId, DateTime dtTranDate)
+        public List<MemberConfirmationDto> GetMemberConfirmationReport(int GroupId, int UserId, DateTime dtTranDate,DateTime meetingDate)
         {
             List<MemberConfirmationDto> lstMemberConfirmation = new List<MemberConfirmationDto>();
             
             AdoHelper objado = new AdoHelper();
-            SqlParameter[] parms = new SqlParameter[dtTranDate != DateTime.MinValue ? 3 : 2];
+            SqlParameter[] parms = new SqlParameter[dtTranDate != DateTime.MinValue ? 4 : 3];
 
             parms[0] = new SqlParameter("@GroupID", GroupId);
             parms[0].SqlDbType = System.Data.SqlDbType.Int;
@@ -24,10 +24,12 @@ namespace DataLogic.Implementation
             parms[1] = new SqlParameter("@UserId", UserId);
             parms[1].SqlDbType = System.Data.SqlDbType.Int;
 
+            parms[2] = new SqlParameter("@MeetingDate", meetingDate);
+            parms[2].SqlDbType = System.Data.SqlDbType.DateTime;
             if (dtTranDate != DateTime.MinValue)
             {
-                parms[2] = new SqlParameter("@AsOnDate", dtTranDate);
-                parms[2].SqlDbType = System.Data.SqlDbType.Int;
+                parms[3] = new SqlParameter("@AsOnDate", dtTranDate);
+                parms[3].SqlDbType = System.Data.SqlDbType.Int;
             }
 
             SqlDataReader dr = objado.ExecDataReaderProc("uspMemberConfirmationReport", parms);
