@@ -55,7 +55,7 @@
                                 <div class="form-group">
                                     <label>Requested Loan Date</label><br>
                                     @{ string LoanRequestDate = Model.LoanRequestDate.Ticks > 0 ? Model.LoanRequestDate.ToString("dd/MMM/yyyy") : string.Empty;
-                                        <input type="text" value="@LoanRequestDate" class="form-control Date-Only financial-year-begin-date-picker required" id="LoanRequestDate" name="LoanRequestDate" placeholder="Select Date" />
+                                    <input type="text" value="@LoanRequestDate" class="form-control Date-Only financial-year-begin-date-picker required" id="LoanRequestDate" name="LoanRequestDate" placeholder="Select Date" />
                                     }
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                 <div class="form-group">
                                     <label>Loan Approved Date</label><br>
                                     @{ string LoanAmountApprovedDate = Model.LoanAmountApprovedDate.Ticks > 0 ? Model.LoanAmountApprovedDate.ToString("dd/MMM/yyyy") : string.Empty;
-                                        <input type="text" value="@LoanAmountApprovedDate" class="form-control Date-Only financial-year-begin-date-picker required" id="LoanAmountApprovedDate" name="LoanAmountApprovedDate" placeholder="Select Date" />
+                                    <input type="text" value="@LoanAmountApprovedDate" class="form-control Date-Only financial-year-begin-date-picker required" id="LoanAmountApprovedDate" name="LoanAmountApprovedDate" placeholder="Select Date" />
                                     }
                                 </div>
                             </div>
@@ -100,82 +100,76 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="col-lg-12">
-                            <div class="panel-heading">
-                                <h4>Loan Disbursement</h4>
-                            </div>
+                    <div class="row panel-heading">
+                        <div class="">
+                            <h4>Loan Disbursement</h4>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>DisbursementDate</label><br>
-                                    @{ string DisbursedDate = Model.DisbursedDate.Ticks > 0 ? Model.DisbursedDate.ToString("dd/MMM/yyyy") : string.Empty;
-                                        <input type="text" value="@DisbursedDate" class="form-control Date-Only financial-year-begin-date-picker required" id="DisbursedDate" name="DisbursedDate" placeholder="Select Date" />
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>Disbursed Amount</label>
-                                    @Html.TextBox("DisbursedAmount", Model.DisbursedAmount.ToDisplayCurrency(), new { @class = "form-control required number-only", @id = "DisbursedAmount" })
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>No.Of Installments</label>
-                                    @Html.TextBoxFor(model => model.NoofInstallments, new { @class = "form-control required" })
-                                    @*<input type="text" name="NoofInstallments" maxlength="3" id="NoofInstallments" class="form-control required number-only" />*@
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>Interest Rate %</label><br />
-                                    @Html.TextBoxFor(model => model.InterestRate, "", new { @class = "form-control required number-only", @id = "InterestRate", @name = "InterestRate" })
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>Reference Number</label>
-                                    @Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control required", @id = "ReferenceNumber" })
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>EMI</label>
-                                    @Html.TextBoxFor(m => m.EMI, new { @class = "form-control required number-only", @id = "EMI" })
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>DueDate</label>
-                                    @{ string DueDate = Model.DueDate.Ticks > 0 ? Model.DueDate.ToString("dd/MMM/yyyy") : string.Empty;
-                                        <input type="text" value="@DueDate" class="form-control Date-Only financial-year-begin-date-picker required" id="DueDate" name="DueDate" placeholder="Select Date" />
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Narration</label>
-                                    @Html.TextBoxFor(m => m.Narration, new { @class = "form-control required", @id = "Narration" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel-footer">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
                             <div class="form-group">
-                                @if (!isView)
-                                {
-                                    <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validation();">Submit</button>
+                                <label>DisbursementDate</label><br>
+                                @{ string DisbursedDate = Model.DisbursedDate.Ticks > 0 ? Model.DisbursedDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@DisbursedDate" class="form-control Date-Only financial-year-begin-date-picker required" id="DisbursedDate" name="DisbursedDate" placeholder="Select Date" />
                                 }
-                                @*<button type="reset" class="btn btn-outline btn-primary" onclick="return resetall('@ecnloanmasterid')">Reset</button>*@
-                                <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Disbursed Amount</label>
+                                @Html.TextBox("DisbursedAmount", Model.DisbursedAmount.ToDisplayCurrency(), new { @class = "form-control required number-only", @id = "DisbursedAmount" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>No.Of Installments</label>
+                                @Html.TextBoxFor(model => model.NoofInstallments, new { @class = "form-control required" })
+                                @*<input type="text" name="NoofInstallments" maxlength="3" id="NoofInstallments" class="form-control required number-only" />*@
+                            </div>
+                        </div>
 
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Interest Rate %</label><br />
+                                @Html.TextBoxFor(model => model.InterestRate, "", new { @class = "form-control required number-only", @id = "InterestRate", @name = "InterestRate" })
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Reference Number</label>
+                                @Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control required", @id = "ReferenceNumber" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>EMI</label>
+                                @Html.TextBoxFor(m => m.EMI, new { @class = "form-control required number-only", @id = "EMI" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>DueDate</label>
+                                @{ string DueDate = Model.DueDate.Ticks > 0 ? Model.DueDate.ToString("dd/MMM/yyyy") : string.Empty;
+                                <input type="text" value="@DueDate" class="form-control Date-Only financial-year-begin-date-picker required" id="DueDate" name="DueDate" placeholder="Select Date" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Narration</label>
+                                @Html.TextBoxFor(m => m.Narration, new { @class = "form-control required", @id = "Narration" })
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="panel-footer">
+                    @if (!isView)
+                    {
+                        <button type="submit" class="btn btn-outline btn-primary lock-dependent" onclick="return validation();">Submit</button>
+                    }
+                    @*<button type="reset" class="btn btn-outline btn-primary" onclick="return resetall('@ecnloanmasterid')">Reset</button>*@
+                    <button type="button" class="btn btn-default pull-right" onclick="BackToList();">Back To List</button>
                 </div>
             </div>
         </div>
@@ -388,4 +382,4 @@
         }
         </script>
     }
-                                        }
+                                    }
