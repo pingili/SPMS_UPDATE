@@ -109,7 +109,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     lstLoanOBDto.AHCode1 = interest.PrincipalAHCode;
                     lstLoanOBDto.AHName1 = interest.PrincipalAHName;
                     lstLoanOBDto.ROI1 = Convert.ToInt32(interest.InterestRate);
-
+                    //lstLoanOBDto.InterestDue1 = 0;
                     lstLoanOBDto.Interest1 = s.ID;
                 }
 
@@ -120,7 +120,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     lstLoanOBDto.AHCode2 = interest.PrincipalAHCode;
                     lstLoanOBDto.AHName2 = interest.PrincipalAHName;
                     lstLoanOBDto.ROI2= Convert.ToInt32(interest.InterestRate);
-
+                    //lstLoanOBDto.InterestDue2 = 0;
                     lstLoanOBDto.Interest2 = s.ID;
                 }
                 if (lstInterests != null && lstInterests.Count > 0 && lstInterests.Exists(l => l.Text.ToUpper().Contains("HOUSING LOANS TO")))
@@ -130,7 +130,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     lstLoanOBDto.AHCode3 = interest.PrincipalAHCode;
                     lstLoanOBDto.AHName3 = interest.PrincipalAHName;
                     lstLoanOBDto.ROI3 = Convert.ToInt32(interest.InterestRate);
-
+                    //lstLoanOBDto.InterestDue3 = 0;
                     lstLoanOBDto.Interest3 = s.ID;
                 }
             }

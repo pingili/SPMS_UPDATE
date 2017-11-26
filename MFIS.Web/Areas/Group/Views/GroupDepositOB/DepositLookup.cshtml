@@ -24,8 +24,13 @@
                                     <th class="text-center">#</th>
                                     @foreach (DataColumn dc in dtOB.Columns)
                                     {
-                                        if (dc.ColumnName == "MemberId")
+                                        if (dc.ColumnName == "MemberId" )
                                         {
+                                            continue;
+                                        }
+                                        if (dc.ColumnName == "MemberName")
+                                        {
+                                            <th>Member Name</th>
                                             continue;
                                         }
                                         <th>@dc.ColumnName</th>
