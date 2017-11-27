@@ -26,7 +26,7 @@ INNER JOIN AccountHead PAH ON AH.ParentAHID = PAH.AHID AND PAH.StatusId = 1
 Where AM.GroupId=@GroupId AND  Vw.TransactionType in ('G','B')
 GROUP BY SLAccountId,SLNAME,AM.TransactionDate,AH.OpeningBalance
 
-select Ahid,SLAccountHead
+;with cte4 as(select Ahid,SLAccountHead
   ,isnull(OpeningBalance, 0) OpeningBalance
   ,isnull(sum(case when monthname = 1 then TotalByMonth end), 0) Jan
   ,isnull(sum(case when monthname = 2 then TotalByMonth end), 0) Feb 
@@ -41,8 +41,12 @@ select Ahid,SLAccountHead
   ,isnull(sum(case when monthname = 11 then TotalByMonth end), 0) Nov
   ,isnull(sum(case when monthname = 12 then TotalByMonth end), 0) Dec
 from Receipts
-group by Ahid, SLAccountHead,OpeningBalance
-Order By Ahid
+group by Ahid, SLAccountHead,OpeningBalance)
+select * from cte4
+union all
+Select 0,'Total',sum(OpeningBalance),
+sum(Jan),sum(Feb),Sum(Mar),Sum(Apr) ,Sum(May),Sum(Jun),Sum(Jul),Sum(Aug),Sum(Sep),Sum(Oct),Sum(Nov),Sum(Dec)from cte4
+--Order By Ahid
 
 ;with
  ct1 as(select AH.AHID, AH.AHName SLAccountHead, PAH.AHName  As GLAccountHead ,Ah.OpeningBalance OpeningBalance,sum(CrAmount) total,AM.TransactionDate from AccountTransactions AT
@@ -64,7 +68,7 @@ INNER JOIN AccountHead PAH ON AH.ParentAHID = PAH.AHID AND PAH.StatusId = 1
 Where AM.GroupId=@GroupId AND  Vw.TransactionType in ('G','B')
 GROUP BY SLAccountId,SLNAME,Ah.OpeningBalance,AM.TransactionDate
 
-select Ahid,SLAccountHead
+;with cte3 as(select Ahid,SLAccountHead
   ,isnull(OpeningBalance, 0) OpeningBalance
   ,isnull(sum(case when monthname = 1 then TotalByMonth end), 0) Jan
   ,isnull(sum(case when monthname = 2 then TotalByMonth end), 0) Feb 
@@ -79,9 +83,12 @@ select Ahid,SLAccountHead
   ,isnull(sum(case when monthname = 11 then TotalByMonth end), 0) Nov
   ,isnull(sum(case when monthname = 12 then TotalByMonth end), 0) Dec
 from Payments
-group by Ahid, SLAccountHead,OpeningBalance
-Order by Ahid
-
+group by Ahid, SLAccountHead,OpeningBalance)
+Select * from cte3
+UNION ALL 
+Select 0,'Total',sum(OpeningBalance),
+sum(Jan),sum(Feb),Sum(Mar),Sum(Apr) ,Sum(May),Sum(Jun),Sum(Jul),Sum(Aug),Sum(Sep),Sum(Oct),Sum(Nov),Sum(Dec)from cte3
+--Order By AHID
 Drop Table Receipts
 Drop Table Payments
 END
