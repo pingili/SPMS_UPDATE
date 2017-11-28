@@ -1,4 +1,5 @@
-﻿@{
+﻿@model BusinessEntities.ReceiptsAndPaymentsListDto
+@{
     ViewBag.Title = "ReceiptsAndPayments";
     Layout = "~/Views/Shared/_GroupLayout.cshtml";
 }
@@ -17,8 +18,8 @@
                             <thead>
                                 <tr>
                                     <th colspan="1" class="text-center"></th>
-                                    <th colspan="1" class="text-center">RECEIPTS</th>
-                                    <th colspan="12" class="text-center"> </th>
+                                    <th colspan="13" class="text-center">RECEIPTS</th>
+                                    @*<th colspan="12" class="text-center"> </th>*@
                                     @*<th colspan="2" class="text-center">TRANSACTIONS</th>
                                         <th colspan="2" class="text-center">CLOSING</th>*@
                                 </tr>
@@ -41,84 +42,120 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @*@foreach (var a in Model)
-                                    {*@
-                                <tr>
-                                    <td class="text-center"></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">1</td>
-                                    <td style="text-align:right">6</td>
-                                    <td style="text-align:right">2</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>TOTAL</td>
-                                </tr>
-                                @*}*@
+                                @{ int i = 1;}
+                                @foreach (var item in Model.lstReceiptDto)
+                                {
+
+                                    if (i == Model.lstReceiptDto.Count )
+                                    {
+                                        <tr style="font-weight:bold">
+                                            <td class="text-center"></td>
+                                            <td>@item.SLAccountHead</td>
+                                            <td style="text-align:right">@item.April</td>
+                                            <td style="text-align:right">@item.May</td>
+                                            <td style="text-align:right">@item.June</td>
+                                            <td style="text-align:right">@item.July</td>
+                                            <td style="text-align:right">@item.August</td>
+                                            <td style="text-align:right">@item.Sep</td>
+                                            <td style="text-align:right">@item.Oct</td>
+                                            <td style="text-align:right">@item.Nov</td>
+                                            <td style="text-align:right">@item.Dec</td>
+                                            <td style="text-align:right">@item.Jan</td>
+                                            <td style="text-align:right">@item.Feb</td>
+                                            <td style="text-align:right">@item.March</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-center">@(Model.lstReceiptDto.ToList().IndexOf(item) + 1)</td>
+                                            <td>@item.SLAccountHead</td>
+                                            <td style="text-align:right">@item.April</td>
+                                            <td style="text-align:right">@item.May</td>
+                                            <td style="text-align:right">@item.June</td>
+                                            <td style="text-align:right">@item.July</td>
+                                            <td style="text-align:right">@item.August</td>
+                                            <td style="text-align:right">@item.Sep</td>
+                                            <td style="text-align:right">@item.Oct</td>
+                                            <td style="text-align:right">@item.Nov</td>
+                                            <td style="text-align:right">@item.Dec</td>
+                                            <td style="text-align:right">@item.Jan</td>
+                                            <td style="text-align:right">@item.Feb</td>
+                                            <td style="text-align:right">@item.March</td>
+                                        </tr>
+                                    }
+                                    i++;
+                                }
 
                             </tbody>
-
                             <thead>
                                 <tr>
                                     <th colspan="1" class="text-center"></th>
-                                    <th colspan="2" class="text-center">PAYMENTS</th>
-                                    <th colspan="12" class="text-center"> </th>                                    
+                                    <th colspan="13" class="text-center">PAYMENTS</th>
+                                    @*<th colspan="12" class="text-center"> </th>*@
                                 </tr>
-                                @*<tr>
-                                    <td class="text-center">#</td>
-                                    <td class="text-center">AH CODE</td>
-                                    <td class="text-center">ACCOUNT HEAD NAME</td>
-                                    <td class="text-center">JAN</td>
-                                    <td class="text-center">FEB</td>
-                                    <td class="text-center">MAR</td>
-                                    <td class="text-center">APRIL</td>
-                                    <td class="text-center">MAY</td>
-                                    <td class="text-center">JUNE</td>
-                                    <td class="text-center">JULY</td>
-                                    <td class="text-center">AUG</td>
-                                    <td class="text-center">SEP</td>
-                                    <td class="text-center">OCT</td>
-                                    <td class="text-center">NOV</td>
-                                    <td class="text-center">DEC</td>
-                                </tr>*@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td class="text-center"></td>
-                                    <td></td>
-                                    @*<td></td>*@
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">1</td>
-                                    <td style="text-align:right">6</td>
-                                    <td style="text-align:right">2</td>
-                                    <td style="text-align:right">0</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
-                                    <td style="text-align:right">3</td>
+                                @{ int j = 1;}
+                                @foreach (var Item in Model.lstPaymentsDto)
+                                {
+                                    if (j == Model.lstReceiptDto.Count)
+                                    {
+                                    <tr style="font-weight:bold">
+                                        <td class="text-center"></td>
+                                        <td>@Item.SLAccountHead</td>
+                                        <td style="text-align:right">@Item.April</td>
+                                        <td style="text-align:right">@Item.May</td>
+                                        <td style="text-align:right">@Item.June</td>
+                                        <td style="text-align:right">@Item.July</td>
+                                        <td style="text-align:right">@Item.August</td>
+                                        <td style="text-align:right">@Item.Sep</td>
+                                        <td style="text-align:right">@Item.Oct</td>
+                                        <td style="text-align:right">@Item.Nov</td>
+                                        <td style="text-align:right">@Item.Dec</td>
+                                        <td style="text-align:right">@Item.Jan</td>
+                                        <td style="text-align:right">@Item.Feb</td>
+                                        <td style="text-align:right">@Item.March</td>
 
-                                </tr>
+                                    </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-center">@(Model.lstPaymentsDto.ToList().IndexOf(Item) + 1)</td>
+                                            <td>@Item.SLAccountHead</td>
+                                            @*<td></td>*@
+                                            <td style="text-align:right">@Item.April</td>
+                                            <td style="text-align:right">@Item.May</td>
+                                            <td style="text-align:right">@Item.June</td>
+                                            <td style="text-align:right">@Item.July</td>
+                                            <td style="text-align:right">@Item.August</td>
+                                            <td style="text-align:right">@Item.Sep</td>
+                                            <td style="text-align:right">@Item.Oct</td>
+                                            <td style="text-align:right">@Item.Nov</td>
+                                            <td style="text-align:right">@Item.Dec</td>
+                                            <td style="text-align:right">@Item.Jan</td>
+                                            <td style="text-align:right">@Item.Feb</td>
+                                            <td style="text-align:right">@Item.March</td>
+
+                                        </tr>
+                                    }
+                                    j++;
+                                }
+
                             </tbody>
                         </table>
-                    </div>
-                    <div class="panel-footer">
-                        <button type="button" id="cmd" style="margin-top: 35px;" class="btn btn-default pull-right" onclick="DownloadPdf();">Download</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
+                                    }
+<script>
+    $(document).ready(function () {
+        menuLink = "menuFinancialReports";
+        subMenuLink = "lnkSideReceiptsAndPaments";
+        LoadMenu();
+    });
+</script>

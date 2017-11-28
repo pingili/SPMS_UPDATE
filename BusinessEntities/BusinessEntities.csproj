@@ -137,6 +137,7 @@
     <Compile Include="ProjectDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RAPDto.cs" />
+    <Compile Include="ReceiptsAndPaymentsDto.cs" />
     <Compile Include="ReferenceValueDTO.cs" />
     <Compile Include="RefundsFromFederationLookUpDto.cs" />
     <Compile Include="ResultDto.cs" />
