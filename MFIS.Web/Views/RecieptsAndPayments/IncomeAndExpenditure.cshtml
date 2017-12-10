@@ -1,0 +1,168 @@
+﻿@model BusinessEntities.ReceiptsAndPaymentsListDto
+@{
+    ViewBag.Title = "IncomeAndExprnditure";
+    Layout = "~/Views/Shared/_GroupLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{ <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="header">@ViewBag.OrganizationDetails.OrgName</span>
+                    <span class="header">@ViewBag.OrganizationDetails.Address</span>
+                </div>
+                <div class="panel-body">
+                    <div class="text-center"><span style="font-weight:bold">Financial Year : 01/04/2017 To 31/03/2018</span></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="dataTablesTrialBalance">
+                            <thead>
+                                <tr>
+                                    <th colspan="1" class="text-center"></th>
+                                    <th colspan="15" class="text-center">Income</th>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-center">#</td>
+                                    @*<td class="text-center">AH CODE</td>*@
+                                    <td class="text-center">ACCOUNT HEAD NAME</td>
+                                    <td class="text-center">O/B</td>
+                                    <td class="text-center">APRIL</td>
+                                    <td class="text-center">MAY</td>
+                                    <td class="text-center">JUNE</td>
+                                    <td class="text-center">JULY</td>
+                                    <td class="text-center">AUG</td>
+                                    <td class="text-center">SEP</td>
+                                    <td class="text-center">OCT</td>
+                                    <td class="text-center">NOV</td>
+                                    <td class="text-center">DEC</td>
+                                    <td class="text-center">JAN</td>
+                                    <td class="text-center">FEB</td>
+                                    <td class="text-center">MAR</td>
+                                    <td style="font-weight:bold">Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;}
+                                @foreach (var item in Model.lstReceiptDto)
+                                {
+
+                                    if (i == Model.lstReceiptDto.Count)
+                                    {
+                                        <tr style="font-weight:bold">
+                                            <td class="text-center"></td>
+                                            <td>@item.SLAccountHead</td>
+                                            <td>@item.OpeningBalance</td>
+                                            <td style="text-align:right">@item.April</td>
+                                            <td style="text-align:right">@item.May</td>
+                                            <td style="text-align:right">@item.June</td>
+                                            <td style="text-align:right">@item.July</td>
+                                            <td style="text-align:right">@item.August</td>
+                                            <td style="text-align:right">@item.Sep</td>
+                                            <td style="text-align:right">@item.Oct</td>
+                                            <td style="text-align:right">@item.Nov</td>
+                                            <td style="text-align:right">@item.Dec</td>
+                                            <td style="text-align:right">@item.Jan</td>
+                                            <td style="text-align:right">@item.Feb</td>
+                                            <td style="text-align:right">@item.March</td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-center">@(Model.lstReceiptDto.ToList().IndexOf(item) + 1)</td>
+                                            <td>@item.SLAccountHead</td>
+                                            <td>@item.OpeningBalance</td>
+                                            <td style="text-align:right">@item.April</td>
+                                            <td style="text-align:right">@item.May</td>
+                                            <td style="text-align:right">@item.June</td>
+                                            <td style="text-align:right">@item.July</td>
+                                            <td style="text-align:right">@item.August</td>
+                                            <td style="text-align:right">@item.Sep</td>
+                                            <td style="text-align:right">@item.Oct</td>
+                                            <td style="text-align:right">@item.Nov</td>
+                                            <td style="text-align:right">@item.Dec</td>
+                                            <td style="text-align:right">@item.Jan</td>
+                                            <td style="text-align:right">@item.Feb</td>
+                                            <td style="text-align:right">@item.March</td>
+                                            <td style="font-weight:bold">@(item.OpeningBalance + item.April + item.May + item.June + item.July + item.August + item.Sep + item.Oct + item.Nov + item.Dec + item.Jan + item.Feb + item.March)</td>
+                                        </tr>
+                                    }
+                                    i++;
+                                }
+
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th colspan="1" class="text-center"></th>
+                                    <th colspan="15" class="text-center">Expenditure</th>
+                                    @*<th colspan="12" class="text-center"> </th>*@
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{ int j = 1;}
+                                @foreach (var Item in Model.lstPaymentsDto)
+                                {
+                                    if (j == Model.lstPaymentsDto.Count)
+                                    {
+                                        <tr style="font-weight:bold">
+                                            <td class="text-center"></td>
+                                            <td>@Item.SLAccountHead</td>
+                                            <td>@Item.OpeningBalance</td>
+                                            <td style="text-align:right">@Item.April</td>
+                                            <td style="text-align:right">@Item.May</td>
+                                            <td style="text-align:right">@Item.June</td>
+                                            <td style="text-align:right">@Item.July</td>
+                                            <td style="text-align:right">@Item.August</td>
+                                            <td style="text-align:right">@Item.Sep</td>
+                                            <td style="text-align:right">@Item.Oct</td>
+                                            <td style="text-align:right">@Item.Nov</td>
+                                            <td style="text-align:right">@Item.Dec</td>
+                                            <td style="text-align:right">@Item.Jan</td>
+                                            <td style="text-align:right">@Item.Feb</td>
+                                            <td style="text-align:right">@Item.March</td>
+                                            <td></td>
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td class="text-center">@(Model.lstPaymentsDto.ToList().IndexOf(Item) + 1)</td>
+                                            <td>@Item.SLAccountHead</td>
+                                            <td>@Item.OpeningBalance</td>
+                                            <td style="text-align:right">@Item.April</td>
+                                            <td style="text-align:right">@Item.May</td>
+                                            <td style="text-align:right">@Item.June</td>
+                                            <td style="text-align:right">@Item.July</td>
+                                            <td style="text-align:right">@Item.August</td>
+                                            <td style="text-align:right">@Item.Sep</td>
+                                            <td style="text-align:right">@Item.Oct</td>
+                                            <td style="text-align:right">@Item.Nov</td>
+                                            <td style="text-align:right">@Item.Dec</td>
+                                            <td style="text-align:right">@Item.Jan</td>
+                                            <td style="text-align:right">@Item.Feb</td>
+                                            <td style="text-align:right">@Item.March</td>
+                                            <td style="font-weight:bold">@(Item.OpeningBalance + Item.April + Item.May + Item.June + Item.July + Item.August + Item.Sep + Item.Oct + Item.Nov + Item.Dec + Item.Jan + Item.Feb + Item.March)</td>
+                                        </tr>
+                                    }
+                                    j++;
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    }
+<script>
+    $(document).ready(function () {
+        menuLink = "menuFinancialReports";
+        subMenuLink = "lnkSideInncomeAndExpenditure";
+        LoadMenu();
+    });
+</script>
