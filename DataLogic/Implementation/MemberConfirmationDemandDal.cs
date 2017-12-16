@@ -122,7 +122,7 @@ namespace DataLogic.Implementation
                 parms[3].SqlDbType = System.Data.SqlDbType.Int;
             }
 
-            SqlDataReader dr = objado.ExecDataReaderProc("uspMemberDemandSheetReport", parms);
+            SqlDataReader dr = objado.ExecDataReaderProc("uspMemberDemandSheetReport_v1", parms);
             while (dr.Read())
             {
                 MemberDemandSheetDto obj = new MemberDemandSheetDto();

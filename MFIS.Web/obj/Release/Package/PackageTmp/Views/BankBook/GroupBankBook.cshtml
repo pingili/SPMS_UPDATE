@@ -19,8 +19,15 @@
     int ahId = ViewBag.AHID ?? 0;
     string dtFromDate = ViewBag.FromDate != null ? ((DateTime)ViewBag.FromDate).ToDisplayDateFormat() : string.Empty;
     string dtToDate = ViewBag.ToDate != null ? ((DateTime)ViewBag.ToDate).ToDisplayDateFormat() : string.Empty;
-    
-    
+    string bankName = ViewBag.BankName != null ? (ViewBag.BankName) : string.Empty;
+    string branch = ViewBag.Branch != null ? ViewBag.Branch : string.Empty;
+    string accountNumber = ViewBag.AccountNumber != null ? ViewBag.AccountNumber : string.Empty;
+    string groupName = ViewBag.Group != null ? ViewBag.Group : string.Empty;
+    string groupCode = ViewBag.GroupCode != null ? ViewBag.GroupCode : string.Empty;
+    string cluster = ViewBag.Cluster != null ? ViewBag.Cluster : string.Empty;
+    string bankBalance = ViewBag.BankBalance != null ? ViewBag.BankBalance : string.Empty;
+
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <span class="header">Bank Book</span>
@@ -30,13 +37,13 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>From Date</label>
-                        <input type="text" value="@dtFromDate" class="form-control financial-year-begin-date-picker" id="FromDate" name="FromDate" readonly="true" placeholder="Select From Date" />
+                        <input type="text" value="@dtFromDate" class="form-control financial-year-begin-date-picker" id="FromDate" name="FromDate"  placeholder="Select From Date" />
                     </div>
                 </div>
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>To Date</label>
-                        <input type="text" value="@dtToDate" class="form-control financial-year-end-date-picker" id="ToDate" name="ToDate" readonly="true" placeholder="Select To Date" />
+                        <input type="text" value="@dtToDate" class="form-control financial-year-end-date-picker" id="ToDate" name="ToDate"  placeholder="Select To Date" />
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -52,6 +59,20 @@
                 {
                     <div class="col-lg-12">
                         <div style="text-align: center">
+                            <h4>GROUP : @groupName GROUP-CODE :@groupCode CLUSTER : @cluster</h4>
+                        </div>
+                        <div class="form-group col-lg-3">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div style="text-align: center">
+                            <h4>BANK : @bankName BRANCH : @branch A/C Number : @accountNumber</h4>
+                        </div>
+                        <div class="form-group col-lg-3">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div style="text-align: center">
                             <h4>BANK BOOK : @dtFromDate to @dtToDate</h4>
                         </div>
                         <div class="form-group col-lg-3">
@@ -60,17 +81,17 @@
                 }
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover" id="dataTablesGeneralLedger">
-                            <thead>
-                                <tr class="gradeA odd">
-                                    <th class="text-center">S.No</th>
-                                    <th>AHCode</th>
-                                    <th>Account Name</th>
-                                    <th>Date</th>
-                                    <th>Debit</th>
-                                    <th>Credit</th>
-                                    <th>Balance</th>
-                                </tr>
-                            </thead>
+                        <thead>
+                            <tr class="gradeA odd">
+                                <th class="text-center">S.No</th>
+                                <th>Vr Date</th>
+                                <th>Vr Number</th>
+                                <th>Particulars</th>
+                                <th>Withdrawal</th>
+                                <th>Deposit</th>
+                                <th>Cash AtBank</th>
+                            </tr>
+                        </thead>
                         <tbody style="text-align: center">
                             @if (Model == null || Model.Count < 1)
                             {
@@ -82,16 +103,25 @@
                             {
                                 foreach (var a in Model)
                                 {
-                                <tr class="gradeA odd">
-                                    <td>@(++Index)</td>
-                                    <td>@a.AHCode</td>
-                                    <td>@a.AHName</td>
-                                    <td>@a.Date.ToDisplayDateFormat()</td>
-                                    <td>@a.DrAmount.ToDisplayCurrencyRPT()</td>
-                                    <td>@a.CrAmount.ToDisplayCurrencyRPT()</td>
-                                    <td>@a.Balance.ToDisplayCurrencyRPT()</td>
-                                </tr>
+                                    <tr class="gradeA odd">
+                                        <td>@(++Index)</td>
+                                        <td>@a.Date.ToDisplayDateFormat()</td>
+                                        <td>@a.VrNumber</td>
+                                        <td>@a.AHName</td>
+                                        <td>@a.DrAmount.ToDisplayCurrencyRPT()</td>
+                                        <td>@a.CrAmount.ToDisplayCurrencyRPT()</td>
+                                        <td>@a.Balance.ToDisplayCurrencyRPT()</td>
+                                    </tr>
                                 }
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Cash AtBank</td>
+                                    <td>@bankBalance</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -111,7 +141,7 @@
             var target = this;
             return target.split(search).join(replacement);
         };
-       
+
     </script>
 }
 @section Scripts {

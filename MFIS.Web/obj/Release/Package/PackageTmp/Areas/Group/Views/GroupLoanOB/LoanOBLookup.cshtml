@@ -26,9 +26,10 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>MemberName</th>
+                                    <th>Disbusement Date</th>
                                     @foreach (DataColumn dc in dtOB.Columns)
                                     {
-                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName")
+                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName" || dc.ColumnName == "DisbursementDate")
                                         {
                                             continue;
                                         }
@@ -47,26 +48,27 @@
                                         <tr class="gradeA odd">
                                             <td class="text-center">
                                                 @(counter++)
-                                            <input type="hidden" value="@Convert.ToString(dr["MemberId"])" />
-                                        </td>
-                                        <td>@Convert.ToString(dr["MemberName"])</td>
-                                        @foreach (DataColumn dc in dtOB.Columns)
-                                        {
-                                            if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName")
+                                                <input type="hidden" value="@Convert.ToString(dr["MemberId"])" />
+                                            </td>
+                                            <td>@Convert.ToString(dr["MemberName"])</td>
+                                            <td>@Convert.ToString(dr["DisbursementDate"])</td>
+                                            @foreach (DataColumn dc in dtOB.Columns)
                                             {
-                                                continue;
-                                            }
-                                            string[] arr = Convert.ToString(dr[dc.ColumnName]).Split('~');
+                                                if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName"||dc.ColumnName== "DisbursementDate")
+                                                {
+                                                    continue;
+                                                }
+                                                string[] arr = Convert.ToString(dr[dc.ColumnName]).Split('~');
 
-                                            <td style="text-align: right;">@(arr.Length > 1 ? arr[0] : string.Empty)</td>
-                                            <td style="text-align: right;">@(arr.Length > 1 ? arr[1] : string.Empty)</td>
-                                        }
-                                        <td class="text-center">
-                                            <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="editrecord('@Convert.ToString(dr["MemberId"])');" />
-                                            <input type="hidden" id="hdnMemberID" name="hdnMemberID" value="@Convert.ToString(dr["MemberId"])" />
-                                            <img src="~/Content/images/delete_btn1.png" style="cursor: pointer" title="Delete" onclick="deleteRecord('@Convert.ToString(dr["MemberId"])');" />
-                                        </td>
-                                    </tr>
+                                                <td style="text-align: right;">@(arr.Length > 1 ? arr[0] : string.Empty)</td>
+                                                <td style="text-align: right;">@(arr.Length > 1 ? arr[1] : string.Empty)</td>
+                                            }
+                                            <td class="text-center">
+                                                <img src="~/Content/images/Edit.png" style="cursor: pointer" title="Edit" onclick="editrecord('@Convert.ToString(dr["MemberId"])');" />
+                                                <input type="hidden" id="hdnMemberID" name="hdnMemberID" value="@Convert.ToString(dr["MemberId"])" />
+                                                <img src="~/Content/images/delete_btn1.png" style="cursor: pointer" title="Delete" onclick="deleteRecord('@Convert.ToString(dr["MemberId"])');" />
+                                            </td>
+                                        </tr>
                                     }
                                 }
                             </tbody>
@@ -74,10 +76,10 @@
                                 <tr>
                                     <td></td>
                                     <td>Total:</td>
-
+                                    <td></td>
                                     @foreach (DataColumn dc in dtOB.Columns)
                                     {
-                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName")
+                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName" || dc.ColumnName == "DisbursementDate")
                                         {
                                             continue;
                                         }
@@ -93,6 +95,7 @@
                                                 oa += Convert.ToDecimal(arr[1]);
                                             }
                                         }
+
                                         <td style="text-align: right;">@(da.ToDisplayCurrency()).00</td>
                                         <td style="text-align: right;">@(oa.ToDisplayCurrency()).00</td>
                                     }

@@ -92,10 +92,10 @@ namespace MFIS.Web.Controllers
                     obj.Balance = Convert.ToDecimal(dr["Balance"]);
                 lstLedger.Add(obj);
             }
-            ViewBag.BankBalance = lstLedger[lstLedger.Count - 1].Balance.ToDisplayCurrencyRPT();
-            ViewBag.BankName = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x=>x.BankName).First().ToString() : "";
-            ViewBag.AccountNumber = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.AccountNumner).First().ToString() : "";
-            ViewBag.Branch = lstLedger != null ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.Branch).First().ToString() : "";
+            ViewBag.BankBalance = lstLedger != null && lstLedger.Count > 0 ? lstLedger[lstLedger.Count - 1].Balance.ToDisplayCurrencyRPT() : "";
+            ViewBag.BankName = lstLedger != null && lstLedger.Count > 0 ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.BankName).First().ToString() : "";
+            ViewBag.AccountNumber = lstLedger != null && lstLedger.Count > 0 ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.AccountNumner).First().ToString() : "";
+            ViewBag.Branch = lstLedger != null && lstLedger.Count > 0  ? lstLedger.Where(x => x.AHName == "BANK").Select(x => x.Branch).First().ToString() : "";
             ViewBag.Group = GroupInfo.GroupName;
             ViewBag.GroupCode = GroupInfo.GroupCode;
             ViewBag.Cluster = GroupInfo.Cluster;
