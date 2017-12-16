@@ -1,6 +1,6 @@
 ﻿@model BusinessEntities.ReceiptsAndPaymentsListDto
 @{
-    ViewBag.Title = "ReceiptsAndPayments";
+    ViewBag.Title = "IncomeAndExprnditure";
     Layout = "~/Views/Shared/_GroupLayout.cshtml";
 }
 
@@ -19,13 +19,13 @@
                             <thead>
                                 <tr>
                                     <th colspan="1" class="text-center"></th>
-                                    <th colspan="15" class="text-center">RECEIPTS</th>
-                                   
+                                    <th colspan="15" class="text-center">Income</th>
+
                                 </tr>
                                 <tr>
                                     <td class="text-center">#</td>
                                     @*<td class="text-center">AH CODE</td>*@
-                                    <td class="text-center">ACCOUNT HEAD NAME</td>   
+                                    <td class="text-center">ACCOUNT HEAD NAME</td>
                                     <td class="text-center">O/B</td>
                                     <td class="text-center">APRIL</td>
                                     <td class="text-center">MAY</td>
@@ -47,7 +47,7 @@
                                 @foreach (var item in Model.lstReceiptDto)
                                 {
 
-                                    if (i == Model.lstReceiptDto.Count )
+                                    if (i == Model.lstReceiptDto.Count)
                                     {
                                         <tr style="font-weight:bold">
                                             <td class="text-center"></td>
@@ -86,7 +86,7 @@
                                             <td style="text-align:right">@item.Jan</td>
                                             <td style="text-align:right">@item.Feb</td>
                                             <td style="text-align:right">@item.March</td>
-                                            <td style="font-weight:bold">@(item.OpeningBalance+item.April+item.May+item.June+item.July+item.August+item.Sep+item.Oct+item.Nov+item.Dec+item.Jan+item.Feb+item.March)</td>
+                                            <td style="font-weight:bold">@(item.OpeningBalance + item.April + item.May + item.June + item.July + item.August + item.Sep + item.Oct + item.Nov + item.Dec + item.Jan + item.Feb + item.March)</td>
                                         </tr>
                                     }
                                     i++;
@@ -96,7 +96,7 @@
                             <thead>
                                 <tr>
                                     <th colspan="1" class="text-center"></th>
-                                    <th colspan="15" class="text-center">PAYMENTS</th>
+                                    <th colspan="15" class="text-center">Expenditure</th>
                                     @*<th colspan="12" class="text-center"> </th>*@
                                 </tr>
                             </thead>
@@ -107,25 +107,25 @@
                                 {
                                     if (j == Model.lstPaymentsDto.Count)
                                     {
-                                    <tr style="font-weight:bold">
-                                        <td class="text-center"></td>
-                                        <td>@Item.SLAccountHead</td>
-                                        <td>@Item.OpeningBalance</td>
-                                        <td style="text-align:right">@Item.April</td>
-                                        <td style="text-align:right">@Item.May</td>
-                                        <td style="text-align:right">@Item.June</td>
-                                        <td style="text-align:right">@Item.July</td>
-                                        <td style="text-align:right">@Item.August</td>
-                                        <td style="text-align:right">@Item.Sep</td>
-                                        <td style="text-align:right">@Item.Oct</td>
-                                        <td style="text-align:right">@Item.Nov</td>
-                                        <td style="text-align:right">@Item.Dec</td>
-                                        <td style="text-align:right">@Item.Jan</td>
-                                        <td style="text-align:right">@Item.Feb</td>
-                                        <td style="text-align:right">@Item.March</td>
-                                        <td></td>
+                                        <tr style="font-weight:bold">
+                                            <td class="text-center"></td>
+                                            <td>@Item.SLAccountHead</td>
+                                            <td>@Item.OpeningBalance</td>
+                                            <td style="text-align:right">@Item.April</td>
+                                            <td style="text-align:right">@Item.May</td>
+                                            <td style="text-align:right">@Item.June</td>
+                                            <td style="text-align:right">@Item.July</td>
+                                            <td style="text-align:right">@Item.August</td>
+                                            <td style="text-align:right">@Item.Sep</td>
+                                            <td style="text-align:right">@Item.Oct</td>
+                                            <td style="text-align:right">@Item.Nov</td>
+                                            <td style="text-align:right">@Item.Dec</td>
+                                            <td style="text-align:right">@Item.Jan</td>
+                                            <td style="text-align:right">@Item.Feb</td>
+                                            <td style="text-align:right">@Item.March</td>
+                                            <td></td>
 
-                                    </tr>
+                                        </tr>
                                     }
                                     else
                                     {
@@ -145,7 +145,7 @@
                                             <td style="text-align:right">@Item.Jan</td>
                                             <td style="text-align:right">@Item.Feb</td>
                                             <td style="text-align:right">@Item.March</td>
-                                            <td style="font-weight:bold">@(Item.OpeningBalance+Item.April+Item.May+Item.June+Item.July+Item.August+Item.Sep+Item.Oct+Item.Nov+Item.Dec+Item.Jan+Item.Feb+Item.March)</td>
+                                            <td style="font-weight:bold">@(Item.OpeningBalance + Item.April + Item.May + Item.June + Item.July + Item.August + Item.Sep + Item.Oct + Item.Nov + Item.Dec + Item.Jan + Item.Feb + Item.March)</td>
                                         </tr>
                                     }
                                     j++;
@@ -162,7 +162,7 @@
 <script>
     $(document).ready(function () {
         menuLink = "menuFinancialReports";
-        subMenuLink = "lnkSideReceiptsAndPaments";
+        subMenuLink = "lnkSideInncomeAndExpenditure";
         LoadMenu();
     });
 </script>

@@ -946,6 +946,7 @@
     <Content Include="Views\MemberConfirmationReport\MemberConfirmationReport.cshtml" />
     <Content Include="Views\MemberConfirmationReport\MemberDemandSheet.cshtml" />
     <Content Include="Views\RecieptsAndPayments\ReceiptsAndPayments.cshtml" />
+    <Content Include="Views\RecieptsAndPayments\IncomeAndExpenditure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
