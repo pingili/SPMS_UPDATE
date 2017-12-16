@@ -26,7 +26,7 @@
     string groupCode = ViewBag.GroupCode != null ? ViewBag.GroupCode : string.Empty;
     string cluster = ViewBag.Cluster != null ? ViewBag.Cluster : string.Empty;
     string bankBalance = ViewBag.BankBalance != null ? ViewBag.BankBalance : string.Empty;
-
+    string openingBalance = ViewBag.OpeningBalance != null ? ViewBag.OpeningBalance : string.Empty;
 
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -101,6 +101,15 @@
                             }
                             else
                             {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Opening Balnace</td>
+                                    <td>@openingBalance</td>
+                                </tr>
                                 foreach (var a in Model)
                                 {
                                     <tr class="gradeA odd">

@@ -29,5 +29,6 @@ namespace BusinessEntities
         public decimal DrAmount { get; set; }
         public decimal CrAmount { get; set; }
         public decimal Balance { get; set; }
+        public decimal OpeningBalance { get; set; }
     }
 }
