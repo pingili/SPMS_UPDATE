@@ -67,11 +67,12 @@
                             <tbody>
                                 <tr>
                                     <td></td>
+                                    <td></td>
                                     <td>Total:</td>
 
                                     @foreach (DataColumn dc in dtOB.Columns)
                                     {
-                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName")
+                                        if (dc.ColumnName == "MemberId" || dc.ColumnName == "MemberName" || dc.ColumnName== "MemberCode")
                                         {
                                             continue;
                                         }
