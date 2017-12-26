@@ -485,5 +485,23 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
             string SecurityNAme = _groupLoanDisbursementService.GetSecurityName(SecurityCode);
             return Json(new { SecurityName = SecurityNAme });
         }
+
+        public ActionResult LoanPreCloser(string LoanMasterId)
+        {
+            MemberLoanClosure memberLoanClosure = new MemberLoanClosure();
+            int ID = string.IsNullOrEmpty(LoanMasterId.DecryptString()) ? default(int) : Convert.ToInt32(LoanMasterId.DecryptString());
+            var memberLoanDisbursement = _memberloanapplicationService.GetMemberLoanDisbursementDetailsById(ID, UserInfo.UserID);
+            LoadDropDowns();
+            memberLoanClosure = _memberloanapplicationService.GetLoanClosureDemands(ID, GroupInfo.MeetingDate);
+            ViewBag.LoanClosure = memberLoanClosure;
+            bool isView = false;
+            if (Request.QueryString["isView"] != null)
+                isView = Request.QueryString["isView"] == "1";
+            ViewBag.isView = isView;
+
+            return View(memberLoanDisbursement);
+        }
+        
     }
+  
 }

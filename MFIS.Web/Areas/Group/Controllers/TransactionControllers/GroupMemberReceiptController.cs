@@ -84,7 +84,6 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                 _grpMbrRecptDto.Transactions = new List<GroupMemberReceiptTranDto>();
 
                 int maxCount = Convert.ToInt32(Request.Form["hdnMaxTranCount"]);
-
                 GroupMemberReceiptTranDto objTran = null;
                 for (int index = 1; index < maxCount; index++)
                 {
@@ -93,12 +92,17 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     objTran.GLAccount = Convert.ToString(Request.Form["hdnGlAccount_" + index]);
                     objTran.SLAccount = Convert.ToString(Request.Form["hdnSlAccount_" + index]);
                     objTran.ReferenceNumber = Convert.ToString(Request.Form["hdnRefNumber_" + index]);
-
+                    decimal expectedDemand = default(decimal);
+                    decimal.TryParse(Request.Form["hdnexpectedamount_" + index], out expectedDemand);
                     int subAhId = default(int);
                     int.TryParse(Request.Form["hdnSubAHID_" + index], out subAhId);
                     objTran.SubAhId = subAhId;
 
                     objTran.Amount = Convert.ToDecimal(Request.Form["CrAmount_" + index]);
+                    if (objTran.SLAccount.ToUpper().Contains("SERVICE COST") && objTran.Amount < expectedDemand)
+                    {
+                        objTran.InterestDue = expectedDemand - objTran.Amount;
+                    }
                     _grpMbrRecptDto.Transactions.Add(objTran);
                 }
 

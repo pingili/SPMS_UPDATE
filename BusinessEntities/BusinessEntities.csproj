@@ -100,6 +100,7 @@
     <Compile Include="LoanOBDto.cs" />
     <Compile Include="BankLoanDto.cs" />
     <Compile Include="MemberConfirmationDemandDto.cs" />
+    <Compile Include="MemberLoanClosure.cs" />
     <Compile Include="MemberLoanLedgerDto.cs" />
     <Compile Include="MemberRefundsDto.cs" />
     <Compile Include="MemberReceiptLookupDto.cs" />

@@ -107,8 +107,9 @@
             subMenuLink = "lnkDemandsheet";
             LoadMenu();
         });
-        function getMemberDemand(groupmeeting) {
-            $.ajax({
+        function getMemberDemand(groupmeetingdate) {
+            window.location.href ='@Url.Content("MemberDemandSheet?groupmeetingdate=")' + groupmeetingdate;
+            @*$.ajax({
                 type: "POST",
                 url: "@Url.Action("MemberDemandSheet","MemberConfirmationReport")",
                 contentType: "application/json; charset=utf-8",
@@ -117,12 +118,14 @@
                 }),
                 success: function (result) {
                     //do something
+                    debugger;
+                    window.location.href = '/MemberConfirmationReport/MemberDemandSheet'
                 },
                 error: function (req, status, error) {
                     //error
                 }
-            });
-                }
+            });*@
+        }
 
     </script>
 }
