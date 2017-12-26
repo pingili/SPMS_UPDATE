@@ -110,18 +110,18 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
         }
 
         [HttpGet]
-        public ActionResult DeleteMemberLoanApplication(string Id)
+        public ActionResult DeleteBankLoanApplication(string Id)
         {
             int loanmasterId = DecryptQueryString(Id);
 
             if (loanmasterId < 1)
-                return RedirectToAction("MemberLoanApplicationLookup");
+                return RedirectToAction("BankLoanApplicationLookup");
 
             ResultDto resultDto = _bankLoanService.Delete(loanmasterId, UserInfo.UserID);
 
             TempData["Result"] = resultDto;
 
-            return RedirectToAction("MemberLoanApplicationLookup");
+            return RedirectToAction("BankLoanApplicationLookup");
         }
 
         [HttpGet]

@@ -98,20 +98,21 @@ namespace BusinessLogic
         public ResultDto Delete(int LoanMasterId, int userId)
         {
             ResultDto resultDto = new ResultDto();
-            string obectName = "MemberLoanApplication";
+            string obectName = "BankLoanApplication";
 
             try
             {
                 ObjectParameter prmLoanMasterId = new ObjectParameter("LoanMasterId", LoanMasterId);
-                ObjectParameter prmLoanCode = new ObjectParameter("LoanCode", string.Empty);
+                //ObjectParameter prmLoanCode = new ObjectParameter("LoanCode", string.Empty);
 
-                int effectedCount = _dbContext.uspMemberLoanApplicationDelete(prmLoanMasterId, prmLoanCode, userId);
-
+                //int effectedCount = _dbContext.uspMemberLoanApplicationDelete(prmLoanMasterId, prmLoanCode, userId);
+                BankLoanDataAccess objbankloandal = new BankLoanDataAccess();
+                ResultDto effectedCount = objbankloandal.BankLoanDelete(LoanMasterId, userId);
                 resultDto.ObjectId = (int)prmLoanMasterId.Value;
-                resultDto.ObjectCode = (string)prmLoanCode.Value;
+                //resultDto.ObjectCode = (string)prmLoanCode.Value;
 
                 if (resultDto.ObjectId > 0)
-                    resultDto.Message = string.Format("{0} : {1} details deleted successfully", obectName, resultDto.ObjectCode);
+                    resultDto.Message = string.Format("{0} : {1} deleted successfully", obectName, resultDto.ObjectCode);
                 else
                     resultDto.Message = string.Format("Error occured while deleting {0} details", obectName);
             }

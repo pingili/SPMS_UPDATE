@@ -392,6 +392,23 @@ namespace DataLogic
             return lstLoans;
         }
 
+        public ResultDto BankLoanDelete(int bankloanId,int userId)
+        {
+            ResultDto result = new ResultDto();
+            //string obectName = "Bank Loan Application";
+            AdoHelper objAdo = new AdoHelper();
+            SqlParameter[] parms = new SqlParameter[2];
 
+            parms[0] = new SqlParameter("@BannkLoanId", bankloanId);
+            parms[0].SqlDbType = System.Data.SqlDbType.Int;
+
+            parms[1] = new SqlParameter("@UserId", userId);
+            parms[1].SqlDbType = System.Data.SqlDbType.Int;
+
+            SqlDataReader dr = objAdo.ExecDataReaderProc("uspBankLoanApplicationDelete", parms);
+            result.ObjectId = Convert.ToInt32(parms[0].Value);
+                 
+            return result;
+        }
     }
 }

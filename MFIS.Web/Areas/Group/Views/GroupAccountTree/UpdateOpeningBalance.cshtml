@@ -7,6 +7,12 @@
             </select>
         </div>
 
+        <div>
+            <select class="form-control" name="ddlAddOpeningBalanceSLA" id="ddlAddOpeningBalanceSLA">
+                <option value="">Please Select Bank</option>
+            </select>
+        </div>
+
         <div id="dvAddOpenBalance" class="form-group">
             <label>Opening Balance</label>
             <br>
@@ -17,6 +23,8 @@
                 <option value="Cr">Cr</option>
             </select>
         </div>
+
+
 
     </div>
 
@@ -30,6 +38,29 @@
 
 <script type="text/javascript">
     function GetOpeningBalance(ahid) {
+        debugger;
+        $('#ddlAddOpeningBalanceSLA').hide();
+        if (ahid == '75')
+        {
+            $('#ddlAddOpeningBalanceSLA').show();
+
+            //Load SL Account Heads of selected GL
+            var optionsList = '';
+            var url='@Url.Action("GetSubLedgerBankAccountHeadsByGLAHId", "GroupAccountTree")'
+           // var url = '/Group/GroupOtherReceipt/GetSubLedgerBankAccountHeadsByGLAHId';;
+            $.post(url, { glAHId: Number(ahid) }, function (data) {
+                debugger;
+                if (data.slAccountHeads) {
+                    $(data.slAccountHeads).each(function (item, value) {
+                        debugger;
+                        optionsList += '<option value="' + value.Id + '"> ' + value.Name + '</option>';
+                    });
+                    $('#ddlAddOpeningBalanceSLA').append(optionsList);
+                    //$('#ddlAddOpeningBalanceSLA').val(slAccoutnID);
+                }
+            }, 'json');
+        }
+
         $.post('@Url.Action("GetOB", "GroupAccountTree")',
             { ahid: $('#ddlAccountHead').val()},
             function (data) {
@@ -40,8 +71,12 @@
     }
 
     function UpdateOpeningBalance() {
+        debugger;
+        var achid = $('#ddlAccountHead').val();
+        var bankahid = $('#ddlAddOpeningBalanceSLA').val();
+        if (achid == '75') { achid = bankahid };
         $.post('@Url.Action("UpdateOB", "GroupAccountTree")',
-            { ahid: $('#ddlAccountHead').val(), balance: $('#txtAddOpeningBalance').val() },
+            { ahid: achid , balance: $('#txtAddOpeningBalance').val() },
             function (data) {
                 if (data.result ) {
                     alert('Opening Balance Updated Successfully.');
@@ -55,7 +90,7 @@
     }
 
     $(document).ready(function () {
-        
+        $('#ddlAddOpeningBalanceSLA').hide();
         var actionUrl = '@Url.Action("BindDropDowns", "GroupAccountTree")' + '?parentAhid=0&accountHeadLevel=5&Id=ViewBalanceAccountHead&isFederation=false';// + $('#IsFederation').val();
         $.post(actionUrl, { parentAhid: 0, accountHeadLevel: 5, Id: "ViewBalanceAccountHead", isFederation: $('#IsFederation').val() }, function (response) {
             $("#ddlAccountHead").html(response.DropDownOptions);
