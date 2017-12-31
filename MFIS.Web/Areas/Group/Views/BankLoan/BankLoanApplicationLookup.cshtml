@@ -8,6 +8,8 @@
 @using (Html.BeginForm())
 {
     var Result = TempData["Result"] as BusinessEntities.ResultDto;
+    ResultDto res = TempData["Result"] != null ? TempData["Result"] as ResultDto : null;
+    string message = res != null ? res.Message : string.Empty;
     <div class="row">
         <div class="col-lg-12">
             <!-- Form Elements -->
@@ -16,6 +18,12 @@
                     <span class="header">Bank Loan Lookup</span>
                     <button type="button" class="btn btn-default pull-right lock-dependent" onclick="AddBankLoan();">Add New Bank Loan</button>
                 </div>
+                @if (!string.IsNullOrWhiteSpace(message))
+                {
+                    <div class="alert @(res.ObjectId > 0 ? "alert-success" : "alert-danger")">
+                        <strong>@(res.ObjectId > 0 ? "Success" : "Error")!</strong> @message
+                    </div>
+                }
                 <div class="panel-body">
                     <div class="table-responsive">
                         <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
@@ -97,7 +105,7 @@
             if (!confirm('If you continue this record will be deleted permanently \n Do you wish to continue?'))
                 return false;
             showProgress();
-            window.location.href = '@Url.Content("DeleteMemberLoanApplication?Id=")' + encryptLoanMasterID;
+            window.location.href = '@Url.Content("DeleteBankLoanApplication?Id=")' + encryptLoanMasterID;
         }
 
         function ActiveInactiveLoanmaster(encryptLoanMasterID, currentStatusCode) {

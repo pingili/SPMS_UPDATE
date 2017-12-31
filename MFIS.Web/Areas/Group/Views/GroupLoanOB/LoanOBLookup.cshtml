@@ -26,6 +26,7 @@
                                 <tr>
                                     <th class="text-center">#</th>
                                     <th>MemberName</th>
+                                    <th>MemberCode</th>
                                     <th>Disbusement Date</th>
                                     @foreach (DataColumn dc in dtOB.Columns)
                                     {
@@ -50,7 +51,8 @@
                                                 @(counter++)
                                                 <input type="hidden" value="@Convert.ToString(dr["MemberId"])" />
                                             </td>
-                                            <td>@Convert.ToString(dr["MemberName"])</td>
+                                            <td>@Convert.ToString(dr["MemberName"]).Split('(')[0]</td>
+                                            <td>@Convert.ToString(dr["MemberName"]).Split('(')[1].Replace(")","")</td>
                                             <td>@Convert.ToString(dr["DisbursementDate"])</td>
                                             @foreach (DataColumn dc in dtOB.Columns)
                                             {
@@ -96,9 +98,10 @@
                                             }
                                         }
 
-                                        <td style="text-align: right;">@(da.ToDisplayCurrency()).00</td>
-                                        <td style="text-align: right;">@(oa.ToDisplayCurrency()).00</td>
+                                        <td style="text-align: right;">@(da.ToDisplayCurrency())</td>
+                                        <td style="text-align: right;">@(oa.ToDisplayCurrency())</td>
                                     }
+                                    <td></td>
                                     <td></td>
                                 </tr>
                             </tbody>
