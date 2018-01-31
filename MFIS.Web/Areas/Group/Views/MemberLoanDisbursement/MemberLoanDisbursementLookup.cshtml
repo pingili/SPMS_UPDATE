@@ -5,6 +5,32 @@
     ViewBag.Title = "GroupLoanDisbursementLookup";
     Layout = "~/Views/Shared/_GroupLayout.cshtml";
 }
+<style type="text/css">
+    .pop_up {
+        background-color: #fff;
+        border-radius: 15px;
+        color: #000;
+        display: none;
+        padding: 5px 5px 20px 20px;
+        min-height: 250px;
+        max-height: 600px;
+        min-width: 400px;
+        max-width: 1200px;
+        /*left: 274.5px;
+        position: absolute;
+        top: 120px;
+        display: block;
+        opacity: 1;
+        width: 62%;
+        z-index: 9999;*/
+    }
+
+    .disabledbutton {
+        pointer-events: none;
+        opacity: 0.9;
+    }
+</style>
+
 @using (Html.BeginForm())
 {
     var Result = TempData["Result"] as BusinessEntities.ResultDto;
@@ -71,6 +97,8 @@
                                             {
                                                 <img src="~/Content/images/view-icon.png" style="cursor: pointer; width: 16px; height: 16px;" title="View" onclick="javascript:ViewMemberLoanDisbursement('@encryptLoanMasterID', 'V');" />
                                             }
+                                           
+                                                <img src="/Content/images/preclosing.png" style="cursor: pointer ;width: 16px; height: 16px;" title="Pre Closing" onclick="javascript:LoanPreClosing('@encryptLoanMasterID');" />
                                         </td>
                                     </tr>
                                 }
@@ -83,10 +111,28 @@
             <!-- End Form Elements -->
         </div>
     </div>
+    <div id="divschedule" class="pop_up" title="Schedule" style="z-index: 9999; left: 274.5px; width: 62%;">
+        <div style="float: right; margin-bottom: 10px;">
+            <a style="cursor: pointer;" onclick="javascript:Close();">
+                <img alt="" src="../../Content/images/close_button.png" />
+            </a>
+        </div>
+        @*<div style="font-size: larger; text-align: center; color: #063A60;">
+                <b>Existing Bank Details</b>
+            </div>*@
+        <div id="scroll_popup_container" style="margin-left: 20px; overflow: hidden; max-height: 500px">
+            <div id="schedulecontent">
+            </div>
+
+        </div>
+    </div>
 }
 <link href="~/Scripts/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
 <script src="~/Scripts/plugins/dataTables/jquery.dataTables.js"></script>
 <script src="~/Scripts/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="~/Scripts/jquery.bpopup.min.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment-with-locales.js"></script>
+<script src="~/Scripts/plugins/momentDate/moment.js"></script>
 <script>
     $(document).ready(function () {
         menuLink = "menuTransactions";
@@ -120,6 +166,21 @@
 
         window.location.href = '@Url.Content("ActiveInactiveGroupreceipts?Id=")' + encryptLoanMasterID;
     }
+    function LoanPreClosing(Id) {
+          var LoanMasterId = Id;
 
+            var actionUrl = '@Url.Action("LoanPreCloser", "MemberLoanDisbursement")';
+            $.post(actionUrl,
+                { LoanMasterId: LoanMasterId},
+                function (data) {
+                    $('#schedulecontent').html(data);
+                    $('#divschedule').bPopup();
+                    $('#divschedule').css("left", "274.5px");
+                });
+
+        }
+    function Close() {
+        $('#divschedule').bPopup().close();
+    }
 </script>
 

@@ -17,7 +17,7 @@ namespace DataLogic.Implementation
             try
             {
                 SqlConnection con = new SqlConnection(DBConstants.MFIS_CS);
-                SqlCommand cmd = new SqlCommand("uspGroupGroupMemberReceiptInsertUpdate", con);
+                SqlCommand cmd = new SqlCommand("uspGroupGroupMemberReceiptInsertUpdate_v2", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@TransactionMode", objDto.TransactionMode);

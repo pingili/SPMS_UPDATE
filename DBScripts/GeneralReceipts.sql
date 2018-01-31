@@ -35,8 +35,19 @@ BEGIN
 		DECLARE @TransType		INT
 		DECLARE @Sno			INT
 		DECLARE @ActStatusId	INT = (SELECT StatusID FROM StatusMaster WHERE StatusCode = 'ACT')
+		IF (@IsContra=1 and @TransactionMode='C')
+		BEGIN
+		 select @TransType = RefID from RefValueMaster where RefCode = 'CCW' AND RefMasterID IN(select RefMasterID from RefMaster where RefMasterCode = 'TRANSACTION_TYPE')
+		END
+		ELSE IF(@IsContra=1 and @TransactionMode='B')
+		BEGIN
+		 select @TransType = RefID from RefValueMaster where RefCode = 'CCD' AND RefMasterID IN(select RefMasterID from RefMaster where RefMasterCode = 'TRANSACTION_TYPE')
 
-		select @TransType = RefID from RefValueMaster where RefCode = 'GOR' AND RefMasterID IN(select RefMasterID from RefMaster where RefMasterCode = 'TRANSACTION_TYPE')
+		END
+		ELSE
+		BEGIN
+		 select @TransType = RefID from RefValueMaster where RefCode = 'GOR' AND RefMasterID IN(select RefMasterID from RefMaster where RefMasterCode = 'TRANSACTION_TYPE')
+		END
 		EXEC uspGenerateObjectCodeByEntityCode 'ACCOUNT_MASTER', @Sno OUTPUT, @VoucherNumber OUTPUT
 
 		INSERT INTO AccountMaster(TransactionDate, CodeSno, VoucherNumber, 	VoucherRefNumber, EmployeeID, AHID,  TransactionType,
@@ -67,12 +78,24 @@ BEGIN
 	IF NOT EXISTS (SELECT 1 FROM AccountTransactions WHERE AccountMasterID = @AccountMasterId)
 	BEGIN
 		--FROM ACC
+		IF(@IsContra=1 And @TransactionMode<>'C')
+		BEGIN
+		BEGIN
+		INSERT INTO AccountTransactions(AccountMasterID,  AHID,    DrAmount,CrAmount, IsActive,   CreatedBy, CreatedOn, IsMaster)
+		SELECT @AccountMasterId, @SLAccountId,  @Amount, 0, 1, @UserId, GETDATE(), 	0
+		--TO ACC
+		INSERT INTO AccountTransactions(AccountMasterID,  AHID,   DrAmount,CrAmount, IsActive,   CreatedBy, CreatedOn, IsMaster)
+		SELECT @AccountMasterId, @AHID,  0, @Amount, 1, @UserId, GETDATE(), 1
+		END
+		END
+		ELSE
+		BEGIN
 		INSERT INTO AccountTransactions(AccountMasterID,  AHID,   CrAmount, DrAmount, IsActive,   CreatedBy, CreatedOn, IsMaster)
 		SELECT @AccountMasterId, @SLAccountId,  @Amount, 0, 1, @UserId, GETDATE(), 	0
-
 		--TO ACC
 		INSERT INTO AccountTransactions(AccountMasterID,  AHID,   CrAmount, DrAmount, IsActive,   CreatedBy, CreatedOn, IsMaster)
 		SELECT @AccountMasterId, @AHID,  0, @Amount, 1, @UserId, GETDATE(), 1
+		END
 	END
 	ELSE
 	BEGIN
@@ -93,4 +116,6 @@ BEGIN
 		WHERE AccountMasterID = @AccountMasterId AND IsMaster = 1
 	END
 END
+
+
 

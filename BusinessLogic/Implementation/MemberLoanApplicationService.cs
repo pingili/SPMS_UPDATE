@@ -84,6 +84,12 @@ namespace BusinessLogic
             MemberLoanDisbursementDataAccess objMemberLoandal = new MemberLoanDisbursementDataAccess();
             return objMemberLoandal.GetMemberLoanDisbursementDetailsById(loanMasterId, userId);
         }
+        public MemberLoanClosure GetLoanClosureDemands(int loanMasterId, DateTime transactionDate)
+        {
+            MemberLoanDisbursementDataAccess objMemberLoandal = new MemberLoanDisbursementDataAccess();
+            return objMemberLoandal.GetLoanClosureDemands(loanMasterId, transactionDate);
+        }
+        
 
         public int SubmitLoanApplicationApproval(MemberLoanApprovalDto objLoanApproval, int userId, int loanMasterId, bool isSave = false)
         {

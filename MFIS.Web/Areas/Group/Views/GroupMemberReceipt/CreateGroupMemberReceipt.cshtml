@@ -130,7 +130,12 @@
                                                 <input type="hidden" id="hdnSlAccount_@Count" name="hdnSlAccount_@Count" value="@obj.SLAccount" />
                                                 <input type="hidden" id="hdnRefNumber_@Count" name="hdnRefNumber_@Count" value="@obj.ReferenceNumber" />
                                             </td>
-                                            <td class="text-right"><span id="spn_@Count" class="spnDemand">0</span></td>
+                                            <td class="text-right">
+                                                <span id="spn_@Count" name="spn_@Count" class="spnDemand">0</span>
+                                                <input type="hidden" id="hdnexpectedamount_@Count" name="hdnexpectedamount_@Count" class="spnDemand">
+
+                                            </td>
+
                                             <td class="text-right">
                                                 <input style="text-align:right;" type="text" id="CrAmount_@Count" name="CrAmount_@Count" value="@obj.Amount.ToDisplayCurrency()" class="Amount" onkeypress="return validateNumbersOnly(event);" />
                                             </td>
@@ -359,6 +364,8 @@
                         var demand = Number(this.Demand);
                         if ($('#spn_' + counter)) {
                             $('#spn_' + counter).text(demand);
+                            $('#hdnexpectedamount_' + counter).val(demand);
+                            
                         }
                     });
                     $('#spn_DemandTotal').html(Number(data.totaldemands));
@@ -409,7 +416,6 @@
             }
         }
 
-        debugger;
         var totalAssignedAmount = Number($.trim($('#lblBalance').text()));
         if (amount != totalAssignedAmount) {
             alert('Given Amount should be equal to Total Amount.');

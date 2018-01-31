@@ -363,7 +363,7 @@ namespace MFIS.Web.Areas.Group.Controllers
         public JsonResult GetSubLedgerBankAccountHeadsByGLAHId(string glAHId)
         {
             // var slAccountHeads = _groupOtherReceiptService.GetSLAccountHeads(int.Parse(glAHId));
-            TypeQueryResult lstBankAh = _masterService.GetTypeQueryResult("GROUP_OR_BANK_AH", GroupInfo.GroupID.ToString(), glAHId);
+            TypeQueryResult lstBankAh = _masterService.GetTypeQueryResult("GROUP_OR_BANK_AH_OB", GroupInfo.GroupID.ToString(), glAHId);
            // ViewBag.slBankAh = new SelectList(lstBankAh.OrderBy(a => a.Name), "Id", "Name");
 
             return Json(new { slAccountHeads = lstBankAh });

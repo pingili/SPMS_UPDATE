@@ -497,6 +497,7 @@
     <Content Include="Content\images\Edit.png" />
     <Content Include="Content\images\FileNotFound.png" />
     <Content Include="Content\images\Loading_please_wait.gif" />
+    <Content Include="Content\images\loanpre2.png" />
     <Content Include="Content\images\log.jpg" />
     <Content Include="Content\images\Logo.jpg" />
     <Content Include="Content\images\LogoSpms.jpg" />
@@ -504,6 +505,7 @@
     <Content Include="Content\images\logout.jpg" />
     <Content Include="Content\images\Plus-sign.png" />
     <Content Include="Content\images\approve-icon.png" />
+    <Content Include="Content\images\preclosing.png" />
     <Content Include="Content\images\select_button.png" />
     <Content Include="Content\images\spinner.gif" />
     <Content Include="Content\images\UnderConstruction.png" />
@@ -590,6 +592,8 @@
     <Content Include="Areas\Federation\Views\Bank\AddBank.cshtml" />
     <Content Include="Images\Apply_Active.gif" />
     <Content Include="Images\Apply_Over.gif" />
+    <Content Include="Images\loanpre2.png" />
+    <Content Include="Images\preclosing.png" />
     <Content Include="Images\SelectedList.png" />
     <Content Include="Images\select_button.png" />
     <Content Include="ReferenceDLL\Antlr3.Runtime.dll" />
@@ -744,16 +748,11 @@
     <Content Include="Areas\Group\Views\GroupJournal\GroupJournalLookUp.cshtml" />
     <Content Include="Areas\Group\Views\GroupJournal\ViewGroupJournal.cshtml" />
     <Content Include="Areas\Federation\Views\FederationLoanApplication\CreateFedLoanAppln.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\AdditionalSecuritiesDetails.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\CreateMemberLoanDisbursement.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\Disbursement.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\GenerateVoucher.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\MemberLoanDisbursementLookup.cshtml" />
-    <Content Include="Areas\Group\Views\BACKUP_MemberLoanDisbursement\Schedule.cshtml" />
     <Content Include="Areas\Group\Views\MemberLoanDisbursement\CreateMemberLoanDisbursementNew.cshtml" />
     <Content Include="Areas\Group\Views\BankLoan\CreateBankLoan.cshtml" />
     <Content Include="Areas\Group\Views\BankLoan\BankLoanApplicationLookup.cshtml" />
     <Content Include="Areas\Group\Views\BankLoan\BankLoanApplicationView.cshtml" />
+    <Content Include="Areas\Group\Views\MemberLoanDisbursement\LoanPreCloser.cshtml" />
     <None Include="Properties\PublishProfiles\MFIS_PUB.pubxml" />
     <None Include="Properties\PublishProfiles\raghudesktop.pubxml" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />

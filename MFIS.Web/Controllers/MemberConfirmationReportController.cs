@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Implementation;
+﻿using BusinessEntities;
+using BusinessLogic.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace MFIS.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult MemberDemandSheet()
+        public ActionResult MemberDemandSheet(string groupmeetingdate)
         {
             ViewBag.GroupName = GroupInfo.GroupName + "(" + GroupInfo.GroupCode + ")";
 
@@ -43,23 +44,34 @@ namespace MFIS.Web.Controllers
             //List<SelectListDto> lstselectDto = _accountheadService.GetGeneralReceiptLedgersDropDown(true);
             SelectList lstGroupMeeting = new SelectList(lstGroupMeetings, "Date", "Date");
             ViewBag.GroupMeeting = lstGroupMeeting;
-            var lstMemberDemand = objBal.GetMemberDemandSheetReport(GroupInfo.GroupID, UserInfo.UserID, DateTime.MinValue,DateTime.Now);
+            List<MemberDemandSheetDto> lstMemberDemand = new List<MemberDemandSheetDto>();
+            if (!string.IsNullOrEmpty(groupmeetingdate))
+            {
+                DateTime groupMeetingDate = string.IsNullOrEmpty(groupmeetingdate) ? default(DateTime) : Convert.ToDateTime(groupmeetingdate);
+
+                 lstMemberDemand = objBal.GetMemberDemandSheetReport(GroupInfo.GroupID, UserInfo.UserID, DateTime.MinValue, groupMeetingDate);
+            }
+            else {
+                 lstMemberDemand = objBal.GetMemberDemandSheetReport(GroupInfo.GroupID, UserInfo.UserID, DateTime.MinValue, GroupInfo.MeetingDate);
+
+            }
+
 
             return View(lstMemberDemand);
         }
-        [HttpPost]
-        public ActionResult MemberDemandSheet(DateTime groupmeetingdate)
-        {
-            ViewBag.GroupName = GroupInfo.GroupName + "(" + GroupInfo.GroupCode + ")";
+        //[HttpPost]
+        //public ActionResult MemberDemandSheet()
+        //{
+        //    ViewBag.GroupName = GroupInfo.GroupName + "(" + GroupInfo.GroupCode + ")";
 
-            List<DateTime> lstGroupMeetings = objBal.GetGroupMeetings(GroupInfo.GroupID);
-            //List<SelectListDto> lstselectDto = _accountheadService.GetGeneralReceiptLedgersDropDown(true);
-            SelectList lstGroupMeeting = new SelectList(lstGroupMeetings, "Date", "Date");
-            ViewBag.GroupMeeting = lstGroupMeeting;
-            var lstMemberDemand = objBal.GetMemberDemandSheetReport(GroupInfo.GroupID, UserInfo.UserID, DateTime.MinValue,groupmeetingdate);
+        //    List<DateTime> lstGroupMeetings = objBal.GetGroupMeetings(GroupInfo.GroupID);
+        //    //List<SelectListDto> lstselectDto = _accountheadService.GetGeneralReceiptLedgersDropDown(true);
+        //    SelectList lstGroupMeeting = new SelectList(lstGroupMeetings, "Date", "Date");
+        //    ViewBag.GroupMeeting = lstGroupMeeting;
+        //    var lstMemberDemand = objBal.GetMemberDemandSheetReport(GroupInfo.GroupID, UserInfo.UserID, DateTime.MinValue,groupmeetingdate);
 
-            return View(lstMemberDemand);
-        }
+        //    return View(lstMemberDemand);
+        //}
 
         public MemberConfirmationDemandService objBal
         {

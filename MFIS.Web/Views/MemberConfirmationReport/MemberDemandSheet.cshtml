@@ -82,7 +82,7 @@
                             </tr>
                             }
                         }
-                    </tbody>
+                    </tbody>x
                 </table>
             </div>
         </div>
@@ -107,22 +107,9 @@
             subMenuLink = "lnkDemandsheet";
             LoadMenu();
         });
-        function getMemberDemand(groupmeeting) {
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("MemberDemandSheet","MemberConfirmationReport")",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    groupmeetingdate: groupmeeting
-                }),
-                success: function (result) {
-                    //do something
-                },
-                error: function (req, status, error) {
-                    //error
-                }
-            });
-                }
+        function getMemberDemand(groupmeetingdate) {
+            window.location.href ='@Url.Content("MemberDemandSheet?groupmeetingdate=")' + groupmeetingdate;
+        }
 
     </script>
 }

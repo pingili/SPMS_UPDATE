@@ -101,6 +101,7 @@ namespace DataLogic.Implementation
         }
 
         public List<MemberDemandSheetDto> GetMemberDemandSheetReport(int GroupId, int UserId, DateTime dtTranDate,DateTime meetingDate)
+
         {
             List<MemberDemandSheetDto> lstMemberDemandSheet = new List<MemberDemandSheetDto>();
 
@@ -122,7 +123,7 @@ namespace DataLogic.Implementation
                 parms[3].SqlDbType = System.Data.SqlDbType.Int;
             }
 
-            SqlDataReader dr = objado.ExecDataReaderProc("uspMemberDemandSheetReport", parms);
+            SqlDataReader dr = objado.ExecDataReaderProc("uspMemberDemandSheetReport_v1", parms);
             while (dr.Read())
             {
                 MemberDemandSheetDto obj = new MemberDemandSheetDto();

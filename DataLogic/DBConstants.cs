@@ -42,7 +42,7 @@ namespace DataLogic
         public static readonly string uspMemberLookUp = "uspMemberLookUp";
         public static readonly string uspGroupMemberAccountHeadTemplats = "uspGroupMemberAccountHeadTemplats";
         public static readonly string uspMemberReceiptLookup = "uspMemberReceiptLookup";
-        public static readonly string uspGetMemberReceiptDemands = "uspGetMemberReceiptDemands";
+        public static readonly string uspGetMemberReceiptDemands = "uspGetMemberReceiptDemands_v1";
         public static readonly string uspGetGroupMemberReceiptByAccountMasterId= "uspGetGroupMemberReceiptByAccountMasterId";
 
         public static readonly string uspGroupOtherJournalInsertUpdate = "uspGroupOtherJournalInsertUpdate";

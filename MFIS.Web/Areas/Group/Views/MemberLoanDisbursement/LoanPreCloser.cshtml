@@ -1,0 +1,144 @@
+﻿@using CoreComponents;
+@model BusinessEntities.MemberLoanDisbursementDto
+@using BusinessEntities;
+@using (Html.BeginForm())
+{
+    MemberLoanClosure memberLoanClosure = new MemberLoanClosure();
+    if (ViewBag.LoanClosure != null)
+    {
+        memberLoanClosure = ViewBag.LoanClosure;
+    }
+    <div class="panel-body">
+        <div class="row" id="dvMain">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Member Name</label><br>
+                    @Html.TextBoxFor(m => m.MemberName, new { @disabled = "disabled", @class = "form-control" })
+                    @Html.HiddenFor(m => m.LoanCode)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Loan Application Date</label><br>
+                    @Html.TextBox("LoanApplicationDate", Model.LoanApplicationDate.ToDisplayDateFormat(), new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Loan Amount Applied</label>
+                    @Html.TextBox("LoanAmountApplied", Model.LoanAmountApplied.ToDisplayCurrency(), new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>No.Of Installments Proposed By Group</label>
+                    @Html.TextBox("NoofInstallmentsProposed", Model.NoofInstallmentsProposed, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Loan Type (Principle A/c Head)</label><br />
+                    @Html.TextBoxFor(model => model.PrincipleAHName, "", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Interest Account Head</label><br />
+                    @Html.TextBoxFor(model => model.InterestAHName, "", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Interest Rate %</label>
+                    @Html.TextBoxFor(model => model.ROI, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.HiddenFor(m => m.InterestRateID)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Monthly Due Day</label>
+                    <input type="text" class="form-control" id="txtDueDay" name="txtDueDay" readonly="true" value="@ViewBag.MeetingDueDay" />
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Mode</label>
+                    @Html.TextBoxFor(model => model.FrequencyMode, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Project Purpose</label>
+                    @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.HiddenFor(model => model.LoanMasterId, new { @readonly = "readonly", @class = "form-control", @id = "hdnLoanMasterId" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Loan Purpose</label>
+                    @Html.TextBoxFor(model => model.LoanPurposeName, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Sanction Amount By M.D</label>
+                    @Html.TextBox("MDSanctionAmount", Model.MDSanctionAmount.ToDisplayCurrency(), new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Installments Proposed By M.D</label>
+                    @Html.TextBoxFor(model => model.MDInstallments, new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Out Standing Amount</label>
+                    @Html.TextBox("principalDemand", memberLoanClosure.PrincipleDemand.ToDisplayCurrency(), new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Interest Demand</label>
+                    @Html.TextBox("InterestDemand", memberLoanClosure.InterestDemand.ToDisplayCurrency(), new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label>Total Payment</label>
+                    @Html.TextBox("TotalPayment", (memberLoanClosure.InterestDemand + memberLoanClosure.PrincipleDemand).ToDisplayCurrency(), new { @readonly = "readonly", @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary lock-dependent" style="margin-top:22px" onclick="return validateConfirm();">Close Loan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#hdntabtype').val('schedule');
+    });
+    function validateConfirm() {
+        if (confirm("Are you sure want to loan pre close..?")) {
+            var id = $('#hdnLoanMasterId').val();
+            var LoanMasterId = id;
+
+            var actionUrl = '@Url.Action("SaveLoanPreClose", "MemberLoanDisbursement")';
+            $.post(actionUrl,
+                { LoanMasterId: LoanMasterId},
+                function (data) {
+
+                });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>

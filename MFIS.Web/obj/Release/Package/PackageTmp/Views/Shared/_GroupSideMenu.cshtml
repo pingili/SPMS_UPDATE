@@ -14,7 +14,7 @@
         <!-- user image section-->
         <div class="user-section">
             <div class="user-section-inner">
-                <img src="@(string.IsNullOrEmpty(userInfo.Photo) ? Url.Content("~/Content/images/user.jpg") : "../../" + userInfo.Photo)" style="width:50px;height:60px;"/>
+                <img src="@(string.IsNullOrEmpty(userInfo.Photo) ? Url.Content("~/Content/images/user.jpg") : "/../../" + userInfo.Photo)" style="width:50px;height:60px;" class="img-circle"/>
             </div>
             <div style="font-size: small; font-weight: 100; color: #FFF;" class="user-info">
                 @userInfo.UserName

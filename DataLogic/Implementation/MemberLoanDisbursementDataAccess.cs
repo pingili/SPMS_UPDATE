@@ -489,6 +489,30 @@ namespace DataLogic
             return objLoanApplication;
         }
 
+        public MemberLoanClosure GetLoanClosureDemands(int loanMasterId, DateTime transacationDate)
+        {
+            var memberLoanClosure = new MemberLoanClosure();
+            AdoHelper objAdo = new AdoHelper();
+
+            SqlParameter[] parms = new SqlParameter[2];
+
+            parms[0] = new SqlParameter("@LoanMasterID", loanMasterId);
+            parms[0].SqlDbType = System.Data.SqlDbType.Int;
+
+            parms[1] = new SqlParameter("@TransactionDate", transacationDate);
+            parms[1].SqlDbType = System.Data.SqlDbType.Date;
+
+            SqlDataReader dr = objAdo.ExecDataReaderProc("usp_LoanPreclosureDemand", parms);
+            if (dr.Read())
+            {
+                memberLoanClosure.LoanMasterId = Convert.ToInt32(dr["LoanMasterID"]);
+                memberLoanClosure.PrincipleDemand = Convert.ToDecimal(dr["PrincipleDemand"]);
+                memberLoanClosure.InterestDemand = Convert.ToDecimal(dr["InterestDemand"]);
+            }
+            return memberLoanClosure;
+         
+        }
+
         public MemberLoanDisbursementDto GetMemberLoanDisbursementDetailsById(int loanMasterId, int userId)
         {
             var objLoanDisbursement = new MemberLoanDisbursementDto();
@@ -991,7 +1015,7 @@ namespace DataLogic
                     objresult.ObjectId = loanMasterId;
                     objresult.ObjectCode = "TRUE";
                 }
-                else if(updated == -97)
+                else if (updated == -97)
                 {
                     objresult.Message = "Insufficient Funds to Disburse the Loan.";
                     objresult.ObjectId = updated;

@@ -101,7 +101,7 @@ namespace MFIS.Web.Controllers
         {
             List<ReceiptsAndPaymentsDto> lst = new List<ReceiptsAndPaymentsDto>();
             int GroupId = GroupInfo.GroupID;
-            SqlCommand cmd = new SqlCommand("uspGroupReceiptAndPayments", con);
+            SqlCommand cmd = new SqlCommand("uspGroupIncomeAndExpendature", con);
             cmd.Parameters.Add(new SqlParameter("GroupID", GroupId));
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandTimeout = 0;
