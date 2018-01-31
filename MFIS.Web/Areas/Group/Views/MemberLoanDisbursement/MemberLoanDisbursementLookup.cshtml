@@ -97,10 +97,8 @@
                                             {
                                                 <img src="~/Content/images/view-icon.png" style="cursor: pointer; width: 16px; height: 16px;" title="View" onclick="javascript:ViewMemberLoanDisbursement('@encryptLoanMasterID', 'V');" />
                                             }
-                                            @if (item.CanEdit)
-                                            {
+                                           
                                                 <img src="/Content/images/preclosing.png" style="cursor: pointer ;width: 16px; height: 16px;" title="Pre Closing" onclick="javascript:LoanPreClosing('@encryptLoanMasterID');" />
-                                            }
                                         </td>
                                     </tr>
                                 }

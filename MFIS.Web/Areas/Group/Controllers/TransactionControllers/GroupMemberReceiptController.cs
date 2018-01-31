@@ -103,6 +103,10 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
                     {
                         objTran.InterestDue = expectedDemand - objTran.Amount;
                     }
+                    if (objTran.SLAccount.ToUpper().Contains("LOAN") && objTran.Amount < expectedDemand && !(objTran.SLAccount.ToUpper().Contains("SERVICE COST")))
+                    {
+                        objTran.PrincipleDue = expectedDemand - objTran.Amount;
+                    }
                     _grpMbrRecptDto.Transactions.Add(objTran);
                 }
 

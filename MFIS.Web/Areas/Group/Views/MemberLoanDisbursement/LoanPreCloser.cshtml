@@ -71,6 +71,7 @@
                 <div class="form-group">
                     <label>Project Purpose</label>
                     @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.HiddenFor(model => model.LoanMasterId, new { @readonly = "readonly", @class = "form-control", @id = "hdnLoanMasterId" })
                 </div>
             </div>
             <div class="col-lg-3">
@@ -109,6 +110,11 @@
                     @Html.TextBox("TotalPayment", (memberLoanClosure.InterestDemand + memberLoanClosure.PrincipleDemand).ToDisplayCurrency(), new { @readonly = "readonly", @class = "form-control" })
                 </div>
             </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary lock-dependent" style="margin-top:22px" onclick="return validateConfirm();">Close Loan</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -117,6 +123,22 @@
     $(document).ready(function () {
         $('#hdntabtype').val('schedule');
     });
+    function validateConfirm() {
+        if (confirm("Are you sure want to loan pre close..?")) {
+            var id = $('#hdnLoanMasterId').val();
+            var LoanMasterId = id;
 
+            var actionUrl = '@Url.Action("SaveLoanPreClose", "MemberLoanDisbursement")';
+            $.post(actionUrl,
+                { LoanMasterId: LoanMasterId},
+                function (data) {
+
+                });
+
+        }
+        else {
+            return false;
+        }
+    }
 
 </script>

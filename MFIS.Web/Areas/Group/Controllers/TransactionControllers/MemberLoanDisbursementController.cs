@@ -16,10 +16,11 @@ using BusinessLogic.Implementation;
 
 namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
 {
+
     public class MemberLoanDisbursementController : BaseController
     {
         #region Global Variables
-
+        private readonly GroupMemberReceiptService _groupMemberReceiptService;
         private readonly LoanPurposeService _loanpurposeService;
         private readonly MemberLoanApplicationService _memberloanapplicationService;
         private readonly MemberLoanDisbursementService _memberLoanDisbursementService;
@@ -48,6 +49,7 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
             _loanSecurityService = new LoanSecurityMasterService();
             _interestService = new InterestService();
             _masterService = new MasterService();
+            _groupMemberReceiptService = new GroupMemberReceiptService();
         }
         #endregion Global Variables
 
@@ -501,7 +503,63 @@ namespace MFIS.Web.Areas.Group.Controllers.TransactionControllers
 
             return View(memberLoanDisbursement);
         }
-        
+        public ActionResult SaveLoanPreClose(string LoanMasterId)
+        {
+            MemberLoanClosure memberLoanClosure = new MemberLoanClosure();
+            int ID = string.IsNullOrEmpty(LoanMasterId.DecryptString()) ? default(int) : Convert.ToInt32(LoanMasterId.DecryptString());
+            var memberLoanDisbursement = _memberloanapplicationService.GetMemberLoanDisbursementDetailsById(ID, UserInfo.UserID);
+            LoadDropDowns();
+            memberLoanClosure = _memberloanapplicationService.GetLoanClosureDemands(ID, GroupInfo.MeetingDate);
+            List<GroupMemberDemandDto> lstDemands = new List<GroupMemberDemandDto>();
+            lstDemands = _groupMemberReceiptService.GetTransactionDemands(Convert.ToString(GroupInfo.MeetingDate), memberLoanDisbursement.MemberID);
+            var lstloanDemands = lstDemands.Where(x => x.LoanMasterId == ID).ToList();
+            GroupMemberReceiptDto _grpMbrRecptDto = new GroupMemberReceiptDto();
+            try
+            {
+                ViewBag.LockStatus = GroupInfo.LockStatus;
+                _grpMbrRecptDto.AccountMasterID = memberLoanDisbursement.AccountMasterId;
+                _grpMbrRecptDto.TransactionMode = "C";
+
+                
+                _grpMbrRecptDto.TransactionDate = GroupInfo.MeetingDate;
+
+                _grpMbrRecptDto.VoucherRefNumber = memberLoanDisbursement.PaymentVoucherNumber;
+                _grpMbrRecptDto.CollectionAgent = 0;
+
+
+                _grpMbrRecptDto.TotalAmount = memberLoanClosure.InterestDemand + memberLoanClosure.PrincipleDemand;
+
+                _grpMbrRecptDto.MemberId = memberLoanDisbursement.MemberID;
+                _grpMbrRecptDto.Narration = "Loan Pre Closing";
+
+                //Transactions Read
+                _grpMbrRecptDto.Transactions = new List<GroupMemberReceiptTranDto>();
+                foreach (var memberdemand in lstloanDemands)
+                {
+                    GroupMemberReceiptTranDto objTran = null;
+                    objTran = new GroupMemberReceiptTranDto();
+                    objTran.SLAccountId = memberdemand.SLAhId;
+                    objTran.GLAccount = memberdemand.GLAhName;
+                    objTran.SLAccount = memberdemand.SLAhName;
+                    objTran.ReferenceNumber = "RefCloser";
+                    objTran.SubAhId = memberdemand.SubAhId;
+                    objTran.Amount = memberLoanClosure.PrincipleDemand;
+                    objTran.InterestDue = 0;
+                    _grpMbrRecptDto.Transactions.Add(objTran);
+                }
+                //Save
+                int GroupId = GroupInfo.GroupID;
+                ResultDto resultDto = _groupMemberReceiptService.AddUpdateMemberReceipt(_grpMbrRecptDto, UserInfo.UserID, GroupId);
+                _grpMbrRecptDto.VoucherNumber = resultDto.ObjectCode;
+                _grpMbrRecptDto.AccountMasterID = resultDto.ObjectId;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return View();
+        }
     }
-  
+
 }
